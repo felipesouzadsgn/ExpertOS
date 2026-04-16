@@ -1,29 +1,36 @@
 import { Search, TrendingUp, Target, Zap, ArrowRight } from 'lucide-react';
+import { useExpertStore } from '@/store/expertStore';
 
 export function Research() {
+  const { activeExpert } = useExpertStore();
+
+  if (!activeExpert) {
+    return <div className="p-8 text-text-main">Please select an expert first.</div>;
+  }
+
   return (
-    <div className="p-8 h-full flex flex-col overflow-auto">
+    <div className="p-8 h-full flex flex-col overflow-auto text-text-main">
       <div className="max-w-4xl mx-auto w-full">
         <div className="text-center mb-10">
           <h1 className="font-serif text-3xl mb-3">Market Intelligence</h1>
           <p className="text-text-muted text-sm max-w-xl mx-auto">
-            Analyze trends, competitors, and viral references tailored to your Expert's niche and audience.
+            Analyze trends, competitors, and viral references tailored to <span className="font-semibold" style={{ color: activeExpert.brandColor }}>{activeExpert.name}'s</span> niche and audience.
           </p>
         </div>
 
         {/* Search Bar */}
         <div className="relative mb-12">
-          <div className="absolute inset-0 bg-primary/20 blur-xl rounded-full"></div>
+          <div className="absolute inset-0 rounded-full blur-xl" style={{ backgroundColor: `${activeExpert.brandColor}33` }}></div>
           <div className="relative bg-surface border border-border rounded-2xl p-2 flex items-center shadow-2xl">
-            <div className="pl-4 pr-2 text-primary">
+            <div className="pl-4 pr-2" style={{ color: activeExpert.brandColor }}>
               <Search size={24} />
             </div>
             <input 
               type="text" 
-              placeholder="What topic or trend do you want to research?" 
+              placeholder={`What topic or trend do you want to research for ${activeExpert.niche}?`} 
               className="flex-1 bg-transparent border-none focus:outline-none text-lg py-3 px-2 placeholder:text-text-muted/50"
             />
-            <button className="bg-primary hover:bg-primary/90 text-white px-6 py-3 rounded-xl font-medium transition-colors">
+            <button className="text-white px-6 py-3 rounded-xl font-medium transition-colors hover:brightness-110" style={{ backgroundColor: activeExpert.brandColor }}>
               Analyze
             </button>
           </div>
@@ -62,11 +69,11 @@ export function Research() {
             <p className="text-sm text-text-muted mb-4">Analyze top performing content from direct competitors.</p>
             <div className="space-y-3">
               <div className="bg-bg p-3 rounded-lg border border-border">
-                <p className="text-xs text-primary font-bold uppercase mb-1">Top Format</p>
+                <p className="text-xs font-bold uppercase mb-1" style={{ color: activeExpert.brandColor }}>Top Format</p>
                 <p className="text-sm">Educational Carousels (7-10 slides)</p>
               </div>
               <div className="bg-bg p-3 rounded-lg border border-border">
-                <p className="text-xs text-primary font-bold uppercase mb-1">Missing Gap</p>
+                <p className="text-xs font-bold uppercase mb-1" style={{ color: activeExpert.brandColor }}>Missing Gap</p>
                 <p className="text-sm">Data-driven market predictions</p>
               </div>
             </div>
@@ -94,7 +101,7 @@ export function Research() {
         </div>
 
         {/* Action Area */}
-        <div className="bg-gradient-to-r from-primary/10 to-purple-500/10 border border-primary/20 rounded-2xl p-6 flex items-center justify-between">
+        <div className="border rounded-2xl p-6 flex items-center justify-between" style={{ backgroundColor: `${activeExpert.brandColor}1A`, borderColor: `${activeExpert.brandColor}33` }}>
           <div>
             <h3 className="font-serif text-lg mb-1">Turn Insights into Content</h3>
             <p className="text-sm text-text-muted">Send these findings directly to the Content Studio to generate drafts.</p>

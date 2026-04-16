@@ -1,12 +1,19 @@
 import { UploadCloud, FileText, Search, Filter, MoreVertical, CheckCircle2 } from 'lucide-react';
+import { useExpertStore } from '@/store/expertStore';
 
 export function Knowledge() {
+  const { activeExpert } = useExpertStore();
+
+  if (!activeExpert) {
+    return <div className="p-8 text-text-main">Please select an expert first.</div>;
+  }
+
   return (
-    <div className="p-8 h-full flex flex-col">
+    <div className="p-8 h-full flex flex-col text-text-main">
       <div className="flex justify-between items-center mb-8">
         <div>
           <h1 className="font-serif text-2xl mb-1">Knowledge Base</h1>
-          <p className="text-text-muted text-sm">Manage documents, references, and context for the active Expert.</p>
+          <p className="text-text-muted text-sm">Manage documents, references, and context for <span className="font-semibold" style={{ color: activeExpert.brandColor }}>{activeExpert.name}</span>.</p>
         </div>
         <button className="bg-surface border border-border hover:bg-white/5 text-text-main px-4 py-2 rounded-lg text-sm font-medium flex items-center gap-2 transition-colors">
           <UploadCloud size={16} />
@@ -18,7 +25,7 @@ export function Knowledge() {
         {/* Upload & Stats Sidebar */}
         <div className="flex flex-col gap-6">
           <div className="bg-surface border border-border rounded-2xl p-6 text-center border-dashed hover:border-primary/50 transition-colors cursor-pointer group">
-            <div className="w-12 h-12 rounded-full bg-primary/10 text-primary flex items-center justify-center mx-auto mb-4 group-hover:scale-110 transition-transform">
+            <div className="w-12 h-12 rounded-full flex items-center justify-center mx-auto mb-4 group-hover:scale-110 transition-transform" style={{ backgroundColor: `${activeExpert.brandColor}1A`, color: activeExpert.brandColor }}>
               <UploadCloud size={24} />
             </div>
             <h3 className="font-medium mb-1">Drag & Drop Files</h3>
@@ -34,7 +41,7 @@ export function Knowledge() {
                   <span className="font-medium">45%</span>
                 </div>
                 <div className="h-1.5 bg-bg rounded-full overflow-hidden">
-                  <div className="h-full bg-primary w-[45%]"></div>
+                  <div className="h-full w-[45%]" style={{ backgroundColor: activeExpert.brandColor }}></div>
                 </div>
               </div>
               <div>
@@ -54,8 +61,9 @@ export function Knowledge() {
               <Search size={16} className="absolute left-3 top-1/2 -translate-y-1/2 text-text-muted" />
               <input 
                 type="text" 
-                placeholder="Search documents..." 
-                className="w-full bg-bg border border-border rounded-lg pl-9 pr-4 py-2 text-sm focus:outline-none focus:border-primary/50 transition-colors"
+                placeholder={`Search ${activeExpert.name}'s documents...`} 
+                className="w-full bg-bg border border-border rounded-lg pl-9 pr-4 py-2 text-sm focus:outline-none transition-colors"
+                style={{ '--tw-ring-color': activeExpert.brandColor } as any}
               />
             </div>
             <button className="p-2 border border-border rounded-lg text-text-muted hover:text-text-main hover:bg-white/5 transition-colors">

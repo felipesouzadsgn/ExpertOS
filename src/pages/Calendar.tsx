@@ -1,15 +1,21 @@
 import { ChevronLeft, ChevronRight, Plus } from 'lucide-react';
+import { useExpertStore } from '@/store/expertStore';
 
 export function Calendar() {
+  const { activeExpert } = useExpertStore();
   const days = ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'];
   const dates = Array.from({ length: 35 }, (_, i) => i + 1); // Mock 35 days grid
 
+  if (!activeExpert) {
+    return <div className="p-8 text-text-main">Please select an expert first.</div>;
+  }
+
   return (
-    <div className="p-8 h-full flex flex-col">
+    <div className="p-8 h-full flex flex-col text-text-main">
       <div className="flex justify-between items-center mb-8">
         <div>
           <h1 className="font-serif text-2xl mb-1">Editorial Calendar</h1>
-          <p className="text-text-muted text-sm">Schedule and manage your content pipeline.</p>
+          <p className="text-text-muted text-sm">Schedule and manage content pipeline for <span className="font-semibold" style={{ color: activeExpert.brandColor }}>{activeExpert.name}</span>.</p>
         </div>
         <div className="flex items-center gap-4">
           <div className="flex items-center gap-2 bg-surface border border-border rounded-lg p-1">
@@ -17,7 +23,7 @@ export function Calendar() {
             <span className="text-sm font-medium px-2">October 2025</span>
             <button className="p-1 hover:bg-white/5 rounded transition-colors"><ChevronRight size={18} /></button>
           </div>
-          <button className="bg-primary hover:bg-primary/90 text-white px-4 py-2 rounded-lg text-sm font-medium flex items-center gap-2 transition-colors">
+          <button className="text-white px-4 py-2 rounded-lg text-sm font-medium flex items-center gap-2 transition-colors hover:brightness-110" style={{ backgroundColor: activeExpert.brandColor }}>
             <Plus size={16} />
             Schedule
           </button>
@@ -48,8 +54,8 @@ export function Calendar() {
                 } ${i >= 28 ? 'border-b-0' : ''}`}
               >
                 <div className={`text-xs font-medium w-6 h-6 flex items-center justify-center rounded-full mb-2 ${
-                  isToday ? 'bg-primary text-white' : 'text-text-muted'
-                }`}>
+                  isToday ? 'text-white' : 'text-text-muted'
+                }`} style={{ backgroundColor: isToday ? activeExpert.brandColor : 'transparent' }}>
                   {date > 31 ? date - 31 : date}
                 </div>
                 

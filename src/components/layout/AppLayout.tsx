@@ -33,12 +33,14 @@ export function AppLayout({ children }: AppLayoutProps) {
   const { activeExpert, experts, setActiveExpert } = useExpertStore();
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
 
+  const brandColor = activeExpert?.brandColor || '#6366f1';
+
   return (
     <div className="flex h-screen w-full bg-bg text-text-main font-sans">
       {/* Sidebar Navigation */}
       <aside className="w-[240px] border-r border-border flex flex-col p-6 bg-surface shrink-0">
         <div className="font-serif italic text-xl font-bold mb-10 flex items-center gap-2.5">
-          <div className="w-2.5 h-2.5 bg-primary rounded-full"></div>
+          <div className="w-2.5 h-2.5 rounded-full" style={{ backgroundColor: brandColor }}></div>
           Expert OS
         </div>
         
@@ -52,10 +54,11 @@ export function AppLayout({ children }: AppLayoutProps) {
                     cn(
                       "flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm font-medium transition-all duration-200",
                       isActive 
-                        ? "bg-white/5 text-text-main border-l-4 border-primary pl-[9px]" 
+                        ? "bg-white/5 text-text-main border-l-4 pl-[9px]" 
                         : "text-text-muted hover:bg-white/5 hover:text-text-main"
                     )
                   }
+                  style={({ isActive }) => isActive ? { borderColor: brandColor } : {}}
                 >
                   <item.icon className="w-4 h-4" />
                   {item.name}

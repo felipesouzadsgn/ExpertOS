@@ -1,5 +1,6 @@
-import { useState, useRef } from 'react';
+import React, { useState, useRef, useEffect } from 'react';
 import { useExpertStore } from '@/store/expertStore';
+import { useAgentStore } from '@/store/agentStore';
 import { 
   Monitor, 
   Undo2, 
@@ -26,7 +27,12 @@ import {
   ArrowRight,
   ChevronsRight,
   Upload,
-  Crop
+  Crop,
+  Bot,
+  FileSpreadsheet,
+  Wand2,
+  ImagePlus,
+  CalendarClock
 } from 'lucide-react';
 
 type Slide = {
@@ -53,10 +59,38 @@ type Slide = {
 
 export function Studio() {
   const activeExpert = useExpertStore(state => state.activeExpert);
+  const { getAgentsByExpert } = useAgentStore();
 
   const [format, setFormat] = useState('aspect-[4/5]');
   const [fadeIntensity, setFadeIntensity] = useState(90);
   const [fadeColor, setFadeColor] = useState('#09090B');
+  const [activeTab, setActiveTab] = useState<'design' | 'ai'>('design');
+  
+  const expertAgents = activeExpert ? getAgentsByExpert(activeExpert.id) : [];
+  const [selectedAgentId, setSelectedAgentId] = useState<string | null>(null);
+
+  const activeAgent = expertAgents.find(a => a.id === selectedAgentId) || expertAgents[0];
+
+  const [aiChat, setAiChat] = useState([
+    { id: 1, role: 'agent', text: "Hi! I'm your AI Assistant. How can I help you build this carousel?" }
+  ]);
+
+  // Update AI greeting when expert or agent changes
+  useEffect(() => {
+    if (activeExpert && activeAgent) {
+      setAiChat([
+        { id: Date.now(), role: 'agent', text: `Hi! I'm ${activeAgent.name}. I've loaded ${activeExpert.name}'s brand guidelines, tone of voice, and recent research context. How can I help you build this carousel?` }
+      ]);
+    } else if (activeExpert) {
+      setAiChat([
+        { id: Date.now(), role: 'agent', text: `Hi! I'm your AI Assistant. Please select an agent to load their specific skills.` }
+      ]);
+    } else {
+      setAiChat([
+        { id: Date.now(), role: 'agent', text: `Hi! Please select an expert to load their brand guidelines and context.` }
+      ]);
+    }
+  }, [activeExpert, activeAgent]);
   
   const [slides, setSlides] = useState<Slide[]>([
     { 
@@ -94,6 +128,128 @@ export function Studio() {
 
   const activeSlide = slides[activeSlideIndex];
   const fileInputRef = useRef<HTMLInputElement>(null);
+  const csvInputRef = useRef<HTMLInputElement>(null);
+
+  const downloadCSVTemplate = () => {
+    const headers = ['type', 'backgroundMediaUrl', 'compositionImageUrl', 'hat', 'title', 'subtitle', 'text', 'cta', 'alignment', 'layoutTemplate'];
+    const exampleRow1 = ['image', 'https://images.unsplash.com/photo-1618005182384-a83a8bd57fbe?q=80&w=2564&auto=format&fit=crop', '', 'EXPERT INSIGHTS', 'THE ARCHITECTURE\nOF OS', 'Designing for the future', 'Mastering the visual hierarchy of elite professional workspaces.', 'SWIPE TO LEARN', 'left', 'overlay'];
+    const exampleRow2 = ['video', 'https://images.unsplash.com/photo-1550684848-fac1c5b4e853?q=80&w=2670&auto=format&fit=crop', '', 'B-ROLL', 'VIDEO BACKGROUND', '', 'This slide uses a video background with bottom layout.', '', 'center', 'bottom'];
+    
+    const escapeCSV = (str: string) => `"${str.replace(/"/g, '""')}"`;
+    
+    const csvContent = [
+      headers.join(','),
+      exampleRow1.map(escapeCSV).join(','),
+      exampleRow2.map(escapeCSV).join(',')
+    ].join('\n');
+
+    const blob = new Blob([csvContent], { type: 'text/csv;charset=utf-8;' });
+    const link = document.createElement('a');
+    link.href = URL.createObjectURL(blob);
+    link.setAttribute('download', 'expert_carousel_template.csv');
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
+  };
+
+  const copyAIPrompt = () => {
+    const prompt = `Atue como um Diretor Visual e Copywriter Especialista. Crie um carrossel de alto nível.
+Gere APENAS um formato CSV válido com os seguintes cabeçalhos exatos (em inglês):
+type,backgroundMediaUrl,compositionImageUrl,hat,title,subtitle,text,cta,alignment,layoutTemplate
+
+Regras para encaixe perfeito no layout:
+1. type: "image" ou "video"
+2. backgroundMediaUrl: URL real do Unsplash (ex: https://images.unsplash.com/photo-...) para o fundo.
+3. compositionImageUrl: URL de imagem de composição (opcional, deixe vazio se não precisar).
+4. hat: Texto de sobrancelha (Eyebrow), máx 20 caracteres, MAIÚSCULAS.
+5. title: Título principal, máx 40 caracteres. Use \\n para quebras de linha estratégicas.
+6. subtitle: Subtítulo de apoio, máx 50 caracteres.
+7. text: Corpo do texto, máx 150 caracteres para leitura rápida.
+8. cta: Call to action, máx 20 caracteres (ex: ARRASTE PARA O LADO).
+9. alignment: "left", "center", "right" ou "justify".
+10. layoutTemplate: "overlay", "bottom", "top" ou "split".
+
+Escreva o conteúdo em Português, focado em autoridade e engajamento. Não inclua formatação markdown como \`\`\`csv, apenas o texto bruto do CSV.`;
+
+    navigator.clipboard.writeText(prompt);
+    
+    setAiChat(prev => [
+      ...prev,
+      { id: Date.now(), role: 'user', text: "Me dê um prompt para gerar o CSV perfeitamente." },
+      { id: Date.now() + 1, role: 'agent', text: "Copiei o prompt perfeito para a sua área de transferência! Cole no ChatGPT ou Claude para gerar um CSV com os limites de caracteres exatos para o nosso layout." }
+    ]);
+  };
+
+  const handleCSVUpload = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+    if (!file) return;
+
+    const reader = new FileReader();
+    reader.onload = (event) => {
+      const text = event.target?.result as string;
+      if (!text) return;
+
+      const rows: string[][] = [];
+      let currentRow: string[] = [];
+      let currentCell = '';
+      let inQuotes = false;
+      
+      for (let i = 0; i < text.length; i++) {
+        const char = text[i];
+        if (char === '"' && text[i+1] === '"') {
+          currentCell += '"';
+          i++;
+        } else if (char === '"') {
+          inQuotes = !inQuotes;
+        } else if (char === ',' && !inQuotes) {
+          currentRow.push(currentCell);
+          currentCell = '';
+        } else if ((char === '\n' || char === '\r') && !inQuotes) {
+          if (char === '\r' && text[i+1] === '\n') i++;
+          currentRow.push(currentCell);
+          if (currentRow.some(cell => cell.trim() !== '')) rows.push(currentRow);
+          currentRow = [];
+          currentCell = '';
+        } else {
+          currentCell += char;
+        }
+      }
+      if (currentCell || currentRow.length > 0) {
+        currentRow.push(currentCell);
+        if (currentRow.some(cell => cell.trim() !== '')) rows.push(currentRow);
+      }
+
+      const dataRows = rows.slice(1);
+      if (dataRows.length === 0) return;
+
+      const newSlides: Slide[] = dataRows.map((row, index) => ({
+        id: Date.now() + index,
+        type: (row[0] === 'video' ? 'video' : 'image') as 'image' | 'video',
+        mediaUrl: row[1] || 'https://images.unsplash.com/photo-1600607686527-6fb886090705?q=80&w=2000&auto=format&fit=crop',
+        compositionImageUrl: row[2] || undefined,
+        hat: row[3] || '',
+        title: row[4] || '',
+        subtitle: row[5] || '',
+        text: row[6] || '',
+        cta: row[7] || '',
+        alignment: (['left', 'center', 'right', 'justify'].includes(row[8]) ? row[8] : 'left') as 'left' | 'center' | 'right' | 'justify',
+        layoutTemplate: (['overlay', 'bottom', 'top', 'split'].includes(row[9]) ? row[9] : 'overlay') as 'overlay' | 'bottom' | 'top' | 'split',
+        customPosition: { x: 0, y: 0 }
+      }));
+
+      setSlides(newSlides);
+      setActiveSlideIndex(0);
+      
+      setAiChat(prev => [
+        ...prev,
+        { id: Date.now(), role: 'user', text: `I've uploaded a CSV with ${newSlides.length} slides.` },
+        { id: Date.now() + 1, role: 'agent', text: `Perfect! I've successfully imported ${newSlides.length} slides from your CSV and applied all the content, media, and layout settings. You can review them in the canvas now.` }
+      ]);
+    };
+    reader.readAsText(file);
+    
+    if (csvInputRef.current) csvInputRef.current.value = '';
+  };
 
   const handleFileUpload = (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
@@ -545,18 +701,27 @@ export function Studio() {
       <aside className="w-80 bg-surface border-l border-border flex flex-col shrink-0">
         {/* Tabs */}
         <div className="flex border-b border-border shrink-0">
-          <button className="flex-1 py-4 text-[10px] font-bold uppercase tracking-widest border-b-2 text-text-main flex items-center justify-center gap-2" style={{ borderColor: activeExpert?.brandColor || '#6366f1' }}>
+          <button 
+            onClick={() => setActiveTab('design')}
+            className={`flex-1 py-4 text-[10px] font-bold uppercase tracking-widest border-b-2 flex items-center justify-center gap-2 transition-colors ${activeTab === 'design' ? 'text-text-main' : 'text-text-muted hover:text-text-main border-transparent'}`} 
+            style={{ borderColor: activeTab === 'design' ? (activeExpert?.brandColor || '#6366f1') : 'transparent' }}
+          >
             <SlidersHorizontal size={14} /> Design
           </button>
-          <button className="flex-1 py-4 text-[10px] font-bold uppercase tracking-widest text-text-muted hover:text-text-main transition-colors flex items-center justify-center gap-2">
-            <Sparkles size={14} /> AI Edit
+          <button 
+            onClick={() => setActiveTab('ai')}
+            className={`flex-1 py-4 text-[10px] font-bold uppercase tracking-widest border-b-2 flex items-center justify-center gap-2 transition-colors ${activeTab === 'ai' ? 'text-text-main' : 'text-text-muted hover:text-text-main border-transparent'}`}
+            style={{ borderColor: activeTab === 'ai' ? (activeExpert?.brandColor || '#6366f1') : 'transparent' }}
+          >
+            <Sparkles size={14} /> AI Agent
           </button>
         </div>
         
         <div className="flex-1 overflow-y-auto custom-scrollbar">
-          <div className="p-6 space-y-8">
-            
-            {/* 1. Format & Canvas */}
+          {activeTab === 'design' ? (
+            <div className="p-6 space-y-8">
+              
+              {/* 1. Format & Canvas */}
             <div className="space-y-4">
               <div className="flex items-center gap-2 text-text-main mb-2">
                 <LayoutTemplate size={16} style={{ color: activeExpert?.brandColor || '#6366f1' }} />
@@ -817,6 +982,77 @@ export function Studio() {
             </div>
 
           </div>
+          ) : (
+            <div className="p-6 flex flex-col h-full">
+              {/* AI Agent Header */}
+              <div className="flex items-center justify-between mb-6 p-3 rounded-xl bg-bg border border-border">
+                <div className="flex items-center gap-3">
+                  <div className="w-10 h-10 rounded-lg flex items-center justify-center shrink-0" style={{ backgroundColor: `${activeExpert?.brandColor || '#6366f1'}33`, color: activeExpert?.brandColor || '#6366f1' }}>
+                    <Bot size={20} />
+                  </div>
+                  <div>
+                    <h3 className="text-xs font-bold text-text-main">{activeAgent?.name || 'AI Assistant'}</h3>
+                    <p className="text-[10px] text-text-muted">Context: {activeExpert?.name || 'Expert OS'}</p>
+                  </div>
+                </div>
+                <div className="relative">
+                  <select 
+                    className="bg-surface border border-border rounded-lg text-xs p-2 focus:outline-none appearance-none pr-8 cursor-pointer"
+                    value={activeAgent?.id || ''}
+                    onChange={(e) => setSelectedAgentId(e.target.value)}
+                  >
+                    {expertAgents.map(agent => (
+                      <option key={agent.id} value={agent.id}>{agent.name}</option>
+                    ))}
+                  </select>
+                  <ChevronDown size={12} className="absolute right-2 top-1/2 -translate-y-1/2 text-text-muted pointer-events-none" />
+                </div>
+              </div>
+
+              {/* Quick Actions */}
+              <div className="grid grid-cols-2 gap-2 mb-6">
+                <input 
+                  type="file" 
+                  ref={csvInputRef} 
+                  onChange={handleCSVUpload} 
+                  accept=".csv" 
+                  className="hidden" 
+                />
+                <button onClick={() => csvInputRef.current?.click()} className="bg-bg border border-border hover:bg-white/5 p-3 rounded-xl flex flex-col items-center justify-center gap-2 transition-colors group">
+                  <FileSpreadsheet size={16} className="text-text-muted group-hover:text-primary transition-colors" style={{ color: activeExpert?.brandColor }} />
+                  <span className="text-[9px] font-bold uppercase tracking-widest text-text-muted group-hover:text-text-main text-center">Import CSV</span>
+                </button>
+                <button onClick={downloadCSVTemplate} className="bg-bg border border-border hover:bg-white/5 p-3 rounded-xl flex flex-col items-center justify-center gap-2 transition-colors group">
+                  <Download size={16} className="text-text-muted group-hover:text-primary transition-colors" style={{ color: activeExpert?.brandColor }} />
+                  <span className="text-[9px] font-bold uppercase tracking-widest text-text-muted group-hover:text-text-main text-center">Get Template</span>
+                </button>
+                <button onClick={copyAIPrompt} className="bg-bg border border-border hover:bg-white/5 p-3 rounded-xl flex flex-col items-center justify-center gap-2 transition-colors group">
+                  <Type size={16} className="text-text-muted group-hover:text-primary transition-colors" style={{ color: activeExpert?.brandColor }} />
+                  <span className="text-[9px] font-bold uppercase tracking-widest text-text-muted group-hover:text-text-main text-center">Copy Prompt</span>
+                </button>
+                <button className="bg-bg border border-border hover:bg-white/5 p-3 rounded-xl flex flex-col items-center justify-center gap-2 transition-colors group">
+                  <CalendarClock size={16} className="text-text-muted group-hover:text-primary transition-colors" style={{ color: activeExpert?.brandColor }} />
+                  <span className="text-[9px] font-bold uppercase tracking-widest text-text-muted group-hover:text-text-main text-center">Schedule</span>
+                </button>
+              </div>
+
+              {/* Chat History */}
+              <div className="flex-1 overflow-y-auto space-y-4 pr-2 custom-scrollbar">
+                {aiChat.map(msg => (
+                  <div key={msg.id} className={`flex gap-3 ${msg.role === 'user' ? 'flex-row-reverse' : ''}`}>
+                    {msg.role === 'agent' && (
+                      <div className="w-6 h-6 rounded-full flex items-center justify-center shrink-0 mt-1" style={{ backgroundColor: `${activeExpert?.brandColor || '#6366f1'}33`, color: activeExpert?.brandColor || '#6366f1' }}>
+                        <Bot size={12} />
+                      </div>
+                    )}
+                    <div className={`p-3 rounded-xl text-xs leading-relaxed ${msg.role === 'user' ? 'bg-surface border border-border text-text-main' : 'bg-bg border border-border text-text-muted'}`}>
+                      {msg.text}
+                    </div>
+                  </div>
+                ))}
+              </div>
+            </div>
+          )}
         </div>
 
         {/* AI Input (Fixed at bottom) */}
@@ -824,7 +1060,7 @@ export function Studio() {
           <div className="relative group">
             <textarea 
               className="w-full bg-surface border border-border rounded-xl text-sm text-text-main p-4 pr-12 h-20 resize-none transition-all placeholder:text-text-muted/50 focus:outline-none" 
-              placeholder="Ask AI to edit text, change layout, or swap media..."
+              placeholder={activeTab === 'ai' ? "Tell the Visual Director what to do..." : "Ask AI to edit text, change layout, or swap media..."}
               style={{ '--tw-ring-color': activeExpert?.brandColor || '#6366f1' } as any}
             ></textarea>
             <button className="absolute bottom-4 right-4 w-8 h-8 rounded-lg flex items-center justify-center text-white hover:brightness-110 transition-all active:scale-95 shadow-lg" style={{ backgroundColor: activeExpert?.brandColor || '#6366f1' }}>

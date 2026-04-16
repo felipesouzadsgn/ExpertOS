@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import { useExpertStore } from '@/store/expertStore';
-import { ArrowLeft, Save, Image as ImageIcon, Palette, Type, Camera, Instagram, Linkedin, Twitter, Link as LinkIcon } from 'lucide-react';
+import { ArrowLeft, Save, Image as ImageIcon, Palette, Type, Camera, Instagram, Linkedin, Twitter, Link as LinkIcon, Brain, Target, Briefcase, Sparkles } from 'lucide-react';
 
 export function ExpertDetail() {
   const { id } = useParams();
@@ -11,7 +11,7 @@ export function ExpertDetail() {
   const expert = experts.find(e => e.id === id);
   
   const [formData, setFormData] = useState(expert || {
-    id: '', name: '', handle: '', niche: '', bio: '', profilePicture: '', socialLinks: { instagram: '', linkedin: '', twitter: '' }, avatarGradient: '', brandColor: '', tokens: '', archetypes: 0
+    id: '', name: '', handle: '', niche: '', role: '', bio: '', profilePicture: '', socialLinks: { instagram: '', linkedin: '', twitter: '' }, avatarGradient: '', brandColor: '', colorPalette: [], typography: { heading: 'Inter', body: 'Inter' }, archetype: '', toneOfVoice: '', photographicStyle: '', icp: '', skills: [], tokens: '', archetypes: 0
   });
 
   useEffect(() => {
@@ -50,6 +50,18 @@ export function ExpertDetail() {
         <button onClick={handleSave} className="bg-primary text-white px-6 py-2 rounded-lg font-bold text-sm flex items-center gap-2 hover:brightness-110 transition-all">
           <Save size={16} /> Save Changes
         </button>
+      </div>
+
+      <div className="mb-6 bg-primary/10 border border-primary/20 rounded-xl p-4 flex items-start gap-4">
+        <div className="w-10 h-10 rounded-full bg-primary/20 flex items-center justify-center shrink-0 text-primary">
+          <Sparkles size={20} />
+        </div>
+        <div>
+          <h3 className="text-sm font-bold text-primary mb-1">AI Agent Context Active</h3>
+          <p className="text-xs text-text-muted leading-relaxed">
+            The specialized AI Agent for this expert uses all the data below to learn their tone of voice, visual identity, and ideal customer profile. The more detailed you are, the better the agent will perform in the Content Studio.
+          </p>
+        </div>
       </div>
 
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
@@ -99,12 +111,22 @@ export function ExpertDetail() {
                 />
               </div>
               <div className="space-y-1">
-                <label className="text-[10px] uppercase font-bold text-text-muted">Niche / Title</label>
+                <label className="text-[10px] uppercase font-bold text-text-muted">Niche / Industry</label>
                 <input 
                   type="text" 
                   value={formData.niche} 
                   onChange={e => setFormData({...formData, niche: e.target.value})}
                   className="w-full bg-bg border border-border rounded-lg p-2.5 text-sm focus:border-primary focus:outline-none"
+                />
+              </div>
+              <div className="space-y-1">
+                <label className="text-[10px] uppercase font-bold text-text-muted">Role / Title</label>
+                <input 
+                  type="text" 
+                  value={formData.role || ''} 
+                  onChange={e => setFormData({...formData, role: e.target.value})}
+                  className="w-full bg-bg border border-border rounded-lg p-2.5 text-sm focus:border-primary focus:outline-none"
+                  placeholder="e.g., Luxury Broker & Investor"
                 />
               </div>
               <div className="space-y-1">
@@ -187,24 +209,90 @@ export function ExpertDetail() {
               
               <div className="space-y-1">
                 <label className="text-[10px] uppercase font-bold text-text-muted">Typography Pairings</label>
-                <select className="w-full bg-bg border border-border rounded-lg p-2.5 text-sm focus:border-primary focus:outline-none">
-                  <option>Inter & Georgia (Sophisticated)</option>
-                  <option>Space Grotesk & Inter (Tech)</option>
-                  <option>Playfair & Lato (Editorial)</option>
+                <select 
+                  value={`${formData.typography?.heading} & ${formData.typography?.body}`}
+                  onChange={e => {
+                    const [heading, body] = e.target.value.split(' & ');
+                    setFormData({...formData, typography: { heading, body }});
+                  }}
+                  className="w-full bg-bg border border-border rounded-lg p-2.5 text-sm focus:border-primary focus:outline-none"
+                >
+                  <option value="Inter & Inter">Inter & Inter (Modern)</option>
+                  <option value="Playfair Display & Inter">Playfair & Inter (Sophisticated)</option>
+                  <option value="Space Grotesk & Inter">Space Grotesk & Inter (Tech)</option>
+                  <option value="Georgia & Lato">Georgia & Lato (Editorial)</option>
                 </select>
               </div>
             </div>
+
+            <div className="mt-6 space-y-1">
+              <label className="text-[10px] uppercase font-bold text-text-muted">Photographic Style</label>
+              <textarea 
+                value={formData.photographicStyle || ''}
+                onChange={e => setFormData({...formData, photographicStyle: e.target.value})}
+                className="w-full bg-bg border border-border rounded-lg p-3 text-sm focus:border-primary focus:outline-none h-20 resize-none"
+                placeholder="E.g., High contrast, architectural focus, warm lighting..."
+              />
+            </div>
           </div>
 
-          <div className="bg-surface border border-border rounded-xl p-6">
-            <h2 className="text-xs font-bold uppercase tracking-widest text-text-muted mb-4 flex items-center gap-2">
-              <Type size={14} /> Tone & Voice
-            </h2>
-            <textarea 
-              className="w-full bg-bg border border-border rounded-lg p-3 text-sm focus:border-primary focus:outline-none h-32 resize-none"
-              placeholder="Describe how this expert speaks. E.g., 'Authoritative, direct, uses high-level vocabulary, avoids jargon...'"
-              defaultValue="Authoritative but accessible. Focuses on actionable insights and high-level strategy."
-            />
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+            <div className="bg-surface border border-border rounded-xl p-6">
+              <h2 className="text-xs font-bold uppercase tracking-widest text-text-muted mb-4 flex items-center gap-2">
+                <Brain size={14} /> Persona & Voice
+              </h2>
+              
+              <div className="space-y-4">
+                <div className="space-y-1">
+                  <label className="text-[10px] uppercase font-bold text-text-muted">Brand Archetype</label>
+                  <input 
+                    type="text" 
+                    value={formData.archetype || ''} 
+                    onChange={e => setFormData({...formData, archetype: e.target.value})}
+                    className="w-full bg-bg border border-border rounded-lg p-2.5 text-sm focus:border-primary focus:outline-none"
+                    placeholder="E.g., The Ruler / The Creator"
+                  />
+                </div>
+                
+                <div className="space-y-1">
+                  <label className="text-[10px] uppercase font-bold text-text-muted">Tone of Voice</label>
+                  <textarea 
+                    value={formData.toneOfVoice || ''}
+                    onChange={e => setFormData({...formData, toneOfVoice: e.target.value})}
+                    className="w-full bg-bg border border-border rounded-lg p-3 text-sm focus:border-primary focus:outline-none h-32 resize-none"
+                    placeholder="Describe how this expert speaks. E.g., 'Authoritative, direct, uses high-level vocabulary...'"
+                  />
+                </div>
+              </div>
+            </div>
+
+            <div className="bg-surface border border-border rounded-xl p-6">
+              <h2 className="text-xs font-bold uppercase tracking-widest text-text-muted mb-4 flex items-center gap-2">
+                <Target size={14} /> Audience & Expertise
+              </h2>
+              
+              <div className="space-y-4">
+                <div className="space-y-1">
+                  <label className="text-[10px] uppercase font-bold text-text-muted">Ideal Customer Profile (ICP)</label>
+                  <textarea 
+                    value={formData.icp || ''}
+                    onChange={e => setFormData({...formData, icp: e.target.value})}
+                    className="w-full bg-bg border border-border rounded-lg p-3 text-sm focus:border-primary focus:outline-none h-20 resize-none"
+                    placeholder="Who is the target audience?"
+                  />
+                </div>
+                
+                <div className="space-y-1">
+                  <label className="text-[10px] uppercase font-bold text-text-muted">Core Skills (Comma separated)</label>
+                  <textarea 
+                    value={formData.skills?.join(', ') || ''}
+                    onChange={e => setFormData({...formData, skills: e.target.value.split(',').map(s => s.trim()).filter(Boolean)})}
+                    className="w-full bg-bg border border-border rounded-lg p-3 text-sm focus:border-primary focus:outline-none h-20 resize-none"
+                    placeholder="E.g., Luxury Sales, Negotiation, Branding..."
+                  />
+                </div>
+              </div>
+            </div>
           </div>
         </div>
       </div>
