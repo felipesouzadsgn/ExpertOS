@@ -57,9 +57,9 @@ export function ExpertDetail() {
           <Sparkles size={20} />
         </div>
         <div>
-          <h3 className="text-sm font-bold text-primary mb-1">AI Agent Context Active</h3>
+          <h3 className="text-sm font-bold text-primary mb-1">System Directive: Context Before Generation</h3>
           <p className="text-xs text-text-muted leading-relaxed">
-            The specialized AI Agent for this expert uses all the data below to learn their tone of voice, visual identity, and ideal customer profile. The more detailed you are, the better the agent will perform in the Content Studio.
+            <strong className="text-text-main">Without Expert context, there is no generation.</strong> The specialized AI Agents for this expert use all the data below to learn their tone of voice, visual identity, and ideal customer profile. The more detailed you are, the better the agents will replicate this expert's unique identity in the Content Studio.
           </p>
         </div>
       </div>

@@ -14,6 +14,7 @@ import { Studio } from './pages/Studio';
 import { Calendar } from './pages/Calendar';
 import { Kanban } from './pages/Kanban';
 import { Agents } from './pages/Agents';
+import { ExpertBlog } from './pages/ExpertBlog';
 
 export default function App() {
   return (
@@ -29,6 +30,7 @@ export default function App() {
           <Route path="/calendar" element={<Calendar />} />
           <Route path="/kanban" element={<Kanban />} />
           <Route path="/agents" element={<Agents />} />
+          <Route path="/blog" element={<ExpertBlog />} />
         </Routes>
       </AppLayout>
     </BrowserRouter>

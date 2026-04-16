@@ -1,4 +1,4 @@
-import { FileText, Image as ImageIcon, Video, CheckCircle2, Clock, Brain } from 'lucide-react';
+import { FileText, Image as ImageIcon, Video, CheckCircle2, Clock, Brain, ShieldAlert } from 'lucide-react';
 import { useExpertStore } from '@/store/expertStore';
 import { useAgentStore } from '@/store/agentStore';
 
@@ -13,7 +13,7 @@ export function Dashboard() {
   const agents = getAgentsByExpert(activeExpert.id);
 
   return (
-    <div className="p-8 grid grid-cols-1 lg:grid-cols-3 gap-6 h-full text-text-main">
+    <div className="p-8 grid grid-cols-1 lg:grid-cols-3 gap-6 h-full text-text-main overflow-auto">
       {/* Main Column */}
       <div className="lg:col-span-2 flex flex-col gap-6">
         {/* Context Readiness Card */}
@@ -39,6 +39,36 @@ export function Dashboard() {
             <div className="pl-4">
               <span className="text-2xl font-bold block">22</span>
               <span className="text-xs text-text-muted">Target Personas</span>
+            </div>
+          </div>
+        </div>
+
+        {/* System Directives: Expert First */}
+        <div className="bg-surface border border-border rounded-2xl p-6 relative overflow-hidden">
+          <div className="flex items-center gap-2 mb-4">
+            <ShieldAlert size={18} style={{ color: activeExpert.brandColor }} />
+            <h3 className="font-serif text-lg">System Directives</h3>
+          </div>
+          <p className="text-sm text-text-muted mb-6 italic border-l-2 pl-3" style={{ borderColor: activeExpert.brandColor }}>
+            "First the system understands the Expert. Then the system produces like the Expert."
+          </p>
+          
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+            <div className="bg-bg border border-border p-4 rounded-xl">
+              <h4 className="text-xs font-bold uppercase tracking-wider mb-2" style={{ color: activeExpert.brandColor }}>01. Expert First</h4>
+              <p className="text-xs text-text-muted leading-relaxed">Every operation starts with the selected Expert. Before generating anything, the system loads the briefing, branding, tone of voice, ICP, and knowledge base.</p>
+            </div>
+            <div className="bg-bg border border-border p-4 rounded-xl">
+              <h4 className="text-xs font-bold uppercase tracking-wider mb-2" style={{ color: activeExpert.brandColor }}>02. Context Before Gen</h4>
+              <p className="text-xs text-text-muted leading-relaxed">No relevant generation happens without sufficient context. No agent produces "in a vacuum". Every output answers: Who is this? Who is it for? What is the goal?</p>
+            </div>
+            <div className="bg-bg border border-border p-4 rounded-xl">
+              <h4 className="text-xs font-bold uppercase tracking-wider mb-2" style={{ color: activeExpert.brandColor }}>03. Identity Locked</h4>
+              <p className="text-xs text-text-muted leading-relaxed">Every output must reflect the identity, voice, and positioning of the Expert. Producing means replicating reasoning, repertoire, and visual style.</p>
+            </div>
+            <div className="bg-bg border border-border p-4 rounded-xl">
+              <h4 className="text-xs font-bold uppercase tracking-wider mb-2" style={{ color: activeExpert.brandColor }}>04. Human-Verified</h4>
+              <p className="text-xs text-text-muted leading-relaxed">The system accelerates production, but authenticity remains validated. The Brand Voice + QA core ensures the output never sounds generic.</p>
             </div>
           </div>
         </div>

@@ -31,7 +31,7 @@ const mockAgents: Agent[] = [
     description: 'Analyzes incoming requests and delegates to specialized agents.',
     status: 'active',
     model: 'Gemini 1.5 Pro',
-    systemPrompt: 'You are the lead orchestrator for Aria Sterling. Your job is to understand the overarching strategy for luxury real estate content and delegate tasks to the Copy Architect, Trend Sentinel, and Visual Director. Always keep Aria\'s UHNW target audience in mind.',
+    systemPrompt: 'You are the lead orchestrator for Aria Sterling. CORE DIRECTIVES:\n1. Expert First: Every operation starts with Aria\'s context.\n2. Context Before Gen: Never produce in a vacuum. Always load briefing, branding, and ICP first.\n3. Identity Locked: All outputs must reflect Aria\'s sophisticated, authoritative voice.\n4. Human-Verified: Ensure the Brand Voice + QA core validates authenticity before final delivery.\n\nYour job is to understand the overarching strategy for luxury real estate content and delegate tasks to specialized agents. Always keep Aria\'s UHNW target audience in mind.',
     tools: ['Task Delegation', 'Strategy Analysis', 'Workflow Management'],
     tasks: [
       { id: 't1', title: 'Plan Q3 Content Calendar', status: 'in-progress', createdAt: '2026-04-16T10:00:00Z' }

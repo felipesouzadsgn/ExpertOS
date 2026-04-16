@@ -9,6 +9,7 @@ import {
   Calendar, 
   KanbanSquare, 
   Bot,
+  Globe,
   ChevronDown
 } from 'lucide-react';
 import { cn } from '@/lib/utils';
@@ -27,6 +28,7 @@ const navItems = [
   { name: 'Editorial Calendar', path: '/calendar', icon: Calendar },
   { name: 'Kanban Flow', path: '/kanban', icon: KanbanSquare },
   { name: 'AI Agents', path: '/agents', icon: Bot },
+  { name: 'SEO & Blog', path: '/blog', icon: Globe },
 ];
 
 export function AppLayout({ children }: AppLayoutProps) {

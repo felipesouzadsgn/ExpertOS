@@ -32,7 +32,9 @@ import {
   FileSpreadsheet,
   Wand2,
   ImagePlus,
-  CalendarClock
+  CalendarClock,
+  CheckCircle2,
+  Brain
 } from 'lucide-react';
 
 type Slide = {
@@ -69,7 +71,8 @@ export function Studio() {
   const expertAgents = activeExpert ? getAgentsByExpert(activeExpert.id) : [];
   const [selectedAgentId, setSelectedAgentId] = useState<string | null>(null);
 
-  const activeAgent = expertAgents.find(a => a.id === selectedAgentId) || expertAgents[0];
+  const visualAgent = expertAgents.find(a => a.role.includes('Visual') || a.role.includes('Design')) || expertAgents[0];
+  const activeAgent = expertAgents.find(a => a.id === selectedAgentId) || visualAgent;
 
   const [aiChat, setAiChat] = useState([
     { id: 1, role: 'agent', text: "Hi! I'm your AI Assistant. How can I help you build this carousel?" }
@@ -984,6 +987,21 @@ Escreva o conteúdo em Português, focado em autoridade e engajamento. Não incl
           </div>
           ) : (
             <div className="p-6 flex flex-col h-full">
+              {/* Pipeline Indicator */}
+              <div className="flex items-center gap-2 mb-4 text-[10px] font-bold uppercase tracking-wider">
+                <div className="flex items-center gap-1 text-green-500">
+                  <CheckCircle2 size={12} /> Research
+                </div>
+                <ChevronRight size={12} className="text-text-muted" />
+                <div className="flex items-center gap-1 text-green-500">
+                  <CheckCircle2 size={12} /> Copy
+                </div>
+                <ChevronRight size={12} className="text-text-muted" />
+                <div className="flex items-center gap-1 animate-pulse" style={{ color: activeExpert?.brandColor || '#6366f1' }}>
+                  <Brain size={12} /> Visual Design
+                </div>
+              </div>
+
               {/* AI Agent Header */}
               <div className="flex items-center justify-between mb-6 p-3 rounded-xl bg-bg border border-border">
                 <div className="flex items-center gap-3">
