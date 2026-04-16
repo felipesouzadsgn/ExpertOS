@@ -1,4 +1,4 @@
-import { ReactNode } from 'react';
+import { ReactNode, useState } from 'react';
 import { NavLink } from 'react-router-dom';
 import { 
   LayoutDashboard, 
@@ -8,9 +8,11 @@ import {
   PenTool, 
   Calendar, 
   KanbanSquare, 
-  Bot 
+  Bot,
+  ChevronDown
 } from 'lucide-react';
 import { cn } from '@/lib/utils';
+import { useExpertStore } from '@/store/expertStore';
 
 interface AppLayoutProps {
   children: ReactNode;
@@ -28,6 +30,9 @@ const navItems = [
 ];
 
 export function AppLayout({ children }: AppLayoutProps) {
+  const { activeExpert, experts, setActiveExpert } = useExpertStore();
+  const [isDropdownOpen, setIsDropdownOpen] = useState(false);
+
   return (
     <div className="flex h-screen w-full bg-bg text-text-main font-sans">
       {/* Sidebar Navigation */}
@@ -71,11 +76,51 @@ export function AppLayout({ children }: AppLayoutProps) {
 
       {/* Main Content Area */}
       <main className="flex-1 flex flex-col min-w-0 overflow-hidden">
-        <header className="h-[72px] border-b border-border flex items-center justify-between px-8 bg-bg/80 backdrop-blur-sm shrink-0">
-          <div className="flex items-center gap-3 bg-surface border border-border px-4 py-2 rounded-full cursor-pointer hover:bg-white/5 transition-colors">
-            <div className="w-6 h-6 rounded-full bg-gradient-to-br from-primary to-purple-500"></div>
-            <span className="text-sm font-semibold">Aria Sterling &middot; Luxury Real Estate</span>
-            <span className="opacity-30 text-xs ml-1">▼</span>
+        <header className="h-[72px] border-b border-border flex items-center justify-between px-8 bg-bg/80 backdrop-blur-sm shrink-0 z-50 relative">
+          
+          {/* Expert Switcher */}
+          <div className="relative">
+            <button 
+              onClick={() => setIsDropdownOpen(!isDropdownOpen)}
+              className="flex items-center gap-3 bg-surface border border-border px-4 py-2 rounded-full cursor-pointer hover:bg-white/5 transition-colors"
+            >
+              {activeExpert && (
+                <>
+                  <div className={cn("w-6 h-6 rounded-full bg-gradient-to-br", activeExpert.avatarGradient)}></div>
+                  <span className="text-sm font-semibold">{activeExpert.name} &middot; {activeExpert.niche}</span>
+                </>
+              )}
+              <ChevronDown size={14} className="text-text-muted ml-1" />
+            </button>
+
+            {isDropdownOpen && (
+              <div className="absolute top-full left-0 mt-2 w-64 bg-surface border border-border rounded-xl shadow-2xl overflow-hidden z-50">
+                <div className="p-2 text-xs font-semibold text-text-muted uppercase tracking-wider border-b border-border">
+                  Switch Expert
+                </div>
+                <div className="p-1">
+                  {experts.map(expert => (
+                    <button
+                      key={expert.id}
+                      onClick={() => {
+                        setActiveExpert(expert.id);
+                        setIsDropdownOpen(false);
+                      }}
+                      className={cn(
+                        "w-full flex items-center gap-3 px-3 py-2 rounded-lg text-sm text-left hover:bg-white/5 transition-colors",
+                        activeExpert?.id === expert.id ? "bg-white/5" : ""
+                      )}
+                    >
+                      <div className={cn("w-6 h-6 rounded-full bg-gradient-to-br", expert.avatarGradient)}></div>
+                      <div className="flex-1 truncate">
+                        <div className="font-medium">{expert.name}</div>
+                        <div className="text-[10px] text-text-muted truncate">{expert.niche}</div>
+                      </div>
+                    </button>
+                  ))}
+                </div>
+              </div>
+            )}
           </div>
           
           <div className="flex gap-5 items-center">

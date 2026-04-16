@@ -6,6 +6,14 @@
 import { BrowserRouter, Routes, Route } from 'react-router-dom';
 import { AppLayout } from './components/layout/AppLayout';
 import { Dashboard } from './pages/Dashboard';
+import { Experts } from './pages/Experts';
+import { ExpertDetail } from './pages/ExpertDetail';
+import { Knowledge } from './pages/Knowledge';
+import { Research } from './pages/Research';
+import { Studio } from './pages/Studio';
+import { Calendar } from './pages/Calendar';
+import { Kanban } from './pages/Kanban';
+import { Agents } from './pages/Agents';
 
 export default function App() {
   return (
@@ -13,13 +21,14 @@ export default function App() {
       <AppLayout>
         <Routes>
           <Route path="/" element={<Dashboard />} />
-          <Route path="/experts" element={<div className="p-8">Expert Profile (Coming Soon)</div>} />
-          <Route path="/knowledge" element={<div className="p-8">Knowledge Base (Coming Soon)</div>} />
-          <Route path="/research" element={<div className="p-8">Market Research (Coming Soon)</div>} />
-          <Route path="/studio" element={<div className="p-8">Content Studio (Coming Soon)</div>} />
-          <Route path="/calendar" element={<div className="p-8">Editorial Calendar (Coming Soon)</div>} />
-          <Route path="/kanban" element={<div className="p-8">Kanban Flow (Coming Soon)</div>} />
-          <Route path="/agents" element={<div className="p-8">AI Agents (Coming Soon)</div>} />
+          <Route path="/experts" element={<Experts />} />
+          <Route path="/experts/:id" element={<ExpertDetail />} />
+          <Route path="/knowledge" element={<Knowledge />} />
+          <Route path="/research" element={<Research />} />
+          <Route path="/studio" element={<Studio />} />
+          <Route path="/calendar" element={<Calendar />} />
+          <Route path="/kanban" element={<Kanban />} />
+          <Route path="/agents" element={<Agents />} />
         </Routes>
       </AppLayout>
     </BrowserRouter>
