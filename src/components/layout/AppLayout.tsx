@@ -10,7 +10,9 @@ import {
   KanbanSquare, 
   Bot,
   Globe,
-  ChevronDown
+  Camera,
+  ChevronDown,
+  Video
 } from 'lucide-react';
 import { cn } from '@/lib/utils';
 import { useExpertStore } from '@/store/expertStore';
@@ -22,9 +24,11 @@ interface AppLayoutProps {
 const navItems = [
   { name: 'Dashboard', path: '/', icon: LayoutDashboard },
   { name: 'Expert Profile', path: '/experts', icon: Users },
+  { name: 'AI Avatars', path: '/avatars', icon: Camera },
   { name: 'Knowledge Base', path: '/knowledge', icon: BookOpen },
   { name: 'Market Research', path: '/research', icon: Search },
   { name: 'Content Studio', path: '/studio', icon: PenTool },
+  { name: 'Video & Reels AI', path: '/video-studio', icon: Video },
   { name: 'Editorial Calendar', path: '/calendar', icon: Calendar },
   { name: 'Kanban Flow', path: '/kanban', icon: KanbanSquare },
   { name: 'AI Agents', path: '/agents', icon: Bot },
