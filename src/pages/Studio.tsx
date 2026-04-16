@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useRef } from 'react';
 import { useExpertStore } from '@/store/expertStore';
 import { 
   Monitor, 
@@ -22,7 +22,11 @@ import {
   AlignCenter,
   AlignRight,
   AlignJustify,
-  Move
+  Move,
+  ArrowRight,
+  ChevronsRight,
+  Upload,
+  Crop
 } from 'lucide-react';
 
 type Slide = {
@@ -38,6 +42,13 @@ type Slide = {
   alignment: 'left' | 'center' | 'right' | 'justify';
   layoutTemplate: 'overlay' | 'bottom' | 'top' | 'split';
   customPosition?: { x: number, y: number };
+  videoTrimStart?: number;
+  videoTrimEnd?: number;
+  videoPlaybackSpeed?: number;
+  videoThumbnailFrame?: number;
+  mediaScale?: number;
+  mediaOffsetX?: number;
+  mediaOffsetY?: number;
 };
 
 export function Studio() {
@@ -82,6 +93,26 @@ export function Studio() {
   });
 
   const activeSlide = slides[activeSlideIndex];
+  const fileInputRef = useRef<HTMLInputElement>(null);
+
+  const handleFileUpload = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+    if (!file) return;
+
+    const url = URL.createObjectURL(file);
+    const isVideo = file.type.startsWith('video/');
+    
+    updateActiveSlide({
+      mediaUrl: url,
+      type: isVideo ? 'video' : 'image',
+      mediaScale: 1,
+      mediaOffsetX: 0,
+      mediaOffsetY: 0
+    });
+    
+    // Reset input
+    if (fileInputRef.current) fileInputRef.current.value = '';
+  };
 
   const updateActiveSlide = (updates: Partial<Slide>) => {
     const newSlides = [...slides];
@@ -148,6 +179,19 @@ export function Studio() {
         return (
           <div className="bg-black/40 backdrop-blur-md px-2 py-1 rounded text-[10px] font-bold text-white border border-white/10">
             {String(activeSlideIndex + 1).padStart(2, '0')} / {String(slides.length).padStart(2, '0')}
+          </div>
+        );
+      case 'Arrow (Next)':
+        return (
+          <div className="w-10 h-10 bg-white/10 backdrop-blur-md rounded-full flex items-center justify-center border border-white/10 shadow-lg" style={{ color: activeExpert?.brandColor || '#6366f1' }}>
+            <ArrowRight size={20} />
+          </div>
+        );
+      case 'Swipe Right':
+        return (
+          <div className="flex items-center gap-2 text-white/90 drop-shadow-md">
+            <span className="text-[10px] font-black uppercase tracking-[0.2em]">Swipe</span>
+            <ChevronsRight size={16} style={{ color: activeExpert?.brandColor || '#6366f1' }} />
           </div>
         );
       default:
@@ -284,6 +328,69 @@ export function Studio() {
                       {slide.compositionImageUrl ? 'Remove Comp Image' : 'Add Comp Image'}
                     </button>
                   </div>
+
+                  {/* Video Controls */}
+                  {slide.type === 'video' && (
+                    <div className="mt-4 pt-4 border-t border-border/50 space-y-4">
+                      <h4 className="text-[10px] uppercase font-black flex items-center gap-1" style={{ color: activeExpert?.brandColor || '#6366f1' }}>
+                        <Video size={12} /> Video Settings
+                      </h4>
+                      
+                      <div className="space-y-1">
+                        <label className="text-[9px] uppercase font-bold text-text-muted flex justify-between">
+                          <span>Trim (Seconds)</span>
+                          <span>{slide.videoTrimStart || 0}s - {slide.videoTrimEnd || 15}s</span>
+                        </label>
+                        <div className="flex items-center gap-2">
+                          <input 
+                            type="number" 
+                            className="w-full bg-bg border border-border rounded p-1.5 text-xs text-text-main focus:outline-none" 
+                            placeholder="Start" 
+                            value={slide.videoTrimStart || 0} 
+                            onChange={e => updateActiveSlide({ videoTrimStart: Number(e.target.value) })} 
+                          />
+                          <span className="text-text-muted">-</span>
+                          <input 
+                            type="number" 
+                            className="w-full bg-bg border border-border rounded p-1.5 text-xs text-text-main focus:outline-none" 
+                            placeholder="End" 
+                            value={slide.videoTrimEnd || 15} 
+                            onChange={e => updateActiveSlide({ videoTrimEnd: Number(e.target.value) })} 
+                          />
+                        </div>
+                      </div>
+
+                      <div className="space-y-1">
+                        <label className="text-[9px] uppercase font-bold text-text-muted">Playback Speed</label>
+                        <select 
+                          className="w-full bg-bg border border-border rounded p-1.5 text-xs text-text-main focus:outline-none appearance-none" 
+                          value={slide.videoPlaybackSpeed || 1} 
+                          onChange={e => updateActiveSlide({ videoPlaybackSpeed: Number(e.target.value) })}
+                        >
+                          <option value={0.5}>0.5x (Slow)</option>
+                          <option value={1}>1.0x (Normal)</option>
+                          <option value={1.5}>1.5x (Fast)</option>
+                          <option value={2}>2.0x (Very Fast)</option>
+                        </select>
+                      </div>
+
+                      <div className="space-y-1">
+                        <label className="text-[9px] uppercase font-bold text-text-muted flex justify-between">
+                          <span>Thumbnail Frame</span>
+                          <span>{slide.videoThumbnailFrame || 0}%</span>
+                        </label>
+                        <input 
+                          type="range" 
+                          min="0" 
+                          max="100" 
+                          className="w-full h-1 bg-border rounded-lg appearance-none cursor-pointer" 
+                          style={{ accentColor: activeExpert?.brandColor || '#6366f1' }} 
+                          value={slide.videoThumbnailFrame || 0} 
+                          onChange={e => updateActiveSlide({ videoThumbnailFrame: Number(e.target.value) })} 
+                        />
+                      </div>
+                    </div>
+                  )}
                 </div>
               )}
             </div>
@@ -317,12 +424,30 @@ export function Studio() {
           <div className={`${format} w-full max-w-md bg-surface rounded-xl overflow-hidden shadow-2xl relative group border border-border/50 transition-all duration-500`}>
             
             {/* Base Media (Image or Video) */}
-            <img 
-              key={activeSlide.id}
-              alt="Active Slide Full Render" 
-              className="absolute inset-0 w-full h-full object-cover animate-in fade-in duration-500" 
-              src={activeSlide.mediaUrl} 
-            />
+            {activeSlide.type === 'video' ? (
+              <video 
+                key={activeSlide.id}
+                src={activeSlide.mediaUrl}
+                className="absolute inset-0 w-full h-full object-cover animate-in fade-in duration-500"
+                autoPlay
+                loop
+                muted
+                playsInline
+                style={{
+                  transform: `scale(${activeSlide.mediaScale || 1}) translate(${activeSlide.mediaOffsetX || 0}px, ${activeSlide.mediaOffsetY || 0}px)`
+                }}
+              />
+            ) : (
+              <img 
+                key={activeSlide.id}
+                alt="Active Slide Full Render" 
+                className="absolute inset-0 w-full h-full object-cover animate-in fade-in duration-500" 
+                src={activeSlide.mediaUrl} 
+                style={{
+                  transform: `scale(${activeSlide.mediaScale || 1}) translate(${activeSlide.mediaOffsetX || 0}px, ${activeSlide.mediaOffsetY || 0}px)`
+                }}
+              />
+            )}
             
             {/* Configurable Fade Overlay */}
             <div className="absolute inset-0 mix-blend-multiply transition-opacity duration-300" style={{ 
@@ -538,7 +663,65 @@ export function Studio() {
               </div>
               
               <div className="flex gap-2">
-                <button className="flex-1 bg-bg border border-border hover:bg-white/5 py-2 rounded-lg text-xs font-medium transition-colors">Replace Media</button>
+                <input 
+                  type="file" 
+                  ref={fileInputRef} 
+                  onChange={handleFileUpload} 
+                  accept="image/*,video/*" 
+                  className="hidden" 
+                />
+                <button 
+                  onClick={() => fileInputRef.current?.click()}
+                  className="flex-1 bg-bg border border-border hover:bg-white/5 py-2 rounded-lg text-xs font-medium transition-colors flex items-center justify-center gap-2"
+                >
+                  <Upload size={14} /> Upload Media
+                </button>
+              </div>
+
+              {/* Media Transform Controls */}
+              <div className="space-y-3 pt-2 bg-bg p-3 rounded-xl border border-border">
+                <div className="flex items-center gap-2 mb-1">
+                  <Crop size={12} className="text-text-muted" />
+                  <span className="text-[9px] uppercase font-bold text-text-muted">Media Transform</span>
+                </div>
+                
+                <div className="space-y-1">
+                  <div className="flex justify-between items-center">
+                    <span className="text-[9px] text-text-muted uppercase font-bold">Scale / Zoom</span>
+                    <span className="text-[9px] font-black" style={{ color: activeExpert?.brandColor || '#6366f1' }}>{activeSlide.mediaScale || 1}x</span>
+                  </div>
+                  <input 
+                    className="w-full h-1 bg-border rounded-lg appearance-none cursor-pointer" 
+                    max="3" 
+                    min="0.5" 
+                    step="0.1"
+                    type="range" 
+                    value={activeSlide.mediaScale || 1}
+                    onChange={(e) => updateActiveSlide({ mediaScale: Number(e.target.value) })}
+                    style={{ accentColor: activeExpert?.brandColor || '#6366f1' }}
+                  />
+                </div>
+
+                <div className="grid grid-cols-2 gap-2 pt-1">
+                  <div className="flex items-center bg-surface border border-border rounded px-2 py-1">
+                    <span className="text-[9px] font-bold text-text-muted w-3">X</span>
+                    <input 
+                      type="number" 
+                      value={activeSlide.mediaOffsetX || 0} 
+                      onChange={(e) => updateActiveSlide({ mediaOffsetX: Number(e.target.value) })}
+                      className="bg-transparent border-none focus:outline-none text-xs w-full text-right text-text-main" 
+                    />
+                  </div>
+                  <div className="flex items-center bg-surface border border-border rounded px-2 py-1">
+                    <span className="text-[9px] font-bold text-text-muted w-3">Y</span>
+                    <input 
+                      type="number" 
+                      value={activeSlide.mediaOffsetY || 0} 
+                      onChange={(e) => updateActiveSlide({ mediaOffsetY: Number(e.target.value) })}
+                      className="bg-transparent border-none focus:outline-none text-xs w-full text-right text-text-main" 
+                    />
+                  </div>
+                </div>
               </div>
 
               <div className="space-y-2 pt-2">
@@ -617,8 +800,10 @@ export function Studio() {
                   <div className="relative">
                     <select value={corners.br} onChange={(e) => setCorners({...corners, br: e.target.value})} className="w-full bg-bg border border-border rounded-lg p-2 text-xs focus:outline-none appearance-none text-text-main">
                       <option>Slide Counter</option>
-                      <option>None</option>
+                      <option>Arrow (Next)</option>
+                      <option>Swipe Right</option>
                       <option>Watermark</option>
+                      <option>None</option>
                     </select>
                     <ChevronDown size={12} className="absolute right-2 top-1/2 -translate-y-1/2 text-text-muted pointer-events-none" />
                   </div>
