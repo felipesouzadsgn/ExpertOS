@@ -66,7 +66,7 @@ export function Studio() {
   const [format, setFormat] = useState('aspect-[4/5]');
   const [fadeIntensity, setFadeIntensity] = useState(90);
   const [fadeColor, setFadeColor] = useState('#09090B');
-  const [activeTab, setActiveTab] = useState<'design' | 'ai'>('design');
+  const [activeTab, setActiveTab] = useState<'content' | 'design' | 'ai'>('content');
   
   const expertAgents = activeExpert ? getAgentsByExpert(activeExpert.id) : [];
   const [selectedAgentId, setSelectedAgentId] = useState<string | null>(null);
@@ -380,183 +380,6 @@ Escreva o conteúdo em Português, focado em autoridade e engajamento. Não incl
 
   return (
     <div className="h-full flex overflow-hidden bg-bg text-text-main">
-      {/* Left Sidebar: Slide Navigator & Editor */}
-      <aside className="w-[340px] bg-surface border-r border-border flex flex-col overflow-hidden shrink-0">
-        <div className="p-6 border-b border-border/50">
-          <h2 className="text-xs font-bold uppercase tracking-widest text-text-muted mb-4">Content Blocks</h2>
-          <div className="flex gap-2">
-            <button onClick={() => addSlide('image')} className="flex-1 bg-white/5 hover:bg-white/10 text-primary text-xs font-semibold py-2.5 rounded-lg flex items-center justify-center gap-2 transition-all duration-200">
-              <ImageIcon size={14} /> Add Slide
-            </button>
-            <button onClick={() => addSlide('video')} className="flex-1 bg-white/5 hover:bg-white/10 text-primary text-xs font-semibold py-2.5 rounded-lg flex items-center justify-center gap-2 transition-all duration-200">
-              <Video size={14} /> Add Video
-            </button>
-          </div>
-        </div>
-        
-        <div className="flex-1 overflow-y-auto p-4 space-y-4 custom-scrollbar">
-          {slides.map((slide, index) => (
-            <div 
-              key={slide.id}
-              onClick={() => setActiveSlideIndex(index)}
-              className={`p-3 rounded-xl transition-all duration-200 cursor-pointer group ${
-                activeSlideIndex === index ? 'bg-white/5 border-l-4 shadow-lg' : 'bg-transparent hover:bg-white/5 border-l-4 border-transparent'
-              }`}
-              style={{ borderLeftColor: activeSlideIndex === index ? (activeExpert?.brandColor || '#6366f1') : 'transparent' }}
-            >
-              <div className="flex gap-3 mb-2">
-                <div className="w-16 h-16 rounded-lg bg-bg overflow-hidden flex-shrink-0 relative">
-                  <img 
-                    alt={`Slide Thumbnail ${index + 1}`} 
-                    className={`w-full h-full object-cover ${slide.type === 'video' ? 'opacity-70' : ''}`} 
-                    src={slide.mediaUrl} 
-                  />
-                  {slide.type === 'video' && (
-                    <div className="absolute inset-0 flex items-center justify-center">
-                      <Play size={16} className="text-white drop-shadow-md" fill="white" />
-                    </div>
-                  )}
-                  <div className="absolute top-1 right-1 bg-black/50 rounded p-0.5">
-                    {slide.type === 'video' ? <Video size={10} className="text-white" /> : <ImageIcon size={10} className="text-white" />}
-                  </div>
-                </div>
-                <div className="flex flex-col justify-center overflow-hidden">
-                  <span className="text-[10px] font-bold uppercase tracking-widest transition-colors" style={{ color: activeSlideIndex === index ? (activeExpert?.brandColor || '#6366f1') : '#a1a1aa' }}>
-                    Slide {index + 1}
-                  </span>
-                  <span className="text-sm font-medium truncate w-full">{slide.title || 'Untitled'}</span>
-                </div>
-              </div>
-
-              {/* Expanded Editor for Active Slide */}
-              {activeSlideIndex === index && (
-                <div className="mt-4 space-y-3 border-t border-border/50 pt-4" onClick={(e) => e.stopPropagation()}>
-                  <div className="space-y-1">
-                    <label className="text-[9px] uppercase font-bold text-text-muted">HAT (Eyebrow Text)</label>
-                    <input 
-                      className="w-full bg-bg border border-border rounded-lg text-xs text-text-main p-2 focus:outline-none" 
-                      style={{ '--tw-ring-color': activeExpert?.brandColor || '#6366f1' } as any}
-                      value={slide.hat || ''}
-                      onChange={(e) => updateActiveSlide({ hat: e.target.value })}
-                      placeholder="e.g. EXPERT INSIGHTS"
-                    />
-                  </div>
-                  <div className="space-y-1">
-                    <label className="text-[9px] uppercase font-bold text-text-muted">Title</label>
-                    <textarea 
-                      className="w-full bg-bg border border-border rounded-lg text-sm font-bold text-text-main p-2 focus:outline-none resize-none h-16" 
-                      value={slide.title}
-                      onChange={(e) => updateActiveSlide({ title: e.target.value })}
-                      placeholder="Main Headline"
-                    />
-                  </div>
-                  <div className="space-y-1">
-                    <label className="text-[9px] uppercase font-bold text-text-muted">Subtitle</label>
-                    <input 
-                      className="w-full bg-bg border border-border rounded-lg text-xs text-text-main p-2 focus:outline-none" 
-                      value={slide.subtitle || ''}
-                      onChange={(e) => updateActiveSlide({ subtitle: e.target.value })}
-                      placeholder="Supporting headline"
-                    />
-                  </div>
-                  <div className="space-y-1">
-                    <label className="text-[9px] uppercase font-bold text-text-muted">Description</label>
-                    <textarea 
-                      className="w-full bg-bg border border-border rounded-lg text-xs text-text-muted p-2 focus:outline-none resize-none h-20" 
-                      value={slide.text}
-                      onChange={(e) => updateActiveSlide({ text: e.target.value })}
-                      placeholder="Body copy..."
-                    />
-                  </div>
-                  <div className="space-y-1">
-                    <label className="text-[9px] uppercase font-bold text-text-muted">Call to Action (CTA)</label>
-                    <input 
-                      className="w-full bg-bg border border-border rounded-lg text-xs text-text-main p-2 focus:outline-none" 
-                      value={slide.cta || ''}
-                      onChange={(e) => updateActiveSlide({ cta: e.target.value })}
-                      placeholder="e.g. SWIPE TO LEARN"
-                    />
-                  </div>
-                  
-                  <div className="pt-2">
-                    <button 
-                      onClick={() => updateActiveSlide({ compositionImageUrl: slide.compositionImageUrl ? undefined : 'https://images.unsplash.com/photo-1611162617474-5b21e879e113?q=80&w=500&auto=format&fit=crop' })}
-                      className="w-full bg-bg border border-border hover:bg-white/5 py-2 rounded-lg text-xs font-medium transition-colors flex items-center justify-center gap-2"
-                    >
-                      <ImageIcon size={14} /> 
-                      {slide.compositionImageUrl ? 'Remove Comp Image' : 'Add Comp Image'}
-                    </button>
-                  </div>
-
-                  {/* Video Controls */}
-                  {slide.type === 'video' && (
-                    <div className="mt-4 pt-4 border-t border-border/50 space-y-4">
-                      <h4 className="text-[10px] uppercase font-black flex items-center gap-1" style={{ color: activeExpert?.brandColor || '#6366f1' }}>
-                        <Video size={12} /> Video Settings
-                      </h4>
-                      
-                      <div className="space-y-1">
-                        <label className="text-[9px] uppercase font-bold text-text-muted flex justify-between">
-                          <span>Trim (Seconds)</span>
-                          <span>{slide.videoTrimStart || 0}s - {slide.videoTrimEnd || 15}s</span>
-                        </label>
-                        <div className="flex items-center gap-2">
-                          <input 
-                            type="number" 
-                            className="w-full bg-bg border border-border rounded p-1.5 text-xs text-text-main focus:outline-none" 
-                            placeholder="Start" 
-                            value={slide.videoTrimStart || 0} 
-                            onChange={e => updateActiveSlide({ videoTrimStart: Number(e.target.value) })} 
-                          />
-                          <span className="text-text-muted">-</span>
-                          <input 
-                            type="number" 
-                            className="w-full bg-bg border border-border rounded p-1.5 text-xs text-text-main focus:outline-none" 
-                            placeholder="End" 
-                            value={slide.videoTrimEnd || 15} 
-                            onChange={e => updateActiveSlide({ videoTrimEnd: Number(e.target.value) })} 
-                          />
-                        </div>
-                      </div>
-
-                      <div className="space-y-1">
-                        <label className="text-[9px] uppercase font-bold text-text-muted">Playback Speed</label>
-                        <select 
-                          className="w-full bg-bg border border-border rounded p-1.5 text-xs text-text-main focus:outline-none appearance-none" 
-                          value={slide.videoPlaybackSpeed || 1} 
-                          onChange={e => updateActiveSlide({ videoPlaybackSpeed: Number(e.target.value) })}
-                        >
-                          <option value={0.5}>0.5x (Slow)</option>
-                          <option value={1}>1.0x (Normal)</option>
-                          <option value={1.5}>1.5x (Fast)</option>
-                          <option value={2}>2.0x (Very Fast)</option>
-                        </select>
-                      </div>
-
-                      <div className="space-y-1">
-                        <label className="text-[9px] uppercase font-bold text-text-muted flex justify-between">
-                          <span>Thumbnail Frame</span>
-                          <span>{slide.videoThumbnailFrame || 0}%</span>
-                        </label>
-                        <input 
-                          type="range" 
-                          min="0" 
-                          max="100" 
-                          className="w-full h-1 bg-border rounded-lg appearance-none cursor-pointer" 
-                          style={{ accentColor: activeExpert?.brandColor || '#6366f1' }} 
-                          value={slide.videoThumbnailFrame || 0} 
-                          onChange={e => updateActiveSlide({ videoThumbnailFrame: Number(e.target.value) })} 
-                        />
-                      </div>
-                    </div>
-                  )}
-                </div>
-              )}
-            </div>
-          ))}
-        </div>
-      </aside>
-
       {/* Center: Premium Preview Canvas */}
       <section className="flex-1 flex flex-col relative overflow-hidden bg-bg">
         {/* Toolbar Overlay */}
@@ -666,44 +489,62 @@ Escreva o conteúdo em Português, focado em autoridade e engajamento. Não incl
           </div>
         </div>
 
-        {/* Bottom Control: Timeline/Navigation */}
-        <div className="h-20 bg-surface/40 backdrop-blur-md flex items-center justify-center gap-12 px-8 border-t border-border shrink-0">
-          <button 
-            onClick={() => setActiveSlideIndex(Math.max(0, activeSlideIndex - 1))}
-            className="flex items-center gap-2 text-text-muted hover:text-text-main transition-colors disabled:opacity-50"
-            disabled={activeSlideIndex === 0}
-          >
-            <ChevronLeft size={18} />
-            <span className="text-xs font-bold uppercase tracking-widest">Prev</span>
-          </button>
-          
-          {/* Mini Timeline */}
-          <div className="flex items-center gap-2">
-            {slides.map((_, idx) => (
+        {/* Bottom Control: Timeline/Filmstrip */}
+        <div className="h-40 bg-surface border-t border-border flex items-center px-6 shrink-0 relative overflow-hidden">
+          {/* Scrollable Filmstrip container */}
+          <div className="flex items-center gap-4 w-full h-full overflow-x-auto custom-scrollbar pb-2 pt-2">
+            
+            {slides.map((slide, idx) => (
               <div 
-                key={idx}
+                key={slide.id}
                 onClick={() => setActiveSlideIndex(idx)}
-                className="w-12 h-1.5 rounded-full cursor-pointer transition-colors"
-                style={{ backgroundColor: activeSlideIndex === idx ? (activeExpert?.brandColor || '#6366f1') : 'rgba(255,255,255,0.2)' }}
-              ></div>
+                className={`relative w-24 h-24 rounded-xl overflow-hidden shrink-0 border-2 cursor-pointer transition-all duration-300 group ${
+                  activeSlideIndex === idx ? 'border-primary scale-105 shadow-[0_0_15px_rgba(0,0,0,0.5)] z-10' : 'border-border/50 hover:border-text-muted hover:scale-105 opacity-60 hover:opacity-100'
+                }`}
+                style={{ borderColor: activeSlideIndex === idx ? (activeExpert?.brandColor || '#6366f1') : '' }}
+              >
+                <img 
+                  src={slide.mediaUrl} 
+                  alt={`Slide ${idx + 1}`} 
+                  className={`w-full h-full object-cover transition-transform duration-500 ${activeSlideIndex === idx ? 'scale-110' : 'group-hover:scale-110'} ${slide.type === 'video' ? 'opacity-80' : ''}`}
+                />
+                <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-transparent to-transparent"></div>
+                <span className="absolute bottom-1 right-2 text-[10px] font-black text-white drop-shadow-md">{idx + 1}</span>
+                {slide.type === 'video' && (
+                  <div className="absolute top-1 right-1 bg-black/60 rounded p-0.5">
+                    <Video size={10} className="text-white" />
+                  </div>
+                )}
+              </div>
             ))}
-          </div>
 
-          <button 
-            onClick={() => setActiveSlideIndex(Math.min(slides.length - 1, activeSlideIndex + 1))}
-            className="flex items-center gap-2 text-text-muted hover:text-text-main transition-colors disabled:opacity-50"
-            disabled={activeSlideIndex === slides.length - 1}
-          >
-            <span className="text-xs font-bold uppercase tracking-widest">Next</span>
-            <ChevronRight size={18} />
-          </button>
+            {/* Add New Triggers */}
+            <div className="flex flex-col gap-2 shrink-0 ml-2">
+              <button onClick={() => addSlide('image')} className="w-24 h-11 rounded-lg border-2 border-dashed border-border flex items-center justify-center gap-1.5 text-text-muted hover:text-primary hover:border-primary hover:bg-white/5 transition-colors group">
+                <ImageIcon size={12} className="group-hover:scale-110 transition-transform" />
+                <span className="text-[9px] font-bold uppercase tracking-wider">Image</span>
+              </button>
+              <button onClick={() => addSlide('video')} className="w-24 h-11 rounded-lg border-2 border-dashed border-border flex items-center justify-center gap-1.5 text-text-muted hover:text-primary hover:border-primary hover:bg-white/5 transition-colors group">
+                <Video size={12} className="group-hover:scale-110 transition-transform" />
+                <span className="text-[9px] font-bold uppercase tracking-wider">Video</span>
+              </button>
+            </div>
+            
+          </div>
         </div>
       </section>
 
       {/* Right Sidebar: Customization & AI */}
-      <aside className="w-80 bg-surface border-l border-border flex flex-col shrink-0">
+      <aside className="w-[360px] bg-surface border-l border-border flex flex-col shrink-0 overflow-hidden">
         {/* Tabs */}
         <div className="flex border-b border-border shrink-0">
+          <button 
+            onClick={() => setActiveTab('content')}
+            className={`flex-1 py-4 text-[10px] font-bold uppercase tracking-widest border-b-2 flex items-center justify-center gap-2 transition-colors ${activeTab === 'content' ? 'text-text-main' : 'text-text-muted hover:text-text-main border-transparent'}`} 
+            style={{ borderColor: activeTab === 'content' ? (activeExpert?.brandColor || '#6366f1') : 'transparent' }}
+          >
+            <Type size={14} /> Content
+          </button>
           <button 
             onClick={() => setActiveTab('design')}
             className={`flex-1 py-4 text-[10px] font-bold uppercase tracking-widest border-b-2 flex items-center justify-center gap-2 transition-colors ${activeTab === 'design' ? 'text-text-main' : 'text-text-muted hover:text-text-main border-transparent'}`} 
@@ -716,12 +557,125 @@ Escreva o conteúdo em Português, focado em autoridade e engajamento. Não incl
             className={`flex-1 py-4 text-[10px] font-bold uppercase tracking-widest border-b-2 flex items-center justify-center gap-2 transition-colors ${activeTab === 'ai' ? 'text-text-main' : 'text-text-muted hover:text-text-main border-transparent'}`}
             style={{ borderColor: activeTab === 'ai' ? (activeExpert?.brandColor || '#6366f1') : 'transparent' }}
           >
-            <Sparkles size={14} /> AI Agent
+            <Sparkles size={14} /> AI
           </button>
         </div>
         
         <div className="flex-1 overflow-y-auto custom-scrollbar">
-          {activeTab === 'design' ? (
+          {activeTab === 'content' ? (
+            <div className="p-6 space-y-6">
+              <div className="flex items-center gap-2 text-text-main mb-4">
+                <Type size={16} style={{ color: activeExpert?.brandColor || '#6366f1' }} />
+                <h3 className="text-[11px] font-black uppercase tracking-widest">Slide #{activeSlideIndex + 1} Content</h3>
+              </div>
+
+              <div className="space-y-4">
+                <div className="space-y-1">
+                  <label className="text-[9px] uppercase font-bold text-text-muted">HAT (Eyebrow Text)</label>
+                  <input 
+                    className="w-full bg-bg border border-border rounded-lg text-xs text-text-main p-2 focus:outline-none" 
+                    style={{ '--tw-ring-color': activeExpert?.brandColor || '#6366f1' } as any}
+                    value={activeSlide.hat || ''}
+                    onChange={(e) => updateActiveSlide({ hat: e.target.value })}
+                    placeholder="e.g. EXPERT INSIGHTS"
+                  />
+                </div>
+                <div className="space-y-1">
+                  <label className="text-[9px] uppercase font-bold text-text-muted">Title</label>
+                  <textarea 
+                    className="w-full bg-bg border border-border rounded-lg text-sm font-bold text-text-main p-3 focus:outline-none resize-none h-20 leading-tight" 
+                    value={activeSlide.title}
+                    onChange={(e) => updateActiveSlide({ title: e.target.value })}
+                    placeholder="Main Headline"
+                  />
+                </div>
+                <div className="space-y-1">
+                  <label className="text-[9px] uppercase font-bold text-text-muted">Subtitle</label>
+                  <input 
+                    className="w-full bg-bg border border-border rounded-lg text-xs text-text-main p-2 focus:outline-none" 
+                    value={activeSlide.subtitle || ''}
+                    onChange={(e) => updateActiveSlide({ subtitle: e.target.value })}
+                    placeholder="Supporting headline"
+                  />
+                </div>
+                <div className="space-y-1">
+                  <label className="text-[9px] uppercase font-bold text-text-muted">Description</label>
+                  <textarea 
+                    className="w-full bg-bg border border-border rounded-lg text-xs text-text-muted p-3 focus:outline-none resize-none h-28" 
+                    value={activeSlide.text}
+                    onChange={(e) => updateActiveSlide({ text: e.target.value })}
+                    placeholder="Body copy..."
+                  />
+                </div>
+                <div className="space-y-1">
+                  <label className="text-[9px] uppercase font-bold text-text-muted">Call to Action (CTA)</label>
+                  <input 
+                    className="w-full bg-bg border border-border rounded-lg text-xs text-text-main p-2 focus:outline-none" 
+                    value={activeSlide.cta || ''}
+                    onChange={(e) => updateActiveSlide({ cta: e.target.value })}
+                    placeholder="e.g. SWIPE TO LEARN"
+                  />
+                </div>
+                
+                <div className="pt-2">
+                  <button 
+                    onClick={() => updateActiveSlide({ compositionImageUrl: activeSlide.compositionImageUrl ? undefined : 'https://images.unsplash.com/photo-1611162617474-5b21e879e113?q=80&w=500&auto=format&fit=crop' })}
+                    className="w-full bg-bg border border-border hover:bg-white/5 py-2.5 rounded-lg text-xs font-medium transition-colors flex items-center justify-center gap-2"
+                  >
+                    <ImageIcon size={14} /> 
+                    {activeSlide.compositionImageUrl ? 'Remove Comp Image' : 'Add Comp Image Overlay'}
+                  </button>
+                </div>
+
+                {/* Video Controls moved here temporarily if it's a video */}
+                {activeSlide.type === 'video' && (
+                  <div className="mt-6 pt-6 border-t border-border/50 space-y-4 bg-bg p-4 rounded-xl border">
+                    <h4 className="text-[10px] uppercase font-black flex items-center gap-1" style={{ color: activeExpert?.brandColor || '#6366f1' }}>
+                      <Video size={12} /> Video Timing
+                    </h4>
+                    
+                    <div className="space-y-1">
+                      <label className="text-[9px] uppercase font-bold text-text-muted flex justify-between">
+                        <span>Trim (Seconds)</span>
+                        <span>{activeSlide.videoTrimStart || 0}s - {activeSlide.videoTrimEnd || 15}s</span>
+                      </label>
+                      <div className="flex items-center gap-2">
+                        <input 
+                          type="number" 
+                          className="w-full bg-surface border border-border rounded p-1.5 text-xs text-text-main focus:outline-none" 
+                          placeholder="Start" 
+                          value={activeSlide.videoTrimStart || 0} 
+                          onChange={e => updateActiveSlide({ videoTrimStart: Number(e.target.value) })} 
+                        />
+                        <span className="text-text-muted">-</span>
+                        <input 
+                          type="number" 
+                          className="w-full bg-surface border border-border rounded p-1.5 text-xs text-text-main focus:outline-none" 
+                          placeholder="End" 
+                          value={activeSlide.videoTrimEnd || 15} 
+                          onChange={e => updateActiveSlide({ videoTrimEnd: Number(e.target.value) })} 
+                        />
+                      </div>
+                    </div>
+
+                    <div className="space-y-1">
+                      <label className="text-[9px] uppercase font-bold text-text-muted">Playback Speed</label>
+                      <select 
+                        className="w-full bg-surface border border-border rounded p-1.5 text-xs text-text-main focus:outline-none appearance-none" 
+                        value={activeSlide.videoPlaybackSpeed || 1} 
+                        onChange={e => updateActiveSlide({ videoPlaybackSpeed: Number(e.target.value) })}
+                      >
+                        <option value={0.5}>0.5x (Slow)</option>
+                        <option value={1}>1.0x (Normal)</option>
+                        <option value={1.5}>1.5x (Fast)</option>
+                        <option value={2}>2.0x (Very Fast)</option>
+                      </select>
+                    </div>
+                  </div>
+                )}
+              </div>
+            </div>
+          ) : activeTab === 'design' ? (
             <div className="p-6 space-y-8">
               
               {/* 1. Format & Canvas */}

@@ -5,7 +5,7 @@ import { useAgentStore, Agent } from '@/store/agentStore';
 
 export function Agents() {
   const { activeExpert } = useExpertStore();
-  const { getAgentsByExpert, addAgent } = useAgentStore();
+  const { getAgentsByExpert, addAgent, updateAgent } = useAgentStore();
   const [selectedAgentId, setSelectedAgentId] = useState<string | null>(null);
   const [isCreatingAgent, setIsCreatingAgent] = useState(false);
   
@@ -18,6 +18,8 @@ export function Agents() {
     tools: [] as string[]
   });
   const [newTool, setNewTool] = useState('');
+  const [newExistingTool, setNewExistingTool] = useState('');
+  const [isAddingToolToExisting, setIsAddingToolToExisting] = useState(false);
 
   const handleCreateAgent = () => {
     if (!newAgent.name || !newAgent.role || !newAgent.systemPrompt) return;
@@ -47,6 +49,26 @@ export function Agents() {
 
   const handleRemoveTool = (toolToRemove: string) => {
     setNewAgent(prev => ({ ...prev, tools: prev.tools.filter(t => t !== toolToRemove) }));
+  };
+
+  const handleAddToolToExisting = () => {
+    if (newExistingTool.trim() && selectedAgent && !selectedAgent.tools.includes(newExistingTool.trim())) {
+      updateAgent({
+        ...selectedAgent,
+        tools: [...selectedAgent.tools, newExistingTool.trim()]
+      });
+      setNewExistingTool('');
+      setIsAddingToolToExisting(false);
+    }
+  };
+
+  const handleRemoveToolFromExisting = (toolToRemove: string) => {
+    if (selectedAgent) {
+      updateAgent({
+        ...selectedAgent,
+        tools: selectedAgent.tools.filter(t => t !== toolToRemove)
+      });
+    }
   };
 
   if (!activeExpert) {
@@ -241,11 +263,41 @@ export function Agents() {
                     <span key={idx} className="bg-bg border border-border text-text-main px-3 py-1.5 rounded-lg text-sm flex items-center gap-2">
                       <Settings2 size={14} className="text-text-muted" />
                       {tool}
+                      <button onClick={() => handleRemoveToolFromExisting(tool)} className="text-text-muted hover:text-red-400 ml-1 transition-colors">
+                        <X size={14} />
+                      </button>
                     </span>
                   ))}
-                  <button className="bg-white/5 border border-dashed border-border hover:border-primary/50 text-text-muted hover:text-text-main px-3 py-1.5 rounded-lg text-sm transition-colors">
-                    + Add Tool
-                  </button>
+                  
+                  {isAddingToolToExisting ? (
+                    <div className="flex items-center gap-2">
+                      <input 
+                        type="text" 
+                        value={newExistingTool}
+                        onChange={(e) => setNewExistingTool(e.target.value)}
+                        onKeyDown={(e) => e.key === 'Enter' && handleAddToolToExisting()}
+                        className="bg-bg border border-border rounded-lg px-3 py-1.5 text-sm focus:border-primary focus:outline-none w-48"
+                        placeholder="Tool name..."
+                        autoFocus
+                      />
+                      <button onClick={handleAddToolToExisting} className="bg-white/5 border border-border hover:bg-white/10 text-text-main px-2 py-1.5 rounded-lg transition-colors">
+                        <Plus size={16} />
+                      </button>
+                      <button onClick={() => { setIsAddingToolToExisting(false); setNewExistingTool(''); }} className="bg-white/5 border border-border hover:bg-white/10 text-text-main px-2 py-1.5 rounded-lg transition-colors">
+                        <X size={16} />
+                      </button>
+                    </div>
+                  ) : (
+                    <button 
+                      onClick={() => setIsAddingToolToExisting(true)}
+                      className="bg-white/5 border border-dashed border-border hover:border-primary/50 text-text-muted hover:text-text-main px-3 py-1.5 rounded-lg text-sm transition-colors flex items-center gap-2"
+                    >
+                      <Plus size={14} /> Add Tool
+                    </button>
+                  )}
+                  {selectedAgent.tools.length === 0 && !isAddingToolToExisting && (
+                    <span className="text-sm text-text-muted italic ml-2 mt-1.5">No tools equipped.</span>
+                  )}
                 </div>
               </div>
             </div>

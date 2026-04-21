@@ -18,6 +18,7 @@ import { Agents } from './pages/Agents';
 import { ExpertBlog } from './pages/ExpertBlog';
 import { Avatars } from './pages/Avatars';
 import { ScaleHub } from './pages/ScaleHub';
+import { Playbook } from './pages/Playbook';
 
 export default function App() {
   return (
@@ -26,6 +27,7 @@ export default function App() {
         <Routes>
           <Route path="/" element={<Dashboard />} />
           <Route path="/scale-hub" element={<ScaleHub />} />
+          <Route path="/playbook" element={<Playbook />} />
           <Route path="/experts" element={<Experts />} />
           <Route path="/experts/:id" element={<ExpertDetail />} />
           <Route path="/avatars" element={<Avatars />} />
