@@ -12,7 +12,8 @@ import {
   Globe,
   Camera,
   ChevronDown,
-  Video
+  Video,
+  TrendingUp
 } from 'lucide-react';
 import { cn } from '@/lib/utils';
 import { useExpertStore } from '@/store/expertStore';
@@ -23,6 +24,7 @@ interface AppLayoutProps {
 
 const navItems = [
   { name: 'Dashboard', path: '/', icon: LayoutDashboard },
+  { name: 'Scale Hub', path: '/scale-hub', icon: TrendingUp },
   { name: 'Expert Profile', path: '/experts', icon: Users },
   { name: 'AI Avatars', path: '/avatars', icon: Camera },
   { name: 'Knowledge Base', path: '/knowledge', icon: BookOpen },

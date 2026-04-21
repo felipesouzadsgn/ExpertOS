@@ -122,6 +122,7 @@ interface AgentStore {
   agents: Agent[];
   getAgentsByExpert: (expertId: string) => Agent[];
   updateAgent: (agent: Agent) => void;
+  addAgent: (agent: Omit<Agent, 'id' | 'tasks' | 'color' | 'status'>) => void;
 }
 
 export const useAgentStore = create<AgentStore>((set, get) => ({
@@ -129,5 +130,15 @@ export const useAgentStore = create<AgentStore>((set, get) => ({
   getAgentsByExpert: (expertId) => get().agents.filter(a => a.expertId === expertId),
   updateAgent: (updatedAgent) => set((state) => ({
     agents: state.agents.map(a => a.id === updatedAgent.id ? updatedAgent : a)
-  }))
+  })),
+  addAgent: (newAgentData) => set((state) => {
+    const newAgent: Agent = {
+      ...newAgentData,
+      id: `agent-${Date.now()}`,
+      status: 'idle',
+      tasks: [],
+      color: 'bg-text-muted', // default color for idle
+    };
+    return { agents: [...state.agents, newAgent] };
+  })
 }));

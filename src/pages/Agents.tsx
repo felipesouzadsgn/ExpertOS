@@ -1,12 +1,53 @@
 import { useState } from 'react';
-import { Settings2, Activity, Play, Square, Brain, Wrench, ListTodo, ChevronRight, ArrowLeft } from 'lucide-react';
+import { Settings2, Activity, Play, Square, Brain, Wrench, ListTodo, ChevronRight, ArrowLeft, X, Plus } from 'lucide-react';
 import { useExpertStore } from '@/store/expertStore';
 import { useAgentStore, Agent } from '@/store/agentStore';
 
 export function Agents() {
   const { activeExpert } = useExpertStore();
-  const { getAgentsByExpert } = useAgentStore();
+  const { getAgentsByExpert, addAgent } = useAgentStore();
   const [selectedAgentId, setSelectedAgentId] = useState<string | null>(null);
+  const [isCreatingAgent, setIsCreatingAgent] = useState(false);
+  
+  const [newAgent, setNewAgent] = useState({
+    name: '',
+    role: '',
+    description: '',
+    model: 'Gemini 1.5 Pro',
+    systemPrompt: '',
+    tools: [] as string[]
+  });
+  const [newTool, setNewTool] = useState('');
+
+  const handleCreateAgent = () => {
+    if (!newAgent.name || !newAgent.role || !newAgent.systemPrompt) return;
+    
+    addAgent({
+      expertId: activeExpert.id,
+      ...newAgent
+    });
+
+    setIsCreatingAgent(false);
+    setNewAgent({
+      name: '',
+      role: '',
+      description: '',
+      model: 'Gemini 1.5 Pro',
+      systemPrompt: '',
+      tools: []
+    });
+  };
+
+  const handleAddTool = () => {
+    if (newTool.trim() && !newAgent.tools.includes(newTool.trim())) {
+      setNewAgent(prev => ({ ...prev, tools: [...prev.tools, newTool.trim()] }));
+      setNewTool('');
+    }
+  };
+
+  const handleRemoveTool = (toolToRemove: string) => {
+    setNewAgent(prev => ({ ...prev, tools: prev.tools.filter(t => t !== toolToRemove) }));
+  };
 
   if (!activeExpert) {
     return <div className="p-8 text-text-main">Please select an expert first.</div>;
@@ -14,6 +55,135 @@ export function Agents() {
 
   const agents = getAgentsByExpert(activeExpert.id);
   const selectedAgent = agents.find(a => a.id === selectedAgentId);
+
+  if (isCreatingAgent) {
+    return (
+      <div className="p-8 h-full flex flex-col overflow-auto text-text-main relative custom-scrollbar">
+        <div className="max-w-3xl mx-auto w-full">
+          <div className="flex items-center gap-4 mb-8">
+            <button onClick={() => setIsCreatingAgent(false)} className="p-2 hover:bg-white/5 rounded-lg transition-colors">
+              <ArrowLeft size={20} />
+            </button>
+            <div>
+              <h1 className="font-serif text-2xl mb-1">Create Specialized Agent</h1>
+              <p className="text-text-muted text-sm">Design a new AI agent tailored to {activeExpert.name}'s ecosystem.</p>
+            </div>
+          </div>
+
+          <div className="bg-surface border border-border rounded-xl p-6 space-y-6">
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+              <div className="space-y-4">
+                <div>
+                  <label className="block text-xs font-bold uppercase tracking-wider text-text-muted mb-2">Agent Name</label>
+                  <input
+                    type="text"
+                    value={newAgent.name}
+                    onChange={(e) => setNewAgent({ ...newAgent, name: e.target.value })}
+                    className="w-full bg-bg border border-border rounded-lg px-4 py-2 text-sm focus:border-primary focus:outline-none"
+                    placeholder="e.g. Content Architect"
+                  />
+                </div>
+                <div>
+                  <label className="block text-xs font-bold uppercase tracking-wider text-text-muted mb-2">Role</label>
+                  <input
+                    type="text"
+                    value={newAgent.role}
+                    onChange={(e) => setNewAgent({ ...newAgent, role: e.target.value })}
+                    className="w-full bg-bg border border-border rounded-lg px-4 py-2 text-sm focus:border-primary focus:outline-none"
+                    placeholder="e.g. Lead Copywriter"
+                  />
+                </div>
+                <div>
+                  <label className="block text-xs font-bold uppercase tracking-wider text-text-muted mb-2">AI Model</label>
+                  <select
+                    value={newAgent.model}
+                    onChange={(e) => setNewAgent({ ...newAgent, model: e.target.value })}
+                    className="w-full bg-bg border border-border rounded-lg px-4 py-2 text-sm focus:border-primary focus:outline-none"
+                  >
+                    <option value="Gemini 1.5 Pro">Gemini 1.5 Pro (Reasoning & Complex Tasks)</option>
+                    <option value="Gemini 1.5 Flash">Gemini 1.5 Flash (Speed & High Volume)</option>
+                  </select>
+                </div>
+              </div>
+              
+              <div className="space-y-4">
+                <div>
+                  <label className="block text-xs font-bold uppercase tracking-wider text-text-muted mb-2">Description</label>
+                  <textarea
+                    value={newAgent.description}
+                    onChange={(e) => setNewAgent({ ...newAgent, description: e.target.value })}
+                    className="w-full bg-bg border border-border rounded-lg px-4 py-2 text-sm focus:border-primary focus:outline-none h-[116px] resize-none"
+                    placeholder="Briefly describe what this agent does..."
+                  />
+                </div>
+              </div>
+            </div>
+
+            <div>
+              <label className="block text-xs font-bold uppercase tracking-wider text-text-muted mb-2">System Prompt & Directives</label>
+              <textarea
+                value={newAgent.systemPrompt}
+                onChange={(e) => setNewAgent({ ...newAgent, systemPrompt: e.target.value })}
+                className="w-full bg-bg border border-border rounded-lg px-4 py-3 text-sm focus:border-primary focus:outline-none h-48 font-mono resize-none custom-scrollbar"
+                placeholder="You are a specialized agent for... CORE DIRECTIVES: ..."
+              />
+            </div>
+
+            <div>
+              <label className="block text-xs font-bold uppercase tracking-wider text-text-muted mb-2">Available Tools</label>
+              <div className="flex gap-2 mb-3">
+                <input
+                  type="text"
+                  value={newTool}
+                  onChange={(e) => setNewTool(e.target.value)}
+                  onKeyDown={(e) => e.key === 'Enter' && handleAddTool()}
+                  className="flex-1 bg-bg border border-border rounded-lg px-4 py-2 text-sm focus:border-primary focus:outline-none"
+                  placeholder="e.g. Web Search, Data Analytics..."
+                />
+                <button
+                  onClick={handleAddTool}
+                  className="bg-white/5 hover:bg-white/10 border border-border rounded-lg px-4 py-2 flex items-center justify-center transition-colors"
+                >
+                  <Plus size={18} />
+                </button>
+              </div>
+              <div className="flex flex-wrap gap-2">
+                {newAgent.tools.map((tool, idx) => (
+                  <span key={idx} className="bg-bg border border-border text-text-main px-3 py-1.5 rounded-lg text-sm flex items-center gap-2">
+                    <Settings2 size={14} className="text-text-muted" />
+                    {tool}
+                    <button onClick={() => handleRemoveTool(tool)} className="text-text-muted hover:text-red-400 ml-1">
+                      <X size={14} />
+                    </button>
+                  </span>
+                ))}
+                {newAgent.tools.length === 0 && (
+                  <span className="text-sm text-text-muted italic">No tools added yet.</span>
+                )}
+              </div>
+            </div>
+
+            <div className="flex justify-end gap-3 pt-6 border-t border-border mt-6">
+              <button
+                onClick={() => setIsCreatingAgent(false)}
+                className="px-6 py-2 rounded-lg text-sm font-medium border border-border hover:bg-white/5 transition-colors"
+              >
+                Cancel
+              </button>
+              <button
+                onClick={handleCreateAgent}
+                disabled={!newAgent.name || !newAgent.role || !newAgent.systemPrompt}
+                className="px-6 py-2 rounded-lg text-sm font-medium text-white transition-opacity disabled:opacity-50 disabled:cursor-not-allowed hover:opacity-90"
+                style={{ backgroundColor: activeExpert.brandColor }}
+              >
+                Create Agent
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+    );
+  }
 
   if (selectedAgent) {
     return (
@@ -133,7 +303,11 @@ export function Agents() {
               <Activity size={16} />
               View System Logs
             </button>
-            <button className="text-white px-4 py-2 rounded-lg text-sm font-medium transition-colors hover:brightness-110" style={{ backgroundColor: activeExpert.brandColor }}>
+            <button 
+              onClick={() => setIsCreatingAgent(true)}
+              className="text-white px-4 py-2 rounded-lg text-sm font-medium transition-colors hover:brightness-110" 
+              style={{ backgroundColor: activeExpert.brandColor }}
+            >
               + Create Agent
             </button>
           </div>
@@ -146,7 +320,10 @@ export function Agents() {
             <p className="text-text-muted text-sm max-w-md mx-auto">
               This expert doesn't have any specialized agents yet. Create agents to automate tasks, generate content, and analyze data based on their specific context.
             </p>
-            <button className="mt-6 bg-primary text-white px-4 py-2 rounded-lg text-sm font-medium hover:brightness-110 transition-all">
+            <button 
+              onClick={() => setIsCreatingAgent(true)}
+              className="mt-6 bg-primary text-white px-4 py-2 rounded-lg text-sm font-medium hover:brightness-110 transition-all"
+            >
               Create First Agent
             </button>
           </div>

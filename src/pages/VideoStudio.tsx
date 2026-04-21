@@ -5,7 +5,7 @@ import {
   Video, Smartphone, Monitor, Mic, Music, Type, LayoutTemplate, Wand2, 
   Play, Scissors, Sparkles, Download, Settings2, CheckCircle2, Bot, 
   Layers, Upload, Image as ImageIcon, Plus, X, ChevronLeft, ChevronRight, 
-  ArrowRight, Volume2, VolumeX
+  ArrowRight, Volume2, VolumeX, FolderOutput
 } from 'lucide-react';
 
 interface VideoClip {
@@ -391,18 +391,28 @@ export function VideoStudio() {
             </button>
           </div>
           
-          <button 
-            onClick={handleGenerate}
-            disabled={isGenerating || !activeClip.script}
-            className="flex items-center gap-2 text-xs font-bold px-4 py-2 rounded-lg text-white transition-all hover:brightness-110 disabled:opacity-50 disabled:cursor-not-allowed"
-            style={{ backgroundColor: activeExpert.brandColor }}
-          >
-            {isGenerating ? (
-              <><Wand2 size={14} className="animate-pulse" /> Generating...</>
-            ) : (
-              <><Play size={14} /> Generate Video</>
-            )}
-          </button>
+          <div className="flex items-center gap-3">
+            <button 
+              onClick={() => {
+                alert('Project data (Timeline, Scripts, Assets) has been queued for export.');
+              }}
+              className="flex items-center gap-2 text-xs font-bold px-4 py-2 rounded-lg bg-white/5 text-text-main transition-all hover:bg-white/10"
+            >
+              <FolderOutput size={14} /> Export Project
+            </button>
+            <button 
+              onClick={handleGenerate}
+              disabled={isGenerating || !activeClip.script}
+              className="flex items-center gap-2 text-xs font-bold px-4 py-2 rounded-lg text-white transition-all hover:brightness-110 disabled:opacity-50 disabled:cursor-not-allowed"
+              style={{ backgroundColor: activeExpert.brandColor }}
+            >
+              {isGenerating ? (
+                <><Wand2 size={14} className="animate-pulse" /> Generating...</>
+              ) : (
+                <><Play size={14} /> Generate Video</>
+              )}
+            </button>
+          </div>
         </div>
 
         {/* Canvas Area */}
@@ -435,6 +445,18 @@ export function VideoStudio() {
                     <Play size={24} className="text-white ml-1" />
                   </div>
                 </div>
+                <button 
+                  onClick={() => {
+                    const a = document.createElement('a');
+                    a.href = generatedVideo;
+                    a.download = `video-export-${Date.now()}.mp4`;
+                    a.click();
+                  }}
+                  className="absolute top-4 right-4 bg-black/80 backdrop-blur-md p-2 rounded-lg border border-white/20 text-white hover:bg-white/20 transition-colors z-50"
+                  title="Download Video"
+                >
+                  <Download size={20} />
+                </button>
                 {captionsEnabled && (
                   <div className="absolute bottom-20 left-0 right-0 flex justify-center px-8">
                     <div className="bg-black/80 backdrop-blur-md px-4 py-2 rounded-lg border border-white/10 text-center">
