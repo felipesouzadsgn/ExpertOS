@@ -13,7 +13,7 @@ export function Calendar() {
   const dates = Array.from({ length: 35 }, (_, i) => i + 1); // Mock 35 days grid
 
   if (!activeExpert) {
-    return <div className="p-8 text-text-main">Please select an expert first.</div>;
+    return <div className="p-4 md:p-6 lg:p-8 text-text-main">Please select an expert first.</div>;
   }
 
   const expertAgents = getAgentsByExpert(activeExpert.id);
@@ -30,7 +30,7 @@ export function Calendar() {
   };
 
   return (
-    <div className="p-8 h-full flex flex-col text-text-main">
+    <div className="p-4 md:p-6 lg:p-8 h-full flex flex-col text-text-main">
       <div className="flex flex-col sm:flex-row sm:items-center justify-between mb-8 gap-4">
         <div>
           <h1 className="font-serif text-2xl mb-1">Editorial Calendar</h1>
@@ -38,9 +38,9 @@ export function Calendar() {
         </div>
         <div className="flex items-center gap-4 flex-wrap">
           <div className="flex items-center gap-2 bg-surface border border-border rounded-lg p-1">
-            <button className="p-1 hover:bg-white/5 rounded transition-colors"><ChevronLeft size={18} /></button>
+            <button className="p-1 hover:bg-white/5 rounded transition-colors min-w-[44px] min-h-[44px] flex items-center justify-center"><ChevronLeft size={18} /></button>
             <span className="text-sm font-medium px-2">October 2025</span>
-            <button className="p-1 hover:bg-white/5 rounded transition-colors"><ChevronRight size={18} /></button>
+            <button className="p-1 hover:bg-white/5 rounded transition-colors min-w-[44px] min-h-[44px] flex items-center justify-center"><ChevronRight size={18} /></button>
           </div>
           
           <button 
@@ -106,24 +106,24 @@ export function Calendar() {
                 {hasPost && (
                   <div className="space-y-1">
                     {hasManualPost && date === 15 && (
-                      <div className="bg-blue-500/10 border border-blue-500/20 text-blue-400 text-[10px] p-1.5 rounded truncate cursor-pointer hover:bg-blue-500/20 transition-colors">
+                      <div className="bg-blue-500/10 border border-blue-500/20 text-blue-400 text-xs md:text-[10px] p-1.5 rounded truncate cursor-pointer hover:bg-blue-500/20 transition-colors">
                         LI: The Scarcity Premium
                       </div>
                     )}
                     {hasManualPost && (date === 12 || date === 18) && (
-                      <div className="bg-purple-500/10 border border-purple-500/20 text-purple-400 text-[10px] p-1.5 rounded truncate cursor-pointer hover:bg-purple-500/20 transition-colors">
+                      <div className="bg-purple-500/10 border border-purple-500/20 text-purple-400 text-xs md:text-[10px] p-1.5 rounded truncate cursor-pointer hover:bg-purple-500/20 transition-colors">
                         IG: Market Update Reel
                       </div>
                     )}
                     {hasManualPost && date === 24 && (
-                      <div className="bg-green-500/10 border border-green-500/20 text-green-400 text-[10px] p-1.5 rounded truncate cursor-pointer hover:bg-green-500/20 transition-colors">
+                      <div className="bg-green-500/10 border border-green-500/20 text-green-400 text-xs md:text-[10px] p-1.5 rounded truncate cursor-pointer hover:bg-green-500/20 transition-colors">
                         News: Q4 Predictions
                       </div>
                     )}
                     
                     {/* AI Generated Posts */}
                     {hasGeneratedPost && (
-                      <div className="bg-primary/10 border border-primary/20 text-primary text-[10px] p-1.5 rounded cursor-pointer hover:bg-primary/20 transition-colors flex flex-col gap-1">
+                      <div className="bg-primary/10 border border-primary/20 text-primary text-xs md:text-[10px] p-1.5 rounded cursor-pointer hover:bg-primary/20 transition-colors flex flex-col gap-1">
                         <div className="flex items-center gap-1 font-bold">
                           <Wand2 size={10} /> AI Strategy
                         </div>

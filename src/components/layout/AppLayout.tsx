@@ -69,7 +69,7 @@ export function AppLayout({ children }: AppLayoutProps) {
   }, []);
 
   return (
-    <div className="flex h-screen w-full bg-bg text-text-main font-sans">
+    <div className="flex min-h-[100dvh] w-full bg-bg text-text-main font-sans">
       {/* Desktop Sidebar Navigation */}
       <aside className="hidden lg:flex w-[240px] border-r border-border flex-col p-6 bg-surface shrink-0">
         <div className="font-serif italic text-xl font-bold mb-10 flex items-center gap-2.5">
@@ -173,7 +173,7 @@ export function AppLayout({ children }: AppLayoutProps) {
       </aside>
 
       {/* Main Content Area */}
-      <main className="flex-1 flex flex-col min-w-0 overflow-hidden">
+      <main className="flex-1 flex flex-col min-w-0 overflow-hidden min-h-0">
         <header className="h-[72px] border-b border-border flex items-center justify-between px-4 md:px-8 bg-bg/80 backdrop-blur-sm shrink-0 z-30 relative">
           
           {/* Mobile Menu Button + Expert Switcher */}
@@ -243,7 +243,7 @@ export function AppLayout({ children }: AppLayoutProps) {
           </div>
         </header>
 
-        <div className="flex-1 overflow-auto">
+        <div className="flex-1 overflow-auto min-h-0">
           {children}
         </div>
       </main>

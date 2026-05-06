@@ -337,14 +337,14 @@ export function PRD() {
                     {module.stories.map((story, i) => (
                       <div key={i} className="p-4 flex items-start gap-4 hover:bg-white/[0.02]">
                         <div className="flex gap-2 shrink-0">
-                          <span className={`text-[10px] font-bold uppercase tracking-wider px-2 py-0.5 rounded ${
+                          <span className={`text-[11px] md:text-[10px] font-bold uppercase tracking-wider px-2 py-0.5 rounded ${
                             story.priority === 'P0' ? 'bg-red-500/10 text-red-400' : 'bg-yellow-500/10 text-yellow-400'
                           }`}>
                             {story.priority}
                           </span>
                         </div>
                         <p className="text-xs text-text-muted leading-relaxed flex-1">{story.story}</p>
-                        <span className={`text-[10px] font-bold uppercase tracking-wider px-2 py-0.5 rounded shrink-0 ${
+                        <span className={`text-[11px] md:text-[10px] font-bold uppercase tracking-wider px-2 py-0.5 rounded shrink-0 ${
                           story.status === 'Feito' ? 'bg-green-500/10 text-green-400' : 
                           story.status.includes('Mock') || story.status.includes('UI') ? 'bg-blue-500/10 text-blue-400' : 
                           'bg-white/5 text-text-muted'
@@ -370,6 +370,7 @@ export function PRD() {
               </div>
 
               <div className="bg-surface border border-border rounded-2xl overflow-hidden">
+                <div className="overflow-x-auto">
                 <table className="w-full text-sm">
                   <thead className="text-xs text-text-muted uppercase bg-bg/50 border-b border-border">
                     <tr>
@@ -422,6 +423,7 @@ export function PRD() {
                     ))}
                   </tbody>
                 </table>
+                </div>
               </div>
 
               <div className="flex gap-6 text-xs text-text-muted">
@@ -521,7 +523,7 @@ export function PRD() {
                       <h3 className="font-serif text-xl font-bold">{phase.phase}</h3>
                       <p className="text-xs text-text-muted">{phase.timeline}</p>
                     </div>
-                    <span className={`text-[10px] font-bold uppercase tracking-wider px-3 py-1 rounded ${phase.bgColor} ${phase.color}`}>
+                    <span className={`text-[11px] md:text-[10px] font-bold uppercase tracking-wider px-3 py-1 rounded ${phase.bgColor} ${phase.color}`}>
                       {phase.status}
                     </span>
                   </div>
@@ -600,6 +602,7 @@ export function PRD() {
               </div>
 
               <div className="bg-surface border border-border rounded-2xl overflow-hidden">
+                <div className="overflow-x-auto">
                 <table className="w-full text-sm">
                   <thead className="text-xs text-text-muted uppercase bg-bg/50 border-b border-border">
                     <tr>
@@ -636,6 +639,7 @@ export function PRD() {
                     ))}
                   </tbody>
                 </table>
+                </div>
               </div>
             </div>
           )}

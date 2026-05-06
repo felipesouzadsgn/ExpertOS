@@ -16,7 +16,7 @@ export function Research() {
   const [adaptedContent, setAdaptedContent] = useState<any>(null);
 
   if (!activeExpert) {
-    return <div className="p-8 text-text-main">Please select an expert first.</div>;
+    return <div className="p-4 md:p-6 lg:p-8 text-text-main">Please select an expert first.</div>;
   }
 
   const expertAgents = getAgentsByExpert(activeExpert.id);
@@ -173,7 +173,7 @@ export function Research() {
   ];
 
   return (
-    <div className="p-8 h-full flex flex-col overflow-hidden text-text-main relative">
+    <div className="p-4 md:p-6 lg:p-8 h-full flex flex-col overflow-hidden text-text-main relative">
       <div className="max-w-7xl mx-auto w-full flex flex-col h-full">
         <div className="text-center mb-8 shrink-0">
           <h1 className="font-serif text-3xl mb-3">Market Intelligence</h1>
@@ -226,7 +226,7 @@ export function Research() {
         </div>
 
         {/* Content Area */}
-        <div className="flex-1 overflow-y-auto custom-scrollbar pb-8 pr-2">
+        <div className="flex-1 overflow-y-auto custom-scrollbar pb-8 pr-2 min-h-0">
           {activeTab === 'viral' && (
             <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
               {viralContent.map(item => (
@@ -250,10 +250,10 @@ export function Research() {
                     <h3 className="font-bold text-lg mb-3 line-clamp-1">{item.title}</h3>
                     
                     <div className="flex gap-2 mb-4">
-                      <span className="text-[10px] font-bold uppercase tracking-wider bg-white/5 border border-border px-2 py-1 rounded text-text-muted flex items-center gap-1">
+                      <span className="text-[11px] md:text-[10px] font-bold uppercase tracking-wider bg-white/5 border border-border px-2 py-1 rounded text-text-muted flex items-center gap-1">
                         <Filter size={10} /> {item.funnelStage}
                       </span>
-                      <span className="text-[10px] font-bold uppercase tracking-wider bg-white/5 border border-border px-2 py-1 rounded text-text-muted flex items-center gap-1">
+                      <span className="text-[11px] md:text-[10px] font-bold uppercase tracking-wider bg-white/5 border border-border px-2 py-1 rounded text-text-muted flex items-center gap-1">
                         <Layers size={10} /> {item.framework}
                       </span>
                     </div>
@@ -300,25 +300,25 @@ export function Research() {
                 <div key={article.id} className="bg-surface border border-border rounded-2xl p-5 flex items-center justify-between group hover:border-primary/30 transition-colors">
                   <div className="flex-1">
                     <div className="flex items-center gap-3 mb-2">
-                      <span className="text-[10px] font-bold uppercase tracking-wider bg-white/5 px-2 py-1 rounded text-text-muted">{article.source}</span>
+                      <span className="text-[11px] md:text-[10px] font-bold uppercase tracking-wider bg-white/5 px-2 py-1 rounded text-text-muted">{article.source}</span>
                       <span className={`text-[10px] font-bold uppercase tracking-wider flex items-center gap-1 ${article.relevance === 'Critical' ? 'text-red-400' : article.relevance === 'High' ? 'text-orange-400' : 'text-yellow-400'}`}>
                         <Zap size={12} /> {article.relevance} Relevance
                       </span>
-                      <span className="text-[10px] font-bold uppercase tracking-wider text-green-400 flex items-center gap-1">
+                      <span className="text-[11px] md:text-[10px] font-bold uppercase tracking-wider text-green-400 flex items-center gap-1">
                         <BarChart2 size={12} /> SEO Score: {article.seoScore}
                       </span>
                     </div>
                     <h3 className="font-serif text-xl mb-2">{article.title}</h3>
                     <p className="text-sm text-text-muted mb-3">{article.summary}</p>
-                    <div className="inline-flex items-center gap-1 text-[10px] font-mono text-text-muted bg-bg px-2 py-1 rounded border border-border">
+                    <div className="inline-flex items-center gap-1 text-xs md:text-[10px] font-mono text-text-muted bg-bg px-2 py-1 rounded border border-border">
                       <Search size={10} /> Target Keyword: {article.targetKeyword}
                     </div>
                   </div>
                   <div className="pl-0 sm:pl-6 border-l-0 sm:border-l border-border ml-0 sm:ml-6 flex flex-row sm:flex-col gap-2 shrink-0 w-full sm:w-auto">
-                    <button className="bg-bg border border-border hover:bg-white/5 px-4 py-2 rounded-lg text-xs font-bold transition-colors whitespace-nowrap">
+                    <button className="bg-bg border border-border hover:bg-white/5 px-4 py-2 rounded-lg text-xs font-bold transition-colors whitespace-nowrap min-h-[44px]">
                       Read Full
                     </button>
-                    <button className="px-4 py-2 rounded-lg text-xs font-bold transition-colors whitespace-nowrap text-white hover:brightness-110 flex items-center gap-2 justify-center" style={{ backgroundColor: activeExpert.brandColor }}>
+                    <button className="px-4 py-2 rounded-lg text-xs font-bold transition-colors whitespace-nowrap text-white hover:brightness-110 flex items-center gap-2 justify-center min-h-[44px]" style={{ backgroundColor: activeExpert.brandColor }}>
                       <BookOpen size={14} /> Turn into Blog Post
                     </button>
                   </div>
@@ -385,7 +385,7 @@ export function Research() {
 
       {/* AI Adaptation Modal */}
       {selectedViral && (
-        <div className="absolute inset-0 z-50 flex items-center justify-center p-8 bg-bg/80 backdrop-blur-sm">
+        <div className="absolute inset-0 z-50 flex items-center justify-center p-4 md:p-6 lg:p-8 bg-bg/80 backdrop-blur-sm">
           <div className="bg-surface border border-border rounded-2xl shadow-2xl w-full max-w-3xl overflow-hidden flex flex-col max-h-full">
             <div className="p-4 border-b border-border flex justify-between items-center bg-bg">
               <div className="flex items-center gap-2">

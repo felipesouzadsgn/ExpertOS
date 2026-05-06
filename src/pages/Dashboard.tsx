@@ -7,13 +7,13 @@ export function Dashboard() {
   const { getAgentsByExpert } = useAgentStore();
 
   if (!activeExpert) {
-    return <div className="p-8 text-text-main">Please select an expert first.</div>;
+    return <div className="p-4 md:p-6 lg:p-8 text-text-main">Please select an expert first.</div>;
   }
 
   const agents = getAgentsByExpert(activeExpert.id);
 
   return (
-    <div className="p-8 grid grid-cols-1 lg:grid-cols-3 gap-6 h-full text-text-main overflow-auto">
+    <div className="p-4 md:p-6 lg:p-8 grid grid-cols-1 lg:grid-cols-3 gap-6 h-full text-text-main overflow-auto">
       {/* Main Column */}
       <div className="lg:col-span-2 flex flex-col gap-6">
         {/* Context Readiness Card */}
@@ -82,7 +82,7 @@ export function Dashboard() {
               <ImageIcon size={48} strokeWidth={1} />
             </div>
             <div className="p-5 flex-1 flex flex-col">
-              <div className="text-[10px] font-bold uppercase tracking-wider mb-1" style={{ color: activeExpert.brandColor }}>Carousel Series</div>
+              <div className="text-[11px] md:text-[10px] font-bold uppercase tracking-wider mb-1" style={{ color: activeExpert.brandColor }}>Carousel Series</div>
               <div className="text-base font-semibold mb-2">The Invisible Architecture of High-Net-Worth Portfolios</div>
               <p className="text-[13px] text-text-muted leading-relaxed flex-1">
                 A 10-slide breakdown using {activeExpert.name}'s '{activeExpert.toneOfVoice?.split(',')[0] || 'unique'}' tone of voice, targeting {activeExpert.icp?.split(',')[0] || 'their audience'}.
@@ -103,7 +103,7 @@ export function Dashboard() {
               <Video size={48} strokeWidth={1} />
             </div>
             <div className="p-5 flex-1 flex flex-col">
-              <div className="text-[10px] font-bold uppercase tracking-wider mb-1" style={{ color: activeExpert.brandColor }}>Video Script</div>
+              <div className="text-[11px] md:text-[10px] font-bold uppercase tracking-wider mb-1" style={{ color: activeExpert.brandColor }}>Video Script</div>
               <div className="text-base font-semibold mb-2">Why 2025 Real Estate is About Scarcity, Not Square Footage</div>
               <p className="text-[13px] text-text-muted leading-relaxed flex-1">
                 90-second vertical script with visual hooks optimized for {activeExpert.name}'s persona.

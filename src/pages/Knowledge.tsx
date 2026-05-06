@@ -5,11 +5,11 @@ export function Knowledge() {
   const { activeExpert } = useExpertStore();
 
   if (!activeExpert) {
-    return <div className="p-8 text-text-main">Please select an expert first.</div>;
+    return <div className="p-4 md:p-6 lg:p-8 text-text-main">Please select an expert first.</div>;
   }
 
   return (
-    <div className="p-8 h-full flex flex-col text-text-main">
+    <div className="p-4 md:p-6 lg:p-8 h-full flex flex-col text-text-main">
       <div className="flex flex-col sm:flex-row sm:items-center justify-between mb-8 gap-4">
         <div>
           <h1 className="font-serif text-2xl mb-1">Knowledge Base</h1>
@@ -62,11 +62,11 @@ export function Knowledge() {
               <input 
                 type="text" 
                 placeholder={`Search ${activeExpert.name}'s documents...`} 
-                className="w-full bg-bg border border-border rounded-lg pl-9 pr-4 py-2 text-sm focus:outline-none transition-colors"
+                className="w-full bg-bg border border-border rounded-lg pl-9 pr-4 py-2 text-base md:text-sm focus:outline-none transition-colors"
                 style={{ '--tw-ring-color': activeExpert.brandColor } as any}
               />
             </div>
-            <button className="p-2 border border-border rounded-lg text-text-muted hover:text-text-main hover:bg-white/5 transition-colors">
+            <button className="p-2 border border-border rounded-lg text-text-muted hover:text-text-main hover:bg-white/5 transition-colors min-h-[44px] min-w-[44px] flex items-center justify-center">
               <Filter size={16} />
             </button>
           </div>
@@ -100,7 +100,7 @@ export function Knowledge() {
                     <td className="px-6 py-4 text-text-muted">{doc.type}</td>
                     <td className="px-6 py-4 text-text-muted">{doc.size}</td>
                     <td className="px-6 py-4">
-                      <span className="inline-flex items-center gap-1.5 px-2 py-1 rounded text-[10px] uppercase tracking-wider bg-green-500/10 text-green-500">
+                      <span className="inline-flex items-center gap-1.5 px-2 py-1 rounded text-xs md:text-[10px] uppercase tracking-wider bg-green-500/10 text-green-500">
                         <CheckCircle2 size={10} /> Indexed
                       </span>
                     </td>

@@ -11,7 +11,7 @@ export function ExpertBlog() {
   const [viewingPost, setViewingPost] = useState<BlogPost | null>(null);
 
   if (!activeExpert) {
-    return <div className="p-8 text-text-main">Please select an expert first.</div>;
+    return <div className="p-4 md:p-6 lg:p-8 text-text-main">Please select an expert first.</div>;
   }
 
   const handleGeneratePost = (contextPost?: BlogPost) => {
@@ -54,7 +54,7 @@ export function ExpertBlog() {
   };
 
   return (
-    <div className="p-8 h-full flex flex-col text-text-main overflow-hidden relative">
+    <div className="p-4 md:p-6 lg:p-8 h-full flex flex-col text-text-main overflow-hidden relative">
       <div className="flex flex-col sm:flex-row sm:items-center justify-between mb-8 gap-4 shrink-0">
         <div>
           <h1 className="font-serif text-2xl mb-1">SEO & Public Portal</h1>
@@ -83,7 +83,7 @@ export function ExpertBlog() {
       </div>
 
       {activeTab === 'preview' ? (
-        <div className="flex-1 overflow-hidden flex flex-col bg-bg border border-border rounded-2xl shadow-2xl relative">
+        <div className="flex-1 overflow-hidden flex flex-col min-h-0 bg-bg border border-border rounded-2xl shadow-2xl relative">
           {/* Browser Chrome */}
           <div className="h-12 bg-surface border-b border-border flex items-center px-4 gap-4 shrink-0">
             <div className="flex gap-1.5">
@@ -159,13 +159,13 @@ export function ExpertBlog() {
                     <div key={post.id} className="group cursor-pointer flex flex-col" onClick={() => setViewingPost(post)}>
                       <div className="aspect-video rounded-xl bg-gray-100 mb-4 overflow-hidden relative">
                         <img src={post.coverImage} alt={post.title} className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" />
-                        <div className="absolute top-3 left-3 bg-white/90 backdrop-blur-sm px-2 py-1 rounded text-[10px] font-bold uppercase tracking-wider text-gray-900 flex items-center gap-1">
+                        <div className="absolute top-3 left-3 bg-white/90 backdrop-blur-sm px-2 py-1 rounded text-[11px] md:text-[10px] font-bold uppercase tracking-wider text-gray-900 flex items-center gap-1">
                           <Sparkles size={12} className="text-purple-500" /> AEO Optimized
                         </div>
                       </div>
                       <div className="flex gap-2 mb-3">
-                        <span className="text-[10px] font-bold uppercase tracking-wider px-2 py-1 rounded bg-gray-100 text-gray-600">{post.category}</span>
-                        <span className="text-[10px] font-bold uppercase tracking-wider px-2 py-1 rounded bg-gray-100 text-gray-600">{post.readTime}</span>
+                        <span className="text-xs md:text-[10px] font-bold uppercase tracking-wider px-2 py-1 rounded bg-gray-100 text-gray-600">{post.category}</span>
+                        <span className="text-xs md:text-[10px] font-bold uppercase tracking-wider px-2 py-1 rounded bg-gray-100 text-gray-600">{post.readTime}</span>
                       </div>
                       <h4 className="text-xl font-bold text-gray-900 mb-2 group-hover:text-primary transition-colors">{post.title}</h4>
                       <p className="text-gray-600 text-sm line-clamp-2 mb-4 flex-1">{post.excerpt}</p>
@@ -192,7 +192,7 @@ export function ExpertBlog() {
           </div>
         </div>
       ) : (
-        <div className="flex-1 overflow-y-auto custom-scrollbar">
+        <div className="flex-1 overflow-y-auto custom-scrollbar min-h-0">
           <div className="max-w-4xl mx-auto space-y-6">
             <div className="bg-surface border border-border rounded-2xl p-6">
               <h3 className="text-lg font-serif mb-4 flex items-center gap-2">
@@ -221,7 +221,7 @@ export function ExpertBlog() {
                 <div>
                   <label className="block text-xs font-bold uppercase tracking-wider text-text-muted mb-2">Core Entity Definition (For LLMs)</label>
                   <textarea 
-                    className="w-full bg-bg border border-border rounded-xl p-4 text-sm text-text-main focus:outline-none focus:border-primary min-h-[100px]"
+                    className="w-full bg-bg border border-border rounded-xl p-4 text-base md:text-sm text-text-main focus:outline-none focus:border-primary min-h-[100px]"
                     defaultValue={`${activeExpert.name} is a leading authority in ${activeExpert.niche}. Known for ${activeExpert.archetypes}, they primarily serve ${activeExpert.icp}. Their core methodology involves...`}
                   />
                   <p className="text-[10px] text-text-muted mt-1">This text is injected into the site's hidden schema to train AI crawlers on exactly who this expert is.</p>
@@ -270,7 +270,7 @@ export function ExpertBlog() {
 
       {/* AI Generation Modal */}
       {showGenerationModal && (
-        <div className="absolute inset-0 z-50 flex items-center justify-center p-8 bg-bg/80 backdrop-blur-sm">
+        <div className="absolute inset-0 z-50 flex items-center justify-center p-4 md:p-6 lg:p-8 bg-bg/80 backdrop-blur-sm">
           <div className="bg-surface border border-border rounded-2xl shadow-2xl w-full max-w-3xl overflow-hidden flex flex-col max-h-full">
             <div className="p-4 border-b border-border flex justify-between items-center bg-bg">
               <div className="flex items-center gap-2">
@@ -352,7 +352,7 @@ export function ExpertBlog() {
 
       {/* View Post Modal */}
       {viewingPost && (
-        <div className="absolute inset-0 z-50 flex items-center justify-center p-8 bg-bg/80 backdrop-blur-sm">
+        <div className="absolute inset-0 z-50 flex items-center justify-center p-4 md:p-6 lg:p-8 bg-bg/80 backdrop-blur-sm">
           <div className="bg-surface border border-border rounded-2xl shadow-2xl w-full max-w-4xl overflow-hidden flex flex-col max-h-full">
             <div className="p-4 border-b border-border flex justify-between items-center bg-bg">
               <div className="flex items-center gap-2">
@@ -364,7 +364,7 @@ export function ExpertBlog() {
               </button>
             </div>
             
-            <div className="p-8 overflow-y-auto custom-scrollbar bg-white text-gray-900">
+            <div className="p-4 md:p-6 lg:p-8 overflow-y-auto custom-scrollbar bg-white text-gray-900">
               <div className="max-w-3xl mx-auto">
                 <div className="flex gap-2 mb-4">
                   <span className="text-xs font-bold uppercase tracking-wider px-2 py-1 rounded bg-gray-100 text-gray-600">{viewingPost.category}</span>

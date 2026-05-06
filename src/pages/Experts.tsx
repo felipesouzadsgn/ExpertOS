@@ -7,7 +7,7 @@ export function Experts() {
   const navigate = useNavigate();
 
   return (
-    <div className="p-8 h-full flex flex-col">
+    <div className="p-4 md:p-6 lg:p-8 h-full flex flex-col">
       <div className="flex justify-between items-center mb-8">
         <div>
           <h1 className="font-serif text-2xl mb-1">Perfis de Expert</h1>
@@ -52,11 +52,11 @@ export function Experts() {
               <div className="grid grid-cols-2 gap-4 pt-4 border-t border-border">
                 <div>
                   <span className="text-lg font-bold block">{expert.tokens}</span>
-                  <span className="text-[10px] text-text-muted uppercase tracking-wider">Tokens Indexados</span>
+                  <span className="text-xs md:text-[10px] text-text-muted uppercase tracking-wider">Tokens Indexados</span>
                 </div>
                 <div>
                   <span className="text-lg font-bold block">{expert.archetypes}</span>
-                  <span className="text-[10px] text-text-muted uppercase tracking-wider">Arquétipos</span>
+                  <span className="text-xs md:text-[10px] text-text-muted uppercase tracking-wider">Arquétipos</span>
                 </div>
               </div>
             </div>

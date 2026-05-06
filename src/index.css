@@ -14,11 +14,17 @@
 }
 
 @layer base {
+  html {
+    height: 100%;
+  }
   body {
     background-color: var(--color-bg);
     color: var(--color-text-main);
     font-family: var(--font-sans);
     overflow-x: hidden;
+    min-height: 100dvh;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
   }
 }
 
@@ -26,6 +32,9 @@
 @layer utilities {
   .touch-manipulation {
     touch-action: manipulation;
+  }
+  .pb-safe {
+    padding-bottom: env(safe-area-inset-bottom, 0px);
   }
 }
 

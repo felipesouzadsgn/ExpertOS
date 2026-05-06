@@ -21,7 +21,7 @@ export function ScaleHub() {
   const [activeTab, setActiveTab] = useState<'overview' | 'automation'>('automation');
 
   if (!activeExpert) {
-    return <div className="p-8 text-text-main">Please select an expert first.</div>;
+    return <div className="p-4 md:p-6 lg:p-8 text-text-main">Please select an expert first.</div>;
   }
 
   const platforms = [
@@ -119,7 +119,7 @@ export function ScaleHub() {
 
   return (
     <div className="h-full flex flex-col bg-bg overflow-hidden text-text-main">
-      <div className="p-8 border-b border-border bg-surface shrink-0">
+      <div className="p-4 md:p-6 lg:p-8 border-b border-border bg-surface shrink-0">
         <div className="flex justify-between items-start mb-6">
           <div>
             <h1 className="text-3xl font-serif font-bold mb-2 flex items-center gap-3">
@@ -132,11 +132,11 @@ export function ScaleHub() {
           </div>
           <div className="flex gap-4 text-center">
             <div className="bg-bg border border-border p-4 rounded-xl">
-              <div className="text-[10px] text-text-muted uppercase font-bold tracking-wider mb-1">Visualizações Mês</div>
+              <div className="text-xs md:text-[10px] text-text-muted uppercase font-bold tracking-wider mb-1">Visualizações Mês</div>
               <div className="text-2xl font-bold text-green-400">8.8M</div>
             </div>
             <div className="bg-bg border border-border p-4 rounded-xl">
-              <div className="text-[10px] text-text-muted uppercase font-bold tracking-wider mb-1">Crescimento Global</div>
+              <div className="text-xs md:text-[10px] text-text-muted uppercase font-bold tracking-wider mb-1">Crescimento Global</div>
               <div className="text-2xl font-bold text-primary">+24.5%</div>
             </div>
           </div>
@@ -168,7 +168,7 @@ export function ScaleHub() {
         </div>
       </div>
 
-      <div className="flex-1 overflow-y-auto p-8 custom-scrollbar">
+      <div className="flex-1 overflow-y-auto p-4 md:p-6 lg:p-8 custom-scrollbar">
         {activeTab === 'automation' ? (
           <div className="space-y-6">
             <div className="flex items-center justify-between">
@@ -192,7 +192,7 @@ export function ScaleHub() {
                     <div className="flex items-start gap-2">
                       <Clock size={14} className="text-text-muted mt-0.5 shrink-0" />
                       <div>
-                        <div className="text-[10px] text-text-muted uppercase font-bold tracking-wider">Frequência e Horários</div>
+                        <div className="text-xs md:text-[10px] text-text-muted uppercase font-bold tracking-wider">Frequência e Horários</div>
                         <div className="text-xs text-text-main font-medium">{platform.frequency}</div>
                         <div className="text-[10px] text-text-muted">{platform.hours}</div>
                       </div>
@@ -201,7 +201,7 @@ export function ScaleHub() {
                     <div className="flex items-start gap-2">
                       <Video size={14} className="text-text-muted mt-0.5 shrink-0" />
                       <div>
-                        <div className="text-[10px] text-text-muted uppercase font-bold tracking-wider">Formato</div>
+                        <div className="text-xs md:text-[10px] text-text-muted uppercase font-bold tracking-wider">Formato</div>
                         <div className="text-xs text-text-main font-medium">{platform.format}</div>
                       </div>
                     </div>
@@ -209,13 +209,13 @@ export function ScaleHub() {
                     <div className="flex items-start gap-2">
                       <BarChart3 size={14} className="text-text-muted mt-0.5 shrink-0" />
                       <div>
-                        <div className="text-[10px] text-text-muted uppercase font-bold tracking-wider">Atenção & Copy</div>
+                        <div className="text-xs md:text-[10px] text-text-muted uppercase font-bold tracking-wider">Atenção & Copy</div>
                         <div className="text-xs text-text-main font-medium">{platform.copy}</div>
                       </div>
                     </div>
                   </div>
 
-                  <button className="w-full py-2 bg-primary/10 text-primary border border-primary/20 rounded-lg text-xs font-bold flex items-center justify-center gap-2 group-hover:bg-primary/20 transition-colors">
+                  <button className="w-full py-2 bg-primary/10 text-primary border border-primary/20 rounded-lg text-xs font-bold flex items-center justify-center gap-2 group-hover:bg-primary/20 transition-colors min-h-[44px]">
                     <Sparkles size={14} /> Rodar Agente IA
                   </button>
                 </div>

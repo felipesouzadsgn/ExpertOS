@@ -14,7 +14,7 @@ export function Avatars() {
   });
 
   if (!activeExpert) {
-    return <div className="p-8 text-text-main">Please select an expert first.</div>;
+    return <div className="p-4 md:p-6 lg:p-8 text-text-main">Please select an expert first.</div>;
   }
 
   const handleGenerate = () => {
@@ -51,7 +51,7 @@ export function Avatars() {
   const avatars = activeExpert.avatars || [];
 
   return (
-    <div className="p-8 h-full flex flex-col overflow-hidden text-text-main relative">
+    <div className="p-4 md:p-6 lg:p-8 h-full flex flex-col overflow-hidden text-text-main relative">
       <div className="max-w-7xl mx-auto w-full flex flex-col h-full">
         
         {/* Header */}
@@ -141,9 +141,9 @@ export function Avatars() {
         )}
 
         {/* Gallery */}
-        <div className="flex-1 overflow-y-auto custom-scrollbar pr-2">
+        <div className="flex-1 overflow-y-auto custom-scrollbar pr-2 min-h-0">
           {avatars.length === 0 ? (
-            <div className="h-full flex flex-col items-center justify-center text-text-muted border-2 border-dashed border-border rounded-2xl p-8">
+            <div className="h-full flex flex-col items-center justify-center text-text-muted border-2 border-dashed border-border rounded-2xl p-4 md:p-6 lg:p-8">
               <Camera size={48} className="mb-4 opacity-20" />
               <h3 className="text-xl font-bold mb-2">No Avatars Generated Yet</h3>
               <p className="text-sm max-w-md text-center mb-6">
@@ -187,10 +187,10 @@ export function Avatars() {
                         {/* Overlay Actions */}
                         <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity flex flex-col justify-end p-4">
                           <div className="flex gap-2">
-                            <button className="flex-1 bg-white/20 hover:bg-white/30 backdrop-blur-md text-white py-2 rounded-lg text-xs font-bold transition-colors flex items-center justify-center gap-2">
+                            <button className="flex-1 bg-white/20 hover:bg-white/30 backdrop-blur-md text-white py-2 rounded-lg text-xs font-bold transition-colors flex items-center justify-center gap-2 min-h-[44px]">
                               <Download size={14} /> Download
                             </button>
-                            <button className="flex-1 text-white py-2 rounded-lg text-xs font-bold transition-colors flex items-center justify-center gap-2" style={{ backgroundColor: activeExpert.brandColor }}>
+                            <button className="flex-1 text-white py-2 rounded-lg text-xs font-bold transition-colors flex items-center justify-center gap-2 min-h-[44px]" style={{ backgroundColor: activeExpert.brandColor }}>
                               Use Asset
                             </button>
                           </div>
@@ -205,11 +205,11 @@ export function Avatars() {
 
                     {/* Badges */}
                     <div className="absolute top-3 left-3 flex flex-col gap-2">
-                      <div className="bg-black/60 backdrop-blur-md px-2 py-1 rounded flex items-center gap-1 text-[10px] font-bold text-white uppercase tracking-wider">
+                      <div className="bg-black/60 backdrop-blur-md px-2 py-1 rounded flex items-center gap-1 text-[11px] md:text-[10px] font-bold text-white uppercase tracking-wider">
                         {avatar.type === 'image' ? <ImageIcon size={12} /> : <Video size={12} />}
                         {avatar.type}
                       </div>
-                      <div className="bg-black/60 backdrop-blur-md px-2 py-1 rounded flex items-center gap-1 text-[10px] font-bold text-white uppercase tracking-wider">
+                      <div className="bg-black/60 backdrop-blur-md px-2 py-1 rounded flex items-center gap-1 text-[11px] md:text-[10px] font-bold text-white uppercase tracking-wider">
                         {avatar.style}
                       </div>
                     </div>

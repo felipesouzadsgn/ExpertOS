@@ -137,7 +137,7 @@ export function VideoStudio() {
   };
 
   if (!activeExpert) {
-    return <div className="p-8 text-text-main">Please select an expert first.</div>;
+    return <div className="p-4 md:p-6 lg:p-8 text-text-main">Please select an expert first.</div>;
   }
 
   const renderMedia = (className: string) => {
@@ -293,7 +293,7 @@ export function VideoStudio() {
                   type="number" min="1" max="60" 
                   value={activeClip.duration}
                   onChange={(e) => updateActiveClip({ duration: parseInt(e.target.value) || 5 })}
-                  className="w-full bg-bg border border-border rounded p-1.5 text-xs text-text-main focus:outline-none focus:border-primary"
+                  className="w-full bg-bg border border-border rounded p-1.5 text-base md:text-xs text-text-main focus:outline-none focus:border-primary"
                 />
               </div>
               <div className="space-y-1">
@@ -356,7 +356,7 @@ export function VideoStudio() {
             <select 
               value={selectedVoice}
               onChange={(e) => setSelectedVoice(e.target.value)}
-              className="w-full bg-bg border border-border rounded-lg p-2.5 text-xs text-text-main focus:outline-none focus:border-primary"
+              className="w-full bg-bg border border-border rounded-lg p-2.5 text-base md:text-xs text-text-main focus:outline-none focus:border-primary"
             >
               <option value="elevenlabs-1">{activeExpert.name} (Primary Clone)</option>
               <option value="elevenlabs-2">{activeExpert.name} (Energetic)</option>
@@ -381,7 +381,7 @@ export function VideoStudio() {
               value={activeClip.script}
               onChange={(e) => updateActiveClip({ script: e.target.value })}
               placeholder="Paste your script here or use the AI to generate one based on viral market research..."
-              className="w-full bg-bg border border-border rounded-lg p-3 text-xs text-text-main focus:outline-none focus:border-primary min-h-[120px] resize-none"
+              className="w-full bg-bg border border-border rounded-lg p-3 text-base md:text-xs text-text-main focus:outline-none focus:border-primary min-h-[120px] resize-none"
             />
             <div className="flex flex-wrap gap-2">
               {viralTopics.map((topic, idx) => (
@@ -409,10 +409,10 @@ export function VideoStudio() {
             >
               <Type size={14} /> Auto-Captions
             </button>
-            <button className="flex items-center gap-2 text-xs font-bold px-3 py-1.5 rounded-lg bg-white/5 text-text-muted hover:text-text-main transition-colors">
+            <button className="flex items-center gap-2 text-xs font-bold px-3 py-1.5 rounded-lg bg-white/5 text-text-muted hover:text-text-main transition-colors min-h-[44px]">
               <Music size={14} /> Viral BGM
             </button>
-            <button className="flex items-center gap-2 text-xs font-bold px-3 py-1.5 rounded-lg bg-white/5 text-text-muted hover:text-text-main transition-colors">
+            <button className="flex items-center gap-2 text-xs font-bold px-3 py-1.5 rounded-lg bg-white/5 text-text-muted hover:text-text-main transition-colors min-h-[44px]">
               <Scissors size={14} /> Auto-Cuts
             </button>
           </div>
@@ -429,7 +429,7 @@ export function VideoStudio() {
             <button 
               onClick={handleGenerate}
               disabled={isGenerating || !activeClip.script}
-              className="flex items-center gap-2 text-xs font-bold px-4 py-2 rounded-lg text-white transition-all hover:brightness-110 disabled:opacity-50 disabled:cursor-not-allowed"
+              className="flex items-center gap-2 text-xs font-bold px-4 py-2 rounded-lg text-white transition-all hover:brightness-110 disabled:opacity-50 disabled:cursor-not-allowed min-h-[44px]"
               style={{ backgroundColor: activeExpert.brandColor }}
             >
               {isGenerating ? (
@@ -442,7 +442,7 @@ export function VideoStudio() {
         </div>
 
         {/* Canvas Area */}
-        <div className="flex-1 flex items-center justify-center p-8 overflow-y-auto relative">
+        <div className="flex-1 flex items-center justify-center p-4 md:p-6 lg:p-8 overflow-y-auto relative">
           {/* Background Pattern */}
           <div className="absolute inset-0 opacity-5 pointer-events-none" style={{ backgroundImage: 'radial-gradient(circle at 2px 2px, white 1px, transparent 0)', backgroundSize: '24px 24px' }}></div>
           
@@ -603,7 +603,7 @@ export function VideoStudio() {
             <h3 className="text-[10px] font-bold uppercase tracking-widest text-text-muted flex items-center gap-2">
               <Scissors size={14} /> Timeline Editor
             </h3>
-            <button onClick={addClip} className="text-[10px] font-bold uppercase tracking-widest flex items-center gap-1 text-primary hover:text-primary/80 transition-colors">
+            <button onClick={addClip} className="text-[10px] font-bold uppercase tracking-widest flex items-center gap-1 text-primary hover:text-primary/80 transition-colors min-h-[44px]">
               <Plus size={14}/> Add Clip
             </button>
           </div>
@@ -648,7 +648,7 @@ export function VideoStudio() {
                     <select 
                       value={clip.transition}
                       onChange={(e) => updateClipTransition(clip.id, e.target.value as any)}
-                      className="text-[9px] bg-bg border border-border rounded px-1.5 py-1 text-text-muted focus:outline-none focus:border-primary appearance-none text-center cursor-pointer"
+                      className="text-base md:text-[9px] bg-bg border border-border rounded px-1.5 py-1 text-text-muted focus:outline-none focus:border-primary appearance-none text-center cursor-pointer"
                     >
                       <option value="none">Cut</option>
                       <option value="fade">Fade</option>

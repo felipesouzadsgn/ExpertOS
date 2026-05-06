@@ -420,7 +420,7 @@ Escreva o conteúdo em Português, focado em autoridade e engajamento. Não incl
           </div>
         </div>
         
-        <div className="flex-1 overflow-y-auto p-4 space-y-4 custom-scrollbar">
+        <div className="flex-1 overflow-y-auto p-4 space-y-4 custom-scrollbar min-h-0">
           {slides.map((slide, index) => (
             <div 
               key={slide.id}
@@ -460,7 +460,7 @@ Escreva o conteúdo em Português, focado em autoridade e engajamento. Não incl
                   <div className="space-y-1">
                     <label className="text-[9px] uppercase font-bold text-text-muted">HAT (Eyebrow Text)</label>
                     <input 
-                      className="w-full bg-bg border border-border rounded-lg text-xs text-text-main p-2 focus:outline-none" 
+                      className="w-full bg-bg border border-border rounded-lg text-base md:text-xs text-text-main p-2 focus:outline-none" 
                       style={{ '--tw-ring-color': activeExpert?.brandColor || '#6366f1' } as any}
                       value={slide.hat || ''}
                       onChange={(e) => updateActiveSlide({ hat: e.target.value })}
@@ -479,7 +479,7 @@ Escreva o conteúdo em Português, focado em autoridade e engajamento. Não incl
                   <div className="space-y-1">
                     <label className="text-[9px] uppercase font-bold text-text-muted">Subtitle</label>
                     <input 
-                      className="w-full bg-bg border border-border rounded-lg text-xs text-text-main p-2 focus:outline-none" 
+                      className="w-full bg-bg border border-border rounded-lg text-base md:text-xs text-text-main p-2 focus:outline-none" 
                       value={slide.subtitle || ''}
                       onChange={(e) => updateActiveSlide({ subtitle: e.target.value })}
                       placeholder="Supporting headline"
@@ -488,7 +488,7 @@ Escreva o conteúdo em Português, focado em autoridade e engajamento. Não incl
                   <div className="space-y-1">
                     <label className="text-[9px] uppercase font-bold text-text-muted">Description</label>
                     <textarea 
-                      className="w-full bg-bg border border-border rounded-lg text-xs text-text-muted p-2 focus:outline-none resize-none h-20" 
+                      className="w-full bg-bg border border-border rounded-lg text-base md:text-xs text-text-muted p-2 focus:outline-none resize-none h-20" 
                       value={slide.text}
                       onChange={(e) => updateActiveSlide({ text: e.target.value })}
                       placeholder="Body copy..."
@@ -497,7 +497,7 @@ Escreva o conteúdo em Português, focado em autoridade e engajamento. Não incl
                   <div className="space-y-1">
                     <label className="text-[9px] uppercase font-bold text-text-muted">Call to Action (CTA)</label>
                     <input 
-                      className="w-full bg-bg border border-border rounded-lg text-xs text-text-main p-2 focus:outline-none" 
+                      className="w-full bg-bg border border-border rounded-lg text-base md:text-xs text-text-main p-2 focus:outline-none" 
                       value={slide.cta || ''}
                       onChange={(e) => updateActiveSlide({ cta: e.target.value })}
                       placeholder="e.g. SWIPE TO LEARN"
@@ -529,7 +529,7 @@ Escreva o conteúdo em Português, focado em autoridade e engajamento. Não incl
                         <div className="flex items-center gap-2">
                           <input 
                             type="number" 
-                            className="w-full bg-bg border border-border rounded p-1.5 text-xs text-text-main focus:outline-none" 
+                            className="w-full bg-bg border border-border rounded p-1.5 text-base md:text-xs text-text-main focus:outline-none" 
                             placeholder="Start" 
                             value={slide.videoTrimStart || 0} 
                             onChange={e => updateActiveSlide({ videoTrimStart: Number(e.target.value) })} 
@@ -537,7 +537,7 @@ Escreva o conteúdo em Português, focado em autoridade e engajamento. Não incl
                           <span className="text-text-muted">-</span>
                           <input 
                             type="number" 
-                            className="w-full bg-bg border border-border rounded p-1.5 text-xs text-text-main focus:outline-none" 
+                            className="w-full bg-bg border border-border rounded p-1.5 text-base md:text-xs text-text-main focus:outline-none" 
                             placeholder="End" 
                             value={slide.videoTrimEnd || 15} 
                             onChange={e => updateActiveSlide({ videoTrimEnd: Number(e.target.value) })} 
@@ -548,7 +548,7 @@ Escreva o conteúdo em Português, focado em autoridade e engajamento. Não incl
                       <div className="space-y-1">
                         <label className="text-[9px] uppercase font-bold text-text-muted">Playback Speed</label>
                         <select 
-                          className="w-full bg-bg border border-border rounded p-1.5 text-xs text-text-main focus:outline-none appearance-none" 
+                          className="w-full bg-bg border border-border rounded p-1.5 text-base md:text-xs text-text-main focus:outline-none appearance-none" 
                           value={slide.videoPlaybackSpeed || 1} 
                           onChange={e => updateActiveSlide({ videoPlaybackSpeed: Number(e.target.value) })}
                         >
@@ -597,7 +597,7 @@ Escreva o conteúdo em Português, focado em autoridade e engajamento. Não incl
             <button className="text-text-muted hover:text-primary transition-colors"><Redo2 size={18} /></button>
           </div>
           <div className="w-[1px] h-4 bg-border"></div>
-          <button className="text-white text-[10px] font-black uppercase tracking-widest px-4 py-1.5 rounded-full hover:brightness-110 active:scale-95 transition-all flex items-center gap-2" style={{ backgroundColor: activeExpert?.brandColor || '#6366f1' }}>
+          <button className="text-white text-[10px] font-black uppercase tracking-widest px-4 py-1.5 rounded-full hover:brightness-110 active:scale-95 transition-all flex items-center gap-2 min-h-[44px]" style={{ backgroundColor: activeExpert?.brandColor || '#6366f1' }}>
             <Download size={14} />
             Export
           </button>
@@ -764,7 +764,7 @@ Escreva o conteúdo em Português, focado em autoridade e engajamento. Não incl
           </button>
         </div>
         
-        <div className="flex-1 overflow-y-auto custom-scrollbar">
+        <div className="flex-1 overflow-y-auto custom-scrollbar min-h-0">
           {activeTab === 'content' ? (
             <div className="p-6 space-y-6">
               <div className="flex items-center gap-2 text-text-main mb-4">
@@ -776,7 +776,7 @@ Escreva o conteúdo em Português, focado em autoridade e engajamento. Não incl
                 <div className="space-y-1">
                   <label className="text-[9px] uppercase font-bold text-text-muted">HAT (Eyebrow Text)</label>
                   <input 
-                    className="w-full bg-bg border border-border rounded-lg text-xs text-text-main p-2 focus:outline-none" 
+                    className="w-full bg-bg border border-border rounded-lg text-base md:text-xs text-text-main p-2 focus:outline-none" 
                     style={{ '--tw-ring-color': activeExpert?.brandColor || '#6366f1' } as any}
                     value={activeSlide.hat || ''}
                     onChange={(e) => updateActiveSlide({ hat: e.target.value })}
@@ -795,7 +795,7 @@ Escreva o conteúdo em Português, focado em autoridade e engajamento. Não incl
                 <div className="space-y-1">
                   <label className="text-[9px] uppercase font-bold text-text-muted">Subtitle</label>
                   <input 
-                    className="w-full bg-bg border border-border rounded-lg text-xs text-text-main p-2 focus:outline-none" 
+                    className="w-full bg-bg border border-border rounded-lg text-base md:text-xs text-text-main p-2 focus:outline-none" 
                     value={activeSlide.subtitle || ''}
                     onChange={(e) => updateActiveSlide({ subtitle: e.target.value })}
                     placeholder="Supporting headline"
@@ -813,7 +813,7 @@ Escreva o conteúdo em Português, focado em autoridade e engajamento. Não incl
                 <div className="space-y-1">
                   <label className="text-[9px] uppercase font-bold text-text-muted">Call to Action (CTA)</label>
                   <input 
-                    className="w-full bg-bg border border-border rounded-lg text-xs text-text-main p-2 focus:outline-none" 
+                    className="w-full bg-bg border border-border rounded-lg text-base md:text-xs text-text-main p-2 focus:outline-none" 
                     value={activeSlide.cta || ''}
                     onChange={(e) => updateActiveSlide({ cta: e.target.value })}
                     placeholder="e.g. SWIPE TO LEARN"
@@ -845,7 +845,7 @@ Escreva o conteúdo em Português, focado em autoridade e engajamento. Não incl
                       <div className="flex items-center gap-2">
                         <input 
                           type="number" 
-                          className="w-full bg-surface border border-border rounded p-1.5 text-xs text-text-main focus:outline-none" 
+                          className="w-full bg-surface border border-border rounded p-1.5 text-base md:text-xs text-text-main focus:outline-none" 
                           placeholder="Start" 
                           value={activeSlide.videoTrimStart || 0} 
                           onChange={e => updateActiveSlide({ videoTrimStart: Number(e.target.value) })} 
@@ -853,7 +853,7 @@ Escreva o conteúdo em Português, focado em autoridade e engajamento. Não incl
                         <span className="text-text-muted">-</span>
                         <input 
                           type="number" 
-                          className="w-full bg-surface border border-border rounded p-1.5 text-xs text-text-main focus:outline-none" 
+                          className="w-full bg-surface border border-border rounded p-1.5 text-base md:text-xs text-text-main focus:outline-none" 
                           placeholder="End" 
                           value={activeSlide.videoTrimEnd || 15} 
                           onChange={e => updateActiveSlide({ videoTrimEnd: Number(e.target.value) })} 
@@ -864,7 +864,7 @@ Escreva o conteúdo em Português, focado em autoridade e engajamento. Não incl
                     <div className="space-y-1">
                       <label className="text-[9px] uppercase font-bold text-text-muted">Playback Speed</label>
                       <select 
-                        className="w-full bg-surface border border-border rounded p-1.5 text-xs text-text-main focus:outline-none appearance-none" 
+                        className="w-full bg-surface border border-border rounded p-1.5 text-base md:text-xs text-text-main focus:outline-none appearance-none" 
                         value={activeSlide.videoPlaybackSpeed || 1} 
                         onChange={e => updateActiveSlide({ videoPlaybackSpeed: Number(e.target.value) })}
                       >
@@ -889,7 +889,7 @@ Escreva o conteúdo em Português, focado em autoridade e engajamento. Não incl
               </div>
               
               <div className="relative">
-                <select onChange={handleFormatChange} className="w-full bg-bg border border-border rounded-xl p-3 text-sm focus:outline-none appearance-none text-text-main cursor-pointer" style={{ '--tw-ring-color': activeExpert?.brandColor || '#6366f1' } as any}>
+                <select onChange={handleFormatChange} className="w-full bg-bg border border-border rounded-xl p-3 text-base md:text-sm focus:outline-none appearance-none text-text-main cursor-pointer" style={{ '--tw-ring-color': activeExpert?.brandColor || '#6366f1' } as any}>
                   <option value="4:5">Carousel / Feed (4:5)</option>
                   <option value="1:1">Single Post (1:1)</option>
                   <option value="9:16">Reels / TikTok (9:16)</option>
@@ -932,7 +932,7 @@ Escreva o conteúdo em Português, focado em autoridade e engajamento. Não incl
                   <select 
                     value={activeSlide.layoutTemplate}
                     onChange={(e) => updateActiveSlide({ layoutTemplate: e.target.value as any })}
-                    className="w-full bg-bg border border-border rounded-lg p-2.5 text-xs focus:outline-none appearance-none text-text-main cursor-pointer"
+                    className="w-full bg-bg border border-border rounded-lg p-2.5 text-base md:text-xs focus:outline-none appearance-none text-text-main cursor-pointer"
                   >
                     <option value="overlay">Overlay (Center)</option>
                     <option value="bottom">Bottom Anchor</option>
@@ -962,7 +962,7 @@ Escreva o conteúdo em Português, focado em autoridade e engajamento. Não incl
                       type="number" 
                       value={activeSlide.customPosition?.x || 0} 
                       onChange={(e) => updateActiveSlide({ customPosition: { ...activeSlide.customPosition!, x: Number(e.target.value) } })}
-                      className="bg-transparent border-none focus:outline-none text-xs w-full text-right text-text-main" 
+                      className="bg-transparent border-none focus:outline-none text-base md:text-xs w-full text-right text-text-main" 
                     />
                   </div>
                   <div className="flex items-center bg-bg border border-border rounded-lg px-2 py-1.5">
@@ -971,7 +971,7 @@ Escreva o conteúdo em Português, focado em autoridade e engajamento. Não incl
                       type="number" 
                       value={activeSlide.customPosition?.y || 0} 
                       onChange={(e) => updateActiveSlide({ customPosition: { ...activeSlide.customPosition!, y: Number(e.target.value) } })}
-                      className="bg-transparent border-none focus:outline-none text-xs w-full text-right text-text-main" 
+                      className="bg-transparent border-none focus:outline-none text-base md:text-xs w-full text-right text-text-main" 
                     />
                   </div>
                 </div>
@@ -1034,7 +1034,7 @@ Escreva o conteúdo em Português, focado em autoridade e engajamento. Não incl
                       type="number" 
                       value={activeSlide.mediaOffsetX || 0} 
                       onChange={(e) => updateActiveSlide({ mediaOffsetX: Number(e.target.value) })}
-                      className="bg-transparent border-none focus:outline-none text-xs w-full text-right text-text-main" 
+                      className="bg-transparent border-none focus:outline-none text-base md:text-xs w-full text-right text-text-main" 
                     />
                   </div>
                   <div className="flex items-center bg-surface border border-border rounded px-2 py-1">
@@ -1043,7 +1043,7 @@ Escreva o conteúdo em Português, focado em autoridade e engajamento. Não incl
                       type="number" 
                       value={activeSlide.mediaOffsetY || 0} 
                       onChange={(e) => updateActiveSlide({ mediaOffsetY: Number(e.target.value) })}
-                      className="bg-transparent border-none focus:outline-none text-xs w-full text-right text-text-main" 
+                      className="bg-transparent border-none focus:outline-none text-base md:text-xs w-full text-right text-text-main" 
                     />
                   </div>
                 </div>
@@ -1087,7 +1087,7 @@ Escreva o conteúdo em Português, focado em autoridade e engajamento. Não incl
                 <div className="space-y-1">
                   <label className="text-[9px] text-text-muted uppercase font-bold pl-1">Top Left</label>
                   <div className="relative">
-                    <select value={corners.tl} onChange={(e) => setCorners({...corners, tl: e.target.value})} className="w-full bg-bg border border-border rounded-lg p-2 text-xs focus:outline-none appearance-none text-text-main">
+                    <select value={corners.tl} onChange={(e) => setCorners({...corners, tl: e.target.value})} className="w-full bg-bg border border-border rounded-lg p-2 text-base md:text-xs focus:outline-none appearance-none text-text-main">
                       <option>Logo</option>
                       <option>None</option>
                       <option>Series Tag</option>
@@ -1099,7 +1099,7 @@ Escreva o conteúdo em Português, focado em autoridade e engajamento. Não incl
                 <div className="space-y-1">
                   <label className="text-[9px] text-text-muted uppercase font-bold pl-1">Top Right</label>
                   <div className="relative">
-                    <select value={corners.tr} onChange={(e) => setCorners({...corners, tr: e.target.value})} className="w-full bg-bg border border-border rounded-lg p-2 text-xs focus:outline-none appearance-none text-text-main">
+                    <select value={corners.tr} onChange={(e) => setCorners({...corners, tr: e.target.value})} className="w-full bg-bg border border-border rounded-lg p-2 text-base md:text-xs focus:outline-none appearance-none text-text-main">
                       <option>Series Tag</option>
                       <option>None</option>
                       <option>Logo</option>
@@ -1111,7 +1111,7 @@ Escreva o conteúdo em Português, focado em autoridade e engajamento. Não incl
                 <div className="space-y-1">
                   <label className="text-[9px] text-text-muted uppercase font-bold pl-1">Bottom Left</label>
                   <div className="relative">
-                    <select value={corners.bl} onChange={(e) => setCorners({...corners, bl: e.target.value})} className="w-full bg-bg border border-border rounded-lg p-2 text-xs focus:outline-none appearance-none text-text-main">
+                    <select value={corners.bl} onChange={(e) => setCorners({...corners, bl: e.target.value})} className="w-full bg-bg border border-border rounded-lg p-2 text-base md:text-xs focus:outline-none appearance-none text-text-main">
                       <option>Author / Handle</option>
                       <option>None</option>
                       <option>Logo</option>
@@ -1123,7 +1123,7 @@ Escreva o conteúdo em Português, focado em autoridade e engajamento. Não incl
                 <div className="space-y-1">
                   <label className="text-[9px] text-text-muted uppercase font-bold pl-1">Bottom Right</label>
                   <div className="relative">
-                    <select value={corners.br} onChange={(e) => setCorners({...corners, br: e.target.value})} className="w-full bg-bg border border-border rounded-lg p-2 text-xs focus:outline-none appearance-none text-text-main">
+                    <select value={corners.br} onChange={(e) => setCorners({...corners, br: e.target.value})} className="w-full bg-bg border border-border rounded-lg p-2 text-base md:text-xs focus:outline-none appearance-none text-text-main">
                       <option>Slide Counter</option>
                       <option>Arrow (Next)</option>
                       <option>Swipe Right</option>
@@ -1193,19 +1193,19 @@ Escreva o conteúdo em Português, focado em autoridade e engajamento. Não incl
                   accept=".csv" 
                   className="hidden" 
                 />
-                <button onClick={() => csvInputRef.current?.click()} className="bg-bg border border-border hover:bg-white/5 p-3 rounded-xl flex flex-col items-center justify-center gap-2 transition-colors group">
+                <button onClick={() => csvInputRef.current?.click()} className="bg-bg border border-border hover:bg-white/5 p-3 rounded-xl flex flex-col items-center justify-center gap-2 transition-colors group min-h-[44px]">
                   <FileSpreadsheet size={16} className="text-text-muted group-hover:text-primary transition-colors" style={{ color: activeExpert?.brandColor }} />
                   <span className="text-[9px] font-bold uppercase tracking-widest text-text-muted group-hover:text-text-main text-center">Import CSV</span>
                 </button>
-                <button onClick={downloadCSVTemplate} className="bg-bg border border-border hover:bg-white/5 p-3 rounded-xl flex flex-col items-center justify-center gap-2 transition-colors group">
+                <button onClick={downloadCSVTemplate} className="bg-bg border border-border hover:bg-white/5 p-3 rounded-xl flex flex-col items-center justify-center gap-2 transition-colors group min-h-[44px]">
                   <Download size={16} className="text-text-muted group-hover:text-primary transition-colors" style={{ color: activeExpert?.brandColor }} />
                   <span className="text-[9px] font-bold uppercase tracking-widest text-text-muted group-hover:text-text-main text-center">Get Template</span>
                 </button>
-                <button onClick={copyAIPrompt} className="bg-bg border border-border hover:bg-white/5 p-3 rounded-xl flex flex-col items-center justify-center gap-2 transition-colors group">
+                <button onClick={copyAIPrompt} className="bg-bg border border-border hover:bg-white/5 p-3 rounded-xl flex flex-col items-center justify-center gap-2 transition-colors group min-h-[44px]">
                   <Type size={16} className="text-text-muted group-hover:text-primary transition-colors" style={{ color: activeExpert?.brandColor }} />
                   <span className="text-[9px] font-bold uppercase tracking-widest text-text-muted group-hover:text-text-main text-center">Copy Prompt</span>
                 </button>
-                <button className="bg-bg border border-border hover:bg-white/5 p-3 rounded-xl flex flex-col items-center justify-center gap-2 transition-colors group">
+                <button className="bg-bg border border-border hover:bg-white/5 p-3 rounded-xl flex flex-col items-center justify-center gap-2 transition-colors group min-h-[44px]">
                   <CalendarClock size={16} className="text-text-muted group-hover:text-primary transition-colors" style={{ color: activeExpert?.brandColor }} />
                   <span className="text-[9px] font-bold uppercase tracking-widest text-text-muted group-hover:text-text-main text-center">Schedule</span>
                 </button>

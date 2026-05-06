@@ -18,7 +18,7 @@ export function ExpertDetail() {
     if (expert) setFormData(expert);
   }, [expert]);
 
-  if (!expert) return <div className="p-8 text-text-main">Expert não encontrado</div>;
+  if (!expert) return <div className="p-4 md:p-6 lg:p-8 text-text-main">Expert não encontrado</div>;
 
   const handleSave = () => {
     updateExpert(formData);
@@ -36,7 +36,7 @@ export function ExpertDetail() {
   };
 
   return (
-    <div className="p-8 max-w-5xl mx-auto text-text-main">
+    <div className="p-4 md:p-6 lg:p-8 max-w-5xl mx-auto text-text-main">
       <div className="flex flex-col sm:flex-row sm:items-center justify-between mb-8 gap-4">
         <div className="flex items-center gap-4">
           <button onClick={() => navigate('/experts')} className="p-2 hover:bg-white/5 rounded-lg transition-colors">
@@ -93,44 +93,44 @@ export function ExpertDetail() {
 
             <div className="space-y-4">
               <div className="space-y-1">
-                <label className="text-[10px] uppercase font-bold text-text-muted">Nome Completo</label>
+                <label className="text-xs md:text-[10px] uppercase font-bold text-text-muted">Nome Completo</label>
                 <input 
                   type="text" 
                   value={formData.name} 
                   onChange={e => setFormData({...formData, name: e.target.value})}
-                  className="w-full bg-bg border border-border rounded-lg p-2.5 text-sm focus:border-primary focus:outline-none"
+                  className="w-full bg-bg border border-border rounded-lg p-2.5 text-base md:text-sm focus:border-primary focus:outline-none"
                 />
               </div>
               <div className="space-y-1">
-                <label className="text-[10px] uppercase font-bold text-text-muted">Handle / Username</label>
+                <label className="text-xs md:text-[10px] uppercase font-bold text-text-muted">Handle / Username</label>
                 <input 
                   type="text" 
                   value={formData.handle} 
                   onChange={e => setFormData({...formData, handle: e.target.value})}
-                  className="w-full bg-bg border border-border rounded-lg p-2.5 text-sm focus:border-primary focus:outline-none"
+                  className="w-full bg-bg border border-border rounded-lg p-2.5 text-base md:text-sm focus:border-primary focus:outline-none"
                 />
               </div>
               <div className="space-y-1">
-                <label className="text-[10px] uppercase font-bold text-text-muted">Nicho / Indústria</label>
+                <label className="text-xs md:text-[10px] uppercase font-bold text-text-muted">Nicho / Indústria</label>
                 <input 
                   type="text" 
                   value={formData.niche} 
                   onChange={e => setFormData({...formData, niche: e.target.value})}
-                  className="w-full bg-bg border border-border rounded-lg p-2.5 text-sm focus:border-primary focus:outline-none"
+                  className="w-full bg-bg border border-border rounded-lg p-2.5 text-base md:text-sm focus:border-primary focus:outline-none"
                 />
               </div>
               <div className="space-y-1">
-                <label className="text-[10px] uppercase font-bold text-text-muted">Cargo / Título</label>
+                <label className="text-xs md:text-[10px] uppercase font-bold text-text-muted">Cargo / Título</label>
                 <input 
                   type="text" 
                   value={formData.role || ''} 
                   onChange={e => setFormData({...formData, role: e.target.value})}
-                  className="w-full bg-bg border border-border rounded-lg p-2.5 text-sm focus:border-primary focus:outline-none"
+                  className="w-full bg-bg border border-border rounded-lg p-2.5 text-base md:text-sm focus:border-primary focus:outline-none"
                   placeholder="Ex: Corretora de Luxo & Investidora"
                 />
               </div>
               <div className="space-y-1">
-                <label className="text-[10px] uppercase font-bold text-text-muted">Bio</label>
+                <label className="text-xs md:text-[10px] uppercase font-bold text-text-muted">Bio</label>
                 <textarea 
                   value={formData.bio} 
                   onChange={e => setFormData({...formData, bio: e.target.value})}
@@ -154,7 +154,7 @@ export function ExpertDetail() {
                   placeholder="Instagram URL" 
                   value={formData.socialLinks?.instagram || ''} 
                   onChange={e => handleSocialChange('instagram', e.target.value)}
-                  className="flex-1 bg-bg border border-border rounded-lg p-2 text-sm focus:border-primary focus:outline-none"
+                  className="flex-1 bg-bg border border-border rounded-lg p-2 text-base md:text-sm focus:border-primary focus:outline-none"
                 />
               </div>
               <div className="flex items-center gap-3">
@@ -164,7 +164,7 @@ export function ExpertDetail() {
                   placeholder="LinkedIn URL" 
                   value={formData.socialLinks?.linkedin || ''} 
                   onChange={e => handleSocialChange('linkedin', e.target.value)}
-                  className="flex-1 bg-bg border border-border rounded-lg p-2 text-sm focus:border-primary focus:outline-none"
+                  className="flex-1 bg-bg border border-border rounded-lg p-2 text-base md:text-sm focus:border-primary focus:outline-none"
                 />
               </div>
               <div className="flex items-center gap-3">
@@ -174,7 +174,7 @@ export function ExpertDetail() {
                   placeholder="Twitter / X URL" 
                   value={formData.socialLinks?.twitter || ''} 
                   onChange={e => handleSocialChange('twitter', e.target.value)}
-                  className="flex-1 bg-bg border border-border rounded-lg p-2 text-sm focus:border-primary focus:outline-none"
+                  className="flex-1 bg-bg border border-border rounded-lg p-2 text-base md:text-sm focus:border-primary focus:outline-none"
                 />
               </div>
             </div>
@@ -196,7 +196,7 @@ export function ExpertDetail() {
                 { label: 'Terciária', key: 'tertiary' as const, value: formData.brandColors?.tertiary || '#c4b5fd' },
               ].map((color) => (
                 <div key={color.key} className="space-y-2">
-                  <label className="text-[10px] uppercase font-bold text-text-muted">{color.label}</label>
+                  <label className="text-xs md:text-[10px] uppercase font-bold text-text-muted">{color.label}</label>
                   <div className="flex items-center gap-3">
                     <input 
                       type="color" 
@@ -237,7 +237,7 @@ export function ExpertDetail() {
 
             {/* Color Preview Bar */}
             <div className="space-y-2">
-              <label className="text-[10px] uppercase font-bold text-text-muted">Preview do Gradiente</label>
+              <label className="text-xs md:text-[10px] uppercase font-bold text-text-muted">Preview do Gradiente</label>
               <div className="h-16 rounded-xl overflow-hidden flex">
                 <div className="flex-1" style={{ backgroundColor: formData.brandColors?.primary || formData.brandColor }}></div>
                 <div className="flex-1" style={{ backgroundColor: formData.brandColors?.secondary || '#1e1b4b' }}></div>
@@ -263,7 +263,7 @@ export function ExpertDetail() {
                 { label: 'Accent (Destaques e CTAs)', key: 'accent', value: formData.typography?.accent || '', placeholder: 'Ex: Italiana' },
               ].map((font) => (
                 <div key={font.key} className="space-y-1">
-                  <label className="text-[10px] uppercase font-bold text-text-muted">{font.label}</label>
+                  <label className="text-xs md:text-[10px] uppercase font-bold text-text-muted">{font.label}</label>
                   <input 
                     type="text" 
                     value={font.value} 
@@ -277,7 +277,7 @@ export function ExpertDetail() {
                         [font.key]: e.target.value 
                       }
                     })}
-                    className="w-full bg-bg border border-border rounded-lg p-2.5 text-sm focus:border-primary focus:outline-none"
+                    className="w-full bg-bg border border-border rounded-lg p-2.5 text-base md:text-sm focus:border-primary focus:outline-none"
                     placeholder={font.placeholder}
                   />
                 </div>
@@ -311,7 +311,7 @@ export function ExpertDetail() {
                 { label: 'Arquétipo Sombra', key: 'shadow', value: formData.brandArchetype?.shadow || '', placeholder: 'Ex: O Mago' },
               ].map((arch) => (
                 <div key={arch.key} className="space-y-1">
-                  <label className="text-[10px] uppercase font-bold text-text-muted">{arch.label}</label>
+                  <label className="text-xs md:text-[10px] uppercase font-bold text-text-muted">{arch.label}</label>
                   <input 
                     type="text" 
                     value={arch.value} 
@@ -327,7 +327,7 @@ export function ExpertDetail() {
                         [arch.key]: e.target.value 
                       }
                     })}
-                    className="w-full bg-bg border border-border rounded-lg p-2.5 text-sm focus:border-primary focus:outline-none"
+                    className="w-full bg-bg border border-border rounded-lg p-2.5 text-base md:text-sm focus:border-primary focus:outline-none"
                     placeholder={arch.placeholder}
                   />
                 </div>
@@ -336,29 +336,29 @@ export function ExpertDetail() {
 
             <div className="space-y-4">
               <div className="space-y-1">
-                <label className="text-[10px] uppercase font-bold text-text-muted">Essência</label>
+                <label className="text-xs md:text-[10px] uppercase font-bold text-text-muted">Essência</label>
                 <textarea 
                   value={formData.brandArchetype?.essence || ''}
                   onChange={e => setFormData({...formData, brandArchetype: { ...formData.brandArchetype!, essence: e.target.value }})}
-                  className="w-full bg-bg border border-border rounded-lg p-3 text-sm focus:border-primary focus:outline-none h-20 resize-none"
+                  className="w-full bg-bg border border-border rounded-lg p-3 text-base md:text-sm focus:border-primary focus:outline-none h-20 resize-none"
                   placeholder="O que define o core deste Expert? Qual é a verdade fundamental que ele representa?"
                 />
               </div>
               <div className="space-y-1">
-                <label className="text-[10px] uppercase font-bold text-text-muted">Motivação</label>
+                <label className="text-xs md:text-[10px] uppercase font-bold text-text-muted">Motivação</label>
                 <textarea 
                   value={formData.brandArchetype?.motivation || ''}
                   onChange={e => setFormData({...formData, brandArchetype: { ...formData.brandArchetype!, motivation: e.target.value }})}
-                  className="w-full bg-bg border border-border rounded-lg p-3 text-sm focus:border-primary focus:outline-none h-20 resize-none"
+                  className="w-full bg-bg border border-border rounded-lg p-3 text-base md:text-sm focus:border-primary focus:outline-none h-20 resize-none"
                   placeholder="O que move este Expert? Qual causa ou missão guia cada conteúdo produzido?"
                 />
               </div>
               <div className="space-y-1">
-                <label className="text-[10px] uppercase font-bold text-text-muted">Voz do Arquétipo</label>
+                <label className="text-xs md:text-[10px] uppercase font-bold text-text-muted">Voz do Arquétipo</label>
                 <textarea 
                   value={formData.brandArchetype?.voice || ''}
                   onChange={e => setFormData({...formData, brandArchetype: { ...formData.brandArchetype!, voice: e.target.value }})}
-                  className="w-full bg-bg border border-border rounded-lg p-3 text-sm focus:border-primary focus:outline-none h-20 resize-none"
+                  className="w-full bg-bg border border-border rounded-lg p-3 text-base md:text-sm focus:border-primary focus:outline-none h-20 resize-none"
                   placeholder="Como este Expert fala? Que comparações descrevem seu estilo de comunicação?"
                 />
               </div>
@@ -375,7 +375,7 @@ export function ExpertDetail() {
                 <textarea 
                   value={formData.toneOfVoice || ''}
                   onChange={e => setFormData({...formData, toneOfVoice: e.target.value})}
-                  className="w-full bg-bg border border-border rounded-lg p-3 text-sm focus:border-primary focus:outline-none h-32 resize-none"
+                  className="w-full bg-bg border border-border rounded-lg p-3 text-base md:text-sm focus:border-primary focus:outline-none h-32 resize-none"
                   placeholder="Descreva como este Expert fala. Ex: 'Autoritário, direto, vocabulário sofisticado...'"
                 />
               </div>
@@ -387,20 +387,20 @@ export function ExpertDetail() {
               </h2>
               <div className="space-y-4">
                 <div className="space-y-1">
-                  <label className="text-[10px] uppercase font-bold text-text-muted">Perfil de Cliente Ideal (ICP)</label>
+                  <label className="text-xs md:text-[10px] uppercase font-bold text-text-muted">Perfil de Cliente Ideal (ICP)</label>
                   <textarea 
                     value={formData.icp || ''}
                     onChange={e => setFormData({...formData, icp: e.target.value})}
-                    className="w-full bg-bg border border-border rounded-lg p-3 text-sm focus:border-primary focus:outline-none h-20 resize-none"
+                    className="w-full bg-bg border border-border rounded-lg p-3 text-base md:text-sm focus:border-primary focus:outline-none h-20 resize-none"
                     placeholder="Quem é o público-alvo?"
                   />
                 </div>
                 <div className="space-y-1">
-                  <label className="text-[10px] uppercase font-bold text-text-muted">Habilidades Core (Separadas por vírgula)</label>
+                  <label className="text-xs md:text-[10px] uppercase font-bold text-text-muted">Habilidades Core (Separadas por vírgula)</label>
                   <textarea 
                     value={formData.skills?.join(', ') || ''}
                     onChange={e => setFormData({...formData, skills: e.target.value.split(',').map(s => s.trim()).filter(Boolean)})}
-                    className="w-full bg-bg border border-border rounded-lg p-3 text-sm focus:border-primary focus:outline-none h-20 resize-none"
+                    className="w-full bg-bg border border-border rounded-lg p-3 text-base md:text-sm focus:border-primary focus:outline-none h-20 resize-none"
                     placeholder="Ex: Vendas de Luxo, Negociação, Branding..."
                   />
                 </div>
@@ -416,20 +416,20 @@ export function ExpertDetail() {
             
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 mb-4">
               <div className="space-y-1">
-                <label className="text-[10px] uppercase font-bold text-text-muted">Estilo Fotográfico</label>
+                <label className="text-xs md:text-[10px] uppercase font-bold text-text-muted">Estilo Fotográfico</label>
                 <textarea 
                   value={formData.photographicStyle || ''}
                   onChange={e => setFormData({...formData, photographicStyle: e.target.value})}
-                  className="w-full bg-bg border border-border rounded-lg p-3 text-sm focus:border-primary focus:outline-none h-20 resize-none"
+                  className="w-full bg-bg border border-border rounded-lg p-3 text-base md:text-sm focus:border-primary focus:outline-none h-20 resize-none"
                   placeholder="Ex: Alto contraste, foco arquitetônico, iluminação quente..."
                 />
               </div>
               <div className="space-y-1">
-                <label className="text-[10px] uppercase font-bold text-text-muted">Estilo de Logo</label>
+                <label className="text-xs md:text-[10px] uppercase font-bold text-text-muted">Estilo de Logo</label>
                 <textarea 
                   value={formData.visualIdentity?.logoStyle || ''}
                   onChange={e => setFormData({...formData, visualIdentity: { ...formData.visualIdentity!, moodKeywords: formData.visualIdentity?.moodKeywords || [], logoStyle: e.target.value }})}
-                  className="w-full bg-bg border border-border rounded-lg p-3 text-sm focus:border-primary focus:outline-none h-20 resize-none"
+                  className="w-full bg-bg border border-border rounded-lg p-3 text-base md:text-sm focus:border-primary focus:outline-none h-20 resize-none"
                   placeholder="Ex: Monograma serifado, wordmark geométrica..."
                 />
               </div>
@@ -437,20 +437,20 @@ export function ExpertDetail() {
 
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 mb-4">
               <div className="space-y-1">
-                <label className="text-[10px] uppercase font-bold text-text-muted">Estilo de Padrões/Texturas</label>
+                <label className="text-xs md:text-[10px] uppercase font-bold text-text-muted">Estilo de Padrões/Texturas</label>
                 <textarea 
                   value={formData.visualIdentity?.patternStyle || ''}
                   onChange={e => setFormData({...formData, visualIdentity: { ...formData.visualIdentity!, moodKeywords: formData.visualIdentity?.moodKeywords || [], logoStyle: formData.visualIdentity?.logoStyle || '', patternStyle: e.target.value }})}
-                  className="w-full bg-bg border border-border rounded-lg p-3 text-sm focus:border-primary focus:outline-none h-16 resize-none"
+                  className="w-full bg-bg border border-border rounded-lg p-3 text-base md:text-sm focus:border-primary focus:outline-none h-16 resize-none"
                   placeholder="Ex: Linhas geométricas finas, formas orgânicas..."
                 />
               </div>
               <div className="space-y-1">
-                <label className="text-[10px] uppercase font-bold text-text-muted">Iconografia</label>
+                <label className="text-xs md:text-[10px] uppercase font-bold text-text-muted">Iconografia</label>
                 <textarea 
                   value={formData.visualIdentity?.iconography || ''}
                   onChange={e => setFormData({...formData, visualIdentity: { ...formData.visualIdentity!, moodKeywords: formData.visualIdentity?.moodKeywords || [], logoStyle: formData.visualIdentity?.logoStyle || '', iconography: e.target.value }})}
-                  className="w-full bg-bg border border-border rounded-lg p-3 text-sm focus:border-primary focus:outline-none h-16 resize-none"
+                  className="w-full bg-bg border border-border rounded-lg p-3 text-base md:text-sm focus:border-primary focus:outline-none h-16 resize-none"
                   placeholder="Ex: Linhas finas, cantos retos, estética arquitetônica..."
                 />
               </div>
@@ -458,7 +458,7 @@ export function ExpertDetail() {
 
             {/* Mood Keywords */}
             <div className="space-y-2 mb-4">
-              <label className="text-[10px] uppercase font-bold text-text-muted">Palavras-chave do Moodboard</label>
+              <label className="text-xs md:text-[10px] uppercase font-bold text-text-muted">Palavras-chave do Moodboard</label>
               <div className="flex flex-wrap gap-2">
                 {(formData.visualIdentity?.moodKeywords || []).map((keyword, i) => (
                   <span key={i} className="text-xs bg-white/5 border border-border px-3 py-1.5 rounded-lg text-text-muted">
@@ -470,18 +470,18 @@ export function ExpertDetail() {
                 type="text" 
                 value={formData.visualIdentity?.moodKeywords?.join(', ') || ''}
                 onChange={e => setFormData({...formData, visualIdentity: { ...formData.visualIdentity!, logoStyle: formData.visualIdentity?.logoStyle || '', moodKeywords: e.target.value.split(',').map(s => s.trim()).filter(Boolean) }})}
-                className="w-full bg-bg border border-border rounded-lg p-2.5 text-sm focus:border-primary focus:outline-none"
+                className="w-full bg-bg border border-border rounded-lg p-2.5 text-base md:text-sm focus:border-primary focus:outline-none"
                 placeholder="Palavras separadas por vírgula: Ex: Opulência Silenciosa, Poder Discreto..."
               />
             </div>
 
             {/* Brand Manifesto */}
             <div className="space-y-1">
-              <label className="text-[10px] uppercase font-bold text-text-muted">Manifesto da Marca</label>
+              <label className="text-xs md:text-[10px] uppercase font-bold text-text-muted">Manifesto da Marca</label>
               <textarea 
                 value={formData.visualIdentity?.brandManifesto || ''}
                 onChange={e => setFormData({...formData, visualIdentity: { ...formData.visualIdentity!, moodKeywords: formData.visualIdentity?.moodKeywords || [], logoStyle: formData.visualIdentity?.logoStyle || '', brandManifesto: e.target.value }})}
-                className="w-full bg-bg border border-border rounded-lg p-3 text-sm focus:border-primary focus:outline-none h-24 resize-none italic"
+                className="w-full bg-bg border border-border rounded-lg p-3 text-base md:text-sm focus:border-primary focus:outline-none h-24 resize-none italic"
                 placeholder="A declaração fundamental que define a alma desta marca. O que ela acredita? Pelo que luta? Qual é a promessa que faz ao mundo?"
               />
             </div>

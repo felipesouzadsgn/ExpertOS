@@ -38,7 +38,7 @@ export function Kanban() {
   ]);
 
   if (!activeExpert) {
-    return <div className="p-8 text-text-main">Please select an expert first.</div>;
+    return <div className="p-4 md:p-6 lg:p-8 text-text-main">Please select an expert first.</div>;
   }
 
   const expertAgents = getAgentsByExpert(activeExpert.id);
@@ -87,7 +87,7 @@ export function Kanban() {
   };
 
   return (
-    <div className="p-8 h-full flex flex-col overflow-hidden text-text-main">
+    <div className="p-4 md:p-6 lg:p-8 h-full flex flex-col overflow-hidden text-text-main">
       <div className="flex flex-col sm:flex-row sm:items-center justify-between mb-8 gap-4 shrink-0">
         <div>
           <h1 className="font-serif text-2xl mb-1">Kanban Flow</h1>
@@ -99,7 +99,7 @@ export function Kanban() {
         </button>
       </div>
 
-      <div className="flex-1 overflow-x-auto pb-4 custom-scrollbar">
+      <div className="flex-1 overflow-x-auto pb-4 custom-scrollbar min-h-0">
         <div className="flex gap-6 h-full min-w-max">
           {columns.map(col => {
             const columnTasks = tasks.filter(t => t.status === col.id);
@@ -120,8 +120,8 @@ export function Kanban() {
                   {columnTasks.map(task => (
                     <div key={task.id} className="bg-surface border border-border rounded-xl p-4 shadow-sm flex flex-col group">
                       <div className="flex gap-2 mb-2">
-                        <span className="text-[10px] uppercase tracking-wider bg-white/5 text-text-muted px-2 py-1 rounded border border-border">{task.platform}</span>
-                        <span className="text-[10px] uppercase tracking-wider bg-white/5 text-text-muted px-2 py-1 rounded border border-border">{task.format}</span>
+                        <span className="text-[11px] md:text-[10px] uppercase tracking-wider bg-white/5 text-text-muted px-2 py-1 rounded border border-border">{task.platform}</span>
+                        <span className="text-[11px] md:text-[10px] uppercase tracking-wider bg-white/5 text-text-muted px-2 py-1 rounded border border-border">{task.format}</span>
                       </div>
                       <h4 className="text-sm font-medium mb-3">{task.title}</h4>
                       

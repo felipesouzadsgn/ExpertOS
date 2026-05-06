@@ -72,7 +72,7 @@ export function Agents() {
   };
 
   if (!activeExpert) {
-    return <div className="p-8 text-text-main">Please select an expert first.</div>;
+    return <div className="p-4 md:p-6 lg:p-8 text-text-main">Please select an expert first.</div>;
   }
 
   const agents = getAgentsByExpert(activeExpert.id);
@@ -80,7 +80,7 @@ export function Agents() {
 
   if (isCreatingAgent) {
     return (
-      <div className="p-8 h-full flex flex-col overflow-auto text-text-main relative custom-scrollbar">
+      <div className="p-4 md:p-6 lg:p-8 h-full flex flex-col overflow-auto text-text-main relative custom-scrollbar">
         <div className="max-w-3xl mx-auto w-full">
           <div className="flex items-center gap-4 mb-8">
             <button onClick={() => setIsCreatingAgent(false)} className="p-2 hover:bg-white/5 rounded-lg transition-colors">
@@ -101,7 +101,7 @@ export function Agents() {
                     type="text"
                     value={newAgent.name}
                     onChange={(e) => setNewAgent({ ...newAgent, name: e.target.value })}
-                    className="w-full bg-bg border border-border rounded-lg px-4 py-2 text-sm focus:border-primary focus:outline-none"
+                    className="w-full bg-bg border border-border rounded-lg px-4 py-2 text-base md:text-sm focus:border-primary focus:outline-none"
                     placeholder="e.g. Content Architect"
                   />
                 </div>
@@ -111,7 +111,7 @@ export function Agents() {
                     type="text"
                     value={newAgent.role}
                     onChange={(e) => setNewAgent({ ...newAgent, role: e.target.value })}
-                    className="w-full bg-bg border border-border rounded-lg px-4 py-2 text-sm focus:border-primary focus:outline-none"
+                    className="w-full bg-bg border border-border rounded-lg px-4 py-2 text-base md:text-sm focus:border-primary focus:outline-none"
                     placeholder="e.g. Lead Copywriter"
                   />
                 </div>
@@ -120,7 +120,7 @@ export function Agents() {
                   <select
                     value={newAgent.model}
                     onChange={(e) => setNewAgent({ ...newAgent, model: e.target.value })}
-                    className="w-full bg-bg border border-border rounded-lg px-4 py-2 text-sm focus:border-primary focus:outline-none"
+                    className="w-full bg-bg border border-border rounded-lg px-4 py-2 text-base md:text-sm focus:border-primary focus:outline-none"
                   >
                     <option value="Gemini 1.5 Pro">Gemini 1.5 Pro (Reasoning & Complex Tasks)</option>
                     <option value="Gemini 1.5 Flash">Gemini 1.5 Flash (Speed & High Volume)</option>
@@ -146,7 +146,7 @@ export function Agents() {
               <textarea
                 value={newAgent.systemPrompt}
                 onChange={(e) => setNewAgent({ ...newAgent, systemPrompt: e.target.value })}
-                className="w-full bg-bg border border-border rounded-lg px-4 py-3 text-sm focus:border-primary focus:outline-none h-48 font-mono resize-none custom-scrollbar"
+                className="w-full bg-bg border border-border rounded-lg px-4 py-3 text-base md:text-sm focus:border-primary focus:outline-none h-48 font-mono resize-none custom-scrollbar"
                 placeholder="You are a specialized agent for... CORE DIRECTIVES: ..."
               />
             </div>
@@ -159,7 +159,7 @@ export function Agents() {
                   value={newTool}
                   onChange={(e) => setNewTool(e.target.value)}
                   onKeyDown={(e) => e.key === 'Enter' && handleAddTool()}
-                  className="flex-1 bg-bg border border-border rounded-lg px-4 py-2 text-sm focus:border-primary focus:outline-none"
+                  className="flex-1 bg-bg border border-border rounded-lg px-4 py-2 text-base md:text-sm focus:border-primary focus:outline-none"
                   placeholder="e.g. Web Search, Data Analytics..."
                 />
                 <button
@@ -209,7 +209,7 @@ export function Agents() {
 
   if (selectedAgent) {
     return (
-      <div className="p-8 h-full flex flex-col overflow-auto text-text-main">
+      <div className="p-4 md:p-6 lg:p-8 h-full flex flex-col overflow-auto text-text-main">
         <div className="max-w-5xl mx-auto w-full">
           <div className="flex flex-col sm:flex-row sm:items-center gap-4 mb-8">
             <button onClick={() => setSelectedAgentId(null)} className="p-2 hover:bg-white/5 rounded-lg transition-colors">
@@ -218,7 +218,7 @@ export function Agents() {
             <div>
               <div className="flex items-center gap-3">
                 <h1 className="font-serif text-2xl mb-1" style={{ color: activeExpert.brandColor }}>{selectedAgent.name}</h1>
-                <span className="text-[10px] uppercase tracking-wider bg-white/5 text-text-muted px-2 py-0.5 rounded border border-border">
+                <span className="text-[11px] md:text-[10px] uppercase tracking-wider bg-white/5 text-text-muted px-2 py-0.5 rounded border border-border">
                   {selectedAgent.role}
                 </span>
               </div>
@@ -239,7 +239,7 @@ export function Agents() {
                 <div className="mt-4 flex items-center gap-4">
                   <div className="space-y-1 flex-1">
                     <label className="text-[10px] uppercase font-bold text-text-muted">AI Model</label>
-                    <select className="w-full bg-bg border border-border rounded-lg p-2.5 text-sm focus:border-primary focus:outline-none" defaultValue={selectedAgent.model}>
+                    <select className="w-full bg-bg border border-border rounded-lg p-2.5 text-base md:text-sm focus:border-primary focus:outline-none" defaultValue={selectedAgent.model}>
                       <option value="Gemini 1.5 Pro">Gemini 1.5 Pro (Reasoning & Complex Tasks)</option>
                       <option value="Gemini 1.5 Flash">Gemini 1.5 Flash (Speed & High Volume)</option>
                     </select>
@@ -276,7 +276,7 @@ export function Agents() {
                         value={newExistingTool}
                         onChange={(e) => setNewExistingTool(e.target.value)}
                         onKeyDown={(e) => e.key === 'Enter' && handleAddToolToExisting()}
-                        className="bg-bg border border-border rounded-lg px-3 py-1.5 text-sm focus:border-primary focus:outline-none w-48"
+                        className="bg-bg border border-border rounded-lg px-3 py-1.5 text-base md:text-sm focus:border-primary focus:outline-none w-48"
                         placeholder="Tool name..."
                         autoFocus
                       />
@@ -319,7 +319,7 @@ export function Agents() {
                       <div key={task.id} className="bg-bg border border-border rounded-lg p-3">
                         <div className="flex items-start justify-between gap-2 mb-2">
                           <h4 className="text-sm font-medium">{task.title}</h4>
-                          <span className={`text-[10px] uppercase tracking-wider px-1.5 py-0.5 rounded ${
+                          <span className={`text-[11px] md:text-[10px] uppercase tracking-wider px-1.5 py-0.5 rounded ${
                             task.status === 'in-progress' ? 'bg-yellow-500/10 text-yellow-500' :
                             task.status === 'completed' ? 'bg-green-500/10 text-green-500' :
                             'bg-white/5 text-text-muted'
@@ -327,7 +327,7 @@ export function Agents() {
                             {task.status}
                           </span>
                         </div>
-                        <div className="text-[10px] text-text-muted">
+                        <div className="text-xs md:text-[10px] text-text-muted">
                           Created: {new Date(task.createdAt).toLocaleDateString()}
                         </div>
                       </div>
@@ -343,7 +343,7 @@ export function Agents() {
   }
 
   return (
-    <div className="p-8 h-full flex flex-col overflow-auto">
+    <div className="p-4 md:p-6 lg:p-8 h-full flex flex-col overflow-auto">
       <div className="max-w-5xl mx-auto w-full">
         <div className="flex flex-col sm:flex-row sm:items-center justify-between mb-8 gap-4">
           <div>
@@ -397,7 +397,7 @@ export function Agents() {
                 <div className="flex-1">
                   <div className="flex items-center gap-3 mb-1">
                     <h3 className="font-serif text-lg font-semibold text-text-main">{agent.name}</h3>
-                    <span className="text-[10px] uppercase tracking-wider bg-white/5 text-text-muted px-2 py-0.5 rounded border border-border">
+                    <span className="text-[11px] md:text-[10px] uppercase tracking-wider bg-white/5 text-text-muted px-2 py-0.5 rounded border border-border">
                       {agent.role}
                     </span>
                   </div>
@@ -407,7 +407,7 @@ export function Agents() {
                 <div className="flex items-center gap-4 shrink-0">
                   <div className="text-right hidden md:block">
                     <div className="text-xs text-text-main font-medium">{agent.model}</div>
-                    <div className="text-[10px] text-text-muted">{agent.tasks.length} active tasks</div>
+                    <div className="text-xs md:text-[10px] text-text-muted">{agent.tasks.length} active tasks</div>
                   </div>
                   <div className="flex items-center gap-2">
                     {agent.status === 'idle' ? (
