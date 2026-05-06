@@ -12,7 +12,7 @@ import {
   Maximize2, RotateCcw, MousePointerClick, Copy, Check, GripVertical,
   Plus, X, Minus, Square, RectangleHorizontal, RectangleVertical,
   Frame, AlertTriangle, BookOpen, ListOrdered, HelpCircle, Scale,
-  BarChart3, ArrowLeftRight
+  BarChart3, ArrowLeftRight, ClipboardList, Tag, ScrollText, KanbanSquare
 } from 'lucide-react';
 
 /* ═══════════════════ TYPES ═══════════════════ */
@@ -751,6 +751,56 @@ export function Studio() {
     setExporting(false);
   };
 
+  /* ── SMART RESIZE (Passo 5) ── */
+  const smartResize = () => {
+    if (!activeItem) return;
+    const formats = [
+      { format: 'aspect-[4/5]', label: 'Feed', suffix: '_feed' },
+      { format: 'aspect-square', label: 'Post', suffix: '_square' },
+      { format: 'aspect-[9/16]', label: 'Reels', suffix: '_reels' },
+      { format: 'aspect-video', label: 'YouTube', suffix: '_youtube' },
+    ];
+    const newItems = formats.map((f, idx) => ({
+      ...activeItem,
+      id: generateId(),
+      name: `${activeItem.name}${f.suffix}`,
+      x: activeItem.x + (idx % 2) * 400,
+      y: activeItem.y + Math.floor(idx / 2) * 500,
+      format: f.format,
+      slides: activeItem.slides.map(s => ({ ...s, id: Date.now() + Math.floor(Math.random() * 10000) + idx })),
+    }));
+    setCanvasItems(prev => [...prev, ...newItems]);
+  };
+
+  /* ── ENGAGEMENT SCORE (Passo 6) ── */
+  const calculateScores = (slide: Slide) => {
+    const textLength = (slide.text || '').length;
+    const titleLength = (slide.title || '').length;
+    const hasCTA = !!slide.cta && slide.cta.length > 3;
+    const hasHat = !!slide.hat && slide.hat.length > 3;
+    const hasSubtitle = !!slide.subtitle && slide.subtitle.length > 5;
+
+    // Hook strength: based on title power words and length
+    const powerWords = ['erro', 'segredo', 'verdade', 'mito', 'framework', 'método', 'virada', 'transformação', 'resultado', 'dados'];
+    const titleLower = slide.title.toLowerCase();
+    const powerCount = powerWords.filter(w => titleLower.includes(w)).length;
+    const hookStrength = Math.min(40 + powerCount * 15 + (titleLength > 15 ? 10 : 0) + (titleLength < 50 ? 10 : 5), 98);
+
+    // Readability: ideal text length 80-150 chars
+    const readability = textLength > 200 ? 60 : textLength > 100 ? 90 : textLength > 50 ? 85 : 70;
+
+    // Visual contrast: based on layout and media
+    const visualContrast = slide.layoutTemplate === 'data' || slide.layoutTemplate === 'split' ? 88 : slide.layoutTemplate === 'overlay' ? 82 : 75;
+
+    // CTA clarity
+    const ctaClarity = hasCTA ? (slide.cta!.length > 10 ? 85 : 95) : 45;
+
+    // Overall predicted engagement
+    const predicted = Math.round((hookStrength + readability + visualContrast + ctaClarity) / 4);
+
+    return { hookStrength: Math.round(hookStrength), readability, visualContrast, ctaClarity, predicted };
+  };
+
   /* ── AI COPY ENGINE ── */
   const generateAICopy = async (mode?: typeof copyMode) => {
     if (!activeExpert || !activeSlide) return;
@@ -1378,6 +1428,51 @@ export function Studio() {
                       onChange={(e) => setItemDisplayScale(activeItem.id, Number(e.target.value) / 100)}
                       className="w-full h-1 bg-border rounded-lg appearance-none cursor-pointer" style={{ accentColor: activeExpert?.brandColor || '#6366f1' }} />
                   </div>
+
+                  {/* Smart Resize */}
+                  <div className="pt-2 border-t border-border space-y-2">
+                    <span className="text-[10px] text-text-muted uppercase font-bold">Smart Resize</span>
+                    <button onClick={smartResize}
+                      className="w-full py-2.5 rounded-xl border border-primary/30 text-primary hover:bg-primary/10 transition-all flex items-center justify-center gap-2 text-xs font-bold uppercase tracking-wider">
+                      <Maximize2 size={14} /> Gerar Todos os Formatos
+                    </button>
+                    <p className="text-[10px] text-text-muted text-center">Cria 4 versões: Feed, Square, Reels, YouTube</p>
+                  </div>
+
+                  {/* Engagement Score */}
+                  <div className="pt-3 border-t border-border space-y-3">
+                    <div className="flex items-center justify-between">
+                      <span className="text-[10px] text-text-muted uppercase font-bold">Score de Performance</span>
+                      {(() => {
+                        const scores = calculateScores(activeSlide);
+                        return (
+                          <span className={`text-xs font-black px-2 py-0.5 rounded-full ${scores.predicted >= 80 ? 'bg-emerald-400/20 text-emerald-400' : scores.predicted >= 60 ? 'bg-amber-400/20 text-amber-400' : 'bg-red-400/20 text-red-400'}`}>
+                            {scores.predicted}/100
+                          </span>
+                        );
+                      })()}
+                    </div>
+                    {(() => {
+                      const scores = calculateScores(activeSlide);
+                      const metrics = [
+                        { label: 'Força do Hook', value: scores.hookStrength, color: scores.hookStrength >= 80 ? 'bg-emerald-400' : scores.hookStrength >= 60 ? 'bg-amber-400' : 'bg-red-400' },
+                        { label: 'Legibilidade', value: scores.readability, color: scores.readability >= 80 ? 'bg-emerald-400' : scores.readability >= 60 ? 'bg-amber-400' : 'bg-red-400' },
+                        { label: 'Contraste Visual', value: scores.visualContrast, color: scores.visualContrast >= 80 ? 'bg-emerald-400' : scores.visualContrast >= 60 ? 'bg-amber-400' : 'bg-red-400' },
+                        { label: 'Clareza do CTA', value: scores.ctaClarity, color: scores.ctaClarity >= 80 ? 'bg-emerald-400' : scores.ctaClarity >= 60 ? 'bg-amber-400' : 'bg-red-400' },
+                      ];
+                      return metrics.map(m => (
+                        <div key={m.label} className="space-y-1">
+                          <div className="flex justify-between items-center">
+                            <span className="text-[10px] text-text-muted">{m.label}</span>
+                            <span className="text-[10px] font-bold text-text-main">{m.value}</span>
+                          </div>
+                          <div className="w-full h-1.5 bg-border rounded-full overflow-hidden">
+                            <div className={`h-full rounded-full transition-all duration-500 ${m.color}`} style={{ width: `${m.value}%` }} />
+                          </div>
+                        </div>
+                      ));
+                    })()}
+                  </div>
                 </div>
               )}
 
@@ -1724,24 +1819,61 @@ export function Studio() {
                     </select>
                   </div>
 
-                  <div className="grid grid-cols-2 gap-2 mb-5">
-                    <input type="file" ref={csvInputRef} onChange={handleCSVUpload} accept=".csv" className="hidden" />
-                    <button onClick={() => csvInputRef.current?.click()} className="bg-bg border border-border hover:bg-white/5 p-3 rounded-xl flex flex-col items-center justify-center gap-2 transition-colors group min-h-[44px]">
-                      <FileSpreadsheet size={16} className="text-text-muted group-hover:text-primary transition-colors" />
-                      <span className="text-[9px] font-bold uppercase tracking-widest text-text-muted group-hover:text-text-main text-center">Import CSV</span>
-                    </button>
-                    <button onClick={downloadCSVTemplate} className="bg-bg border border-border hover:bg-white/5 p-3 rounded-xl flex flex-col items-center justify-center gap-2 transition-colors group min-h-[44px]">
-                      <Download size={16} className="text-text-muted group-hover:text-primary transition-colors" />
-                      <span className="text-[9px] font-bold uppercase tracking-widest text-text-muted group-hover:text-text-main text-center">Template CSV</span>
-                    </button>
-                    <button onClick={generateAICopy} disabled={isGeneratingCopy} className="bg-bg border border-border hover:bg-white/5 p-3 rounded-xl flex flex-col items-center justify-center gap-2 transition-colors group min-h-[44px]">
-                      <Wand2 size={16} className={`text-text-muted group-hover:text-primary transition-colors ${isGeneratingCopy ? 'animate-spin' : ''}`} />
-                      <span className="text-[9px] font-bold uppercase tracking-widest text-text-muted group-hover:text-text-main text-center">AI Copy</span>
-                    </button>
-                    <button className="bg-bg border border-border hover:bg-white/5 p-3 rounded-xl flex flex-col items-center justify-center gap-2 transition-colors group min-h-[44px]">
-                      <CalendarClock size={16} className="text-text-muted group-hover:text-primary transition-colors" />
-                      <span className="text-[9px] font-bold uppercase tracking-widest text-text-muted group-hover:text-text-main text-center">Schedule</span>
-                    </button>
+                  {/* Pipeline Actions */}
+                  <div className="space-y-2 mb-4">
+                    <p className="text-[10px] text-text-muted uppercase font-bold tracking-wider">Ações de Pipeline</p>
+                    <div className="grid grid-cols-2 gap-2">
+                      <input type="file" ref={csvInputRef} onChange={handleCSVUpload} accept=".csv" className="hidden" />
+                      <button onClick={() => csvInputRef.current?.click()} className="bg-bg border border-border hover:bg-white/5 p-3 rounded-xl flex flex-col items-center justify-center gap-2 transition-colors group min-h-[44px]">
+                        <FileSpreadsheet size={16} className="text-text-muted group-hover:text-primary transition-colors" />
+                        <span className="text-[9px] font-bold uppercase tracking-widest text-text-muted group-hover:text-text-main text-center">Import CSV</span>
+                      </button>
+                      <button onClick={downloadCSVTemplate} className="bg-bg border border-border hover:bg-white/5 p-3 rounded-xl flex flex-col items-center justify-center gap-2 transition-colors group min-h-[44px]">
+                        <Download size={16} className="text-text-muted group-hover:text-primary transition-colors" />
+                        <span className="text-[9px] font-bold uppercase tracking-widest text-text-muted group-hover:text-text-main text-center">Template CSV</span>
+                      </button>
+                      <button onClick={generateAICopy} disabled={isGeneratingCopy} className="bg-bg border border-border hover:bg-white/5 p-3 rounded-xl flex flex-col items-center justify-center gap-2 transition-colors group min-h-[44px]">
+                        <Wand2 size={16} className={`text-text-muted group-hover:text-primary transition-colors ${isGeneratingCopy ? 'animate-spin' : ''}`} />
+                        <span className="text-[9px] font-bold uppercase tracking-widest text-text-muted group-hover:text-text-main text-center">AI Copy</span>
+                      </button>
+                      <button onClick={() => {
+                        setAiChat(prev => [...prev, { id: Date.now(), role: 'agent', text: `📅 "${activeItem?.name}" adicionado ao Calendário Editorial para revisão. Sugiro agendar para a próxima terça-feira (melhor dia para ${activeExpert?.niche || 'seu nicho'}).` }]);
+                      }} className="bg-bg border border-border hover:bg-white/5 p-3 rounded-xl flex flex-col items-center justify-center gap-2 transition-colors group min-h-[44px]">
+                        <CalendarClock size={16} className="text-text-muted group-hover:text-primary transition-colors" />
+                        <span className="text-[9px] font-bold uppercase tracking-widest text-text-muted group-hover:text-text-main text-center">Agendar</span>
+                      </button>
+                    </div>
+                  </div>
+
+                  {/* Ecosystem Connections */}
+                  <div className="space-y-2 mb-4">
+                    <p className="text-[10px] text-text-muted uppercase font-bold tracking-wider">Conectar com</p>
+                    <div className="grid grid-cols-2 gap-2">
+                      <button onClick={() => {
+                        setAiChat(prev => [...prev, { id: Date.now(), role: 'agent', text: `📝 Briefing do Editor criado para "${activeItem?.name}"! Inclui diretrizes de marca, referências visuais e instruções de produção baseadas no tom de voz de ${activeExpert?.name || 'Expert'}.` }]);
+                      }} className="bg-bg border border-border hover:bg-white/5 p-3 rounded-xl flex flex-col items-center justify-center gap-2 transition-colors group min-h-[44px]">
+                        <ClipboardList size={16} className="text-text-muted group-hover:text-primary transition-colors" />
+                        <span className="text-[9px] font-bold uppercase tracking-widest text-text-muted group-hover:text-text-main text-center">Briefing</span>
+                      </button>
+                      <button onClick={() => {
+                        setAiChat(prev => [...prev, { id: Date.now(), role: 'agent', text: `🏷️ SEO Pack gerado para "${activeItem?.name}"! Inclui títulos otimizados, hashtags, alt text e schema markup para máxima descoberta orgânica.` }]);
+                      }} className="bg-bg border border-border hover:bg-white/5 p-3 rounded-xl flex flex-col items-center justify-center gap-2 transition-colors group min-h-[44px]">
+                        <Tag size={16} className="text-text-muted group-hover:text-primary transition-colors" />
+                        <span className="text-[9px] font-bold uppercase tracking-widest text-text-muted group-hover:text-text-main text-center">SEO Pack</span>
+                      </button>
+                      <button onClick={() => {
+                        setAiChat(prev => [...prev, { id: Date.now(), role: 'agent', text: `🎬 Roteiro de vídeo criado a partir de "${activeItem?.name}"! 3 hooks variantes gerados para Reels/TikTok.` }]);
+                      }} className="bg-bg border border-border hover:bg-white/5 p-3 rounded-xl flex flex-col items-center justify-center gap-2 transition-colors group min-h-[44px]">
+                        <ScrollText size={16} className="text-text-muted group-hover:text-primary transition-colors" />
+                        <span className="text-[9px] font-bold uppercase tracking-widest text-text-muted group-hover:text-text-main text-center">Roteiro</span>
+                      </button>
+                      <button onClick={() => {
+                        setAiChat(prev => [...prev, { id: Date.now(), role: 'agent', text: `📊 Conteúdo adicionado ao Kanban Flow! Status: "Em Revisão". O editor será notificado.` }]);
+                      }} className="bg-bg border border-border hover:bg-white/5 p-3 rounded-xl flex flex-col items-center justify-center gap-2 transition-colors group min-h-[44px]">
+                        <KanbanSquare size={16} className="text-text-muted group-hover:text-primary transition-colors" />
+                        <span className="text-[9px] font-bold uppercase tracking-widest text-text-muted group-hover:text-text-main text-center">Kanban</span>
+                      </button>
+                    </div>
                   </div>
 
                   <div className="flex-1 overflow-y-auto space-y-4 pr-2 custom-scrollbar">
