@@ -211,7 +211,7 @@ export function Agents() {
     return (
       <div className="p-8 h-full flex flex-col overflow-auto text-text-main">
         <div className="max-w-5xl mx-auto w-full">
-          <div className="flex items-center gap-4 mb-8">
+          <div className="flex flex-col sm:flex-row sm:items-center gap-4 mb-8">
             <button onClick={() => setSelectedAgentId(null)} className="p-2 hover:bg-white/5 rounded-lg transition-colors">
               <ArrowLeft size={20} />
             </button>
@@ -345,12 +345,12 @@ export function Agents() {
   return (
     <div className="p-8 h-full flex flex-col overflow-auto">
       <div className="max-w-5xl mx-auto w-full">
-        <div className="flex justify-between items-center mb-8">
+        <div className="flex flex-col sm:flex-row sm:items-center justify-between mb-8 gap-4">
           <div>
             <h1 className="font-serif text-2xl mb-1">Specialized Agents</h1>
             <p className="text-text-muted text-sm">Manage the AI workforce dedicated to <span className="font-semibold" style={{ color: activeExpert.brandColor }}>{activeExpert.name}</span>.</p>
           </div>
-          <div className="flex items-center gap-4">
+          <div className="flex items-center gap-4 flex-wrap">
             <button className="bg-surface border border-border hover:bg-white/5 text-text-main px-4 py-2 rounded-lg text-sm font-medium flex items-center gap-2 transition-colors">
               <Activity size={16} />
               View System Logs

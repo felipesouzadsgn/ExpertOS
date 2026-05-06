@@ -88,12 +88,12 @@ export function Kanban() {
 
   return (
     <div className="p-8 h-full flex flex-col overflow-hidden text-text-main">
-      <div className="flex justify-between items-center mb-8 shrink-0">
+      <div className="flex flex-col sm:flex-row sm:items-center justify-between mb-8 gap-4 shrink-0">
         <div>
           <h1 className="font-serif text-2xl mb-1">Kanban Flow</h1>
           <p className="text-text-muted text-sm">Track content production stages for <span className="font-semibold" style={{ color: activeExpert.brandColor }}>{activeExpert.name}</span>.</p>
         </div>
-        <button className="text-white px-4 py-2 rounded-lg text-sm font-medium flex items-center gap-2 transition-colors hover:brightness-110" style={{ backgroundColor: activeExpert.brandColor }}>
+        <button className="text-white px-4 py-2 rounded-lg text-sm font-medium flex items-center gap-2 transition-colors hover:brightness-110 w-full sm:w-auto justify-center" style={{ backgroundColor: activeExpert.brandColor }}>
           <Plus size={16} />
           Add Task
         </button>

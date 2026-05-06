@@ -10,12 +10,12 @@ export function Experts() {
     <div className="p-8 h-full flex flex-col">
       <div className="flex justify-between items-center mb-8">
         <div>
-          <h1 className="font-serif text-2xl mb-1">Expert Profiles</h1>
-          <p className="text-text-muted text-sm">Manage your AI-powered expert personas and context.</p>
+          <h1 className="font-serif text-2xl mb-1">Perfis de Expert</h1>
+          <p className="text-text-muted text-sm">Gerencie suas personas de Expert com IA e contexto.</p>
         </div>
         <button className="bg-primary hover:bg-primary/90 text-white px-4 py-2 rounded-lg text-sm font-medium flex items-center gap-2 transition-colors">
           <Plus size={16} />
-          New Expert
+          Novo Expert
         </button>
       </div>
 
@@ -52,11 +52,11 @@ export function Experts() {
               <div className="grid grid-cols-2 gap-4 pt-4 border-t border-border">
                 <div>
                   <span className="text-lg font-bold block">{expert.tokens}</span>
-                  <span className="text-[10px] text-text-muted uppercase tracking-wider">Tokens Indexed</span>
+                  <span className="text-[10px] text-text-muted uppercase tracking-wider">Tokens Indexados</span>
                 </div>
                 <div>
                   <span className="text-lg font-bold block">{expert.archetypes}</span>
-                  <span className="text-[10px] text-text-muted uppercase tracking-wider">Archetypes</span>
+                  <span className="text-[10px] text-text-muted uppercase tracking-wider">Arquétipos</span>
                 </div>
               </div>
             </div>
@@ -68,8 +68,8 @@ export function Experts() {
           <div className="w-12 h-12 rounded-full bg-white/5 flex items-center justify-center mb-4">
             <Plus size={24} />
           </div>
-          <h3 className="font-medium">Create New Expert</h3>
-          <p className="text-xs text-center mt-2 max-w-[200px]">Set up a new persona with custom branding and knowledge base.</p>
+          <h3 className="font-medium">Criar Novo Expert</h3>
+          <p className="text-xs text-center mt-2 max-w-[200px]">Configure uma nova persona com branding personalizado e base de conhecimento.</p>
         </div>
       </div>
     </div>

@@ -18,7 +18,14 @@
     background-color: var(--color-bg);
     color: var(--color-text-main);
     font-family: var(--font-sans);
-    overflow: hidden;
+    overflow-x: hidden;
+  }
+}
+
+/* Mobile touch optimization */
+@layer utilities {
+  .touch-manipulation {
+    touch-action: manipulation;
   }
 }
 

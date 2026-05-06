@@ -24,6 +24,7 @@ export function VideoStudio() {
   const { getAgentsByExpert } = useAgentStore();
   
   const [format, setFormat] = useState<'9:16' | '16:9'>('9:16');
+  const [mobilePanel, setMobilePanel] = useState<'config' | 'canvas' | 'ai'>('canvas');
   const [captionsEnabled, setCaptionsEnabled] = useState(true);
   const [selectedVoice, setSelectedVoice] = useState('elevenlabs-1');
   const [isGenerating, setIsGenerating] = useState(false);
@@ -159,9 +160,34 @@ export function VideoStudio() {
   };
 
   return (
-    <div className="h-full flex overflow-hidden bg-bg text-text-main">
+    <div className="h-full flex flex-col lg:flex-row overflow-hidden bg-bg text-text-main">
+      {/* Mobile Panel Tabs */}
+      <div className="lg:hidden flex border-b border-border bg-surface shrink-0">
+        <button 
+          onClick={() => setMobilePanel('config')}
+          className={`flex-1 py-3 text-xs font-bold uppercase tracking-widest flex items-center justify-center gap-2 transition-colors ${mobilePanel === 'config' ? 'text-text-main border-b-2' : 'text-text-muted'}`}
+          style={{ borderColor: mobilePanel === 'config' ? (activeExpert?.brandColor || '#6366f1') : 'transparent' }}
+        >
+          <Settings2 size={14} /> Config
+        </button>
+        <button 
+          onClick={() => setMobilePanel('canvas')}
+          className={`flex-1 py-3 text-xs font-bold uppercase tracking-widest flex items-center justify-center gap-2 transition-colors ${mobilePanel === 'canvas' ? 'text-text-main border-b-2' : 'text-text-muted'}`}
+          style={{ borderColor: mobilePanel === 'canvas' ? (activeExpert?.brandColor || '#6366f1') : 'transparent' }}
+        >
+          <Monitor size={14} /> Canvas
+        </button>
+        <button 
+          onClick={() => setMobilePanel('ai')}
+          className={`flex-1 py-3 text-xs font-bold uppercase tracking-widest flex items-center justify-center gap-2 transition-colors ${mobilePanel === 'ai' ? 'text-text-main border-b-2' : 'text-text-muted'}`}
+          style={{ borderColor: mobilePanel === 'ai' ? (activeExpert?.brandColor || '#6366f1') : 'transparent' }}
+        >
+          <Bot size={14} /> AI
+        </button>
+      </div>
+
       {/* Left Sidebar: Configuration */}
-      <aside className="w-[340px] bg-surface border-r border-border flex flex-col overflow-y-auto custom-scrollbar shrink-0">
+      <aside className={`w-full lg:w-[340px] bg-surface border-r border-border flex flex-col overflow-y-auto custom-scrollbar shrink-0 ${mobilePanel !== 'config' ? 'hidden lg:flex' : 'flex'}`}>
         <div className="p-6 border-b border-border/50">
           <h2 className="text-lg font-serif font-bold mb-1 flex items-center gap-2">
             <Video className="text-primary" size={20} /> Video & Reels AI
@@ -373,7 +399,7 @@ export function VideoStudio() {
       </aside>
 
       {/* Center: Preview Canvas & Timeline */}
-      <section className="flex-1 flex flex-col relative overflow-hidden bg-bg">
+      <section className={`flex-1 flex flex-col relative overflow-hidden bg-bg ${mobilePanel !== 'canvas' ? 'hidden lg:flex' : 'flex'}`}>
         {/* Toolbar */}
         <div className="h-14 border-b border-border bg-surface/50 backdrop-blur-sm flex items-center justify-between px-6 shrink-0">
           <div className="flex items-center gap-4">
@@ -639,7 +665,7 @@ export function VideoStudio() {
       </section>
 
       {/* Right Sidebar: AI Agent Context */}
-      <aside className="w-[300px] bg-surface border-l border-border flex flex-col shrink-0">
+      <aside className={`w-full lg:w-[300px] bg-surface border-l border-border flex flex-col shrink-0 ${mobilePanel !== 'ai' ? 'hidden lg:flex' : 'flex'}`}>
         <div className="p-6 border-b border-border/50">
           <h2 className="text-sm font-bold flex items-center gap-2">
             <Bot className="text-primary" size={16} /> AI Director

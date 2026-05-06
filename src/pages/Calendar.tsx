@@ -31,12 +31,12 @@ export function Calendar() {
 
   return (
     <div className="p-8 h-full flex flex-col text-text-main">
-      <div className="flex justify-between items-center mb-8">
+      <div className="flex flex-col sm:flex-row sm:items-center justify-between mb-8 gap-4">
         <div>
           <h1 className="font-serif text-2xl mb-1">Editorial Calendar</h1>
           <p className="text-text-muted text-sm">Schedule and manage content pipeline for <span className="font-semibold" style={{ color: activeExpert.brandColor }}>{activeExpert.name}</span>.</p>
         </div>
-        <div className="flex items-center gap-4">
+        <div className="flex items-center gap-4 flex-wrap">
           <div className="flex items-center gap-2 bg-surface border border-border rounded-lg p-1">
             <button className="p-1 hover:bg-white/5 rounded transition-colors"><ChevronLeft size={18} /></button>
             <span className="text-sm font-medium px-2">October 2025</span>
@@ -52,7 +52,7 @@ export function Calendar() {
             {isGenerating ? `${orchestrator.name} is planning...` : 'Auto-Fill Strategy'}
           </button>
 
-          <button className="text-white px-4 py-2 rounded-lg text-sm font-medium flex items-center gap-2 transition-colors hover:brightness-110" style={{ backgroundColor: activeExpert.brandColor }}>
+          <button className="text-white px-4 py-2 rounded-lg text-sm font-medium flex items-center gap-2 transition-colors hover:brightness-110 w-full sm:w-auto justify-center" style={{ backgroundColor: activeExpert.brandColor }}>
             <Plus size={16} />
             Schedule
           </button>
@@ -75,8 +75,9 @@ export function Calendar() {
         {/* Calendar Header */}
         <div className="grid grid-cols-7 border-b border-border bg-bg/50">
           {days.map(day => (
-            <div key={day} className="p-3 text-center text-xs font-medium text-text-muted uppercase tracking-wider">
-              {day}
+            <div key={day} className="p-1 sm:p-3 text-center text-[10px] sm:text-xs font-medium text-text-muted uppercase tracking-wider">
+              <span className="hidden sm:inline">{day}</span>
+              <span className="sm:hidden">{day.charAt(0)}</span>
             </div>
           ))}
         </div>
@@ -92,11 +93,11 @@ export function Calendar() {
             return (
               <div 
                 key={i} 
-                className={`border-r border-b border-border p-2 min-h-[100px] transition-colors hover:bg-white/[0.02] ${
+                className={`border-r border-b border-border p-1 sm:p-2 min-h-[60px] sm:min-h-[100px] transition-colors hover:bg-white/[0.02] ${
                   (i + 1) % 7 === 0 ? 'border-r-0' : ''
                 } ${i >= 28 ? 'border-b-0' : ''}`}
               >
-                <div className={`text-xs font-medium w-6 h-6 flex items-center justify-center rounded-full mb-2 ${
+                <div className={`text-[10px] sm:text-xs font-medium w-5 h-5 sm:w-6 sm:h-6 flex items-center justify-center rounded-full mb-1 sm:mb-2 ${
                   isToday ? 'text-white' : 'text-text-muted'
                 }`} style={{ backgroundColor: isToday ? activeExpert.brandColor : 'transparent' }}>
                   {date > 31 ? date - 31 : date}

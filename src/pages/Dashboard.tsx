@@ -27,7 +27,7 @@ export function Dashboard() {
             </span>
           </div>
           
-          <div className="grid grid-cols-3 gap-4 relative z-10">
+          <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 relative z-10">
             <div className="border-r border-border">
               <span className="text-2xl font-bold block">{activeExpert.archetypes}</span>
               <span className="text-xs text-text-muted">Core Archetypes</span>
@@ -77,8 +77,8 @@ export function Dashboard() {
         <div className="flex flex-col gap-4">
           <h3 className="font-serif text-lg">Active Content Studio</h3>
           
-          <div className="bg-[#1c1c1f] border border-border rounded-xl overflow-hidden flex h-[180px] group hover:border-primary/30 transition-colors">
-            <div className="w-[180px] bg-border flex items-center justify-center text-[#3f3f46] text-4xl group-hover:text-primary/40 transition-colors">
+          <div className="bg-[#1c1c1f] border border-border rounded-xl overflow-hidden flex flex-col sm:flex-row h-auto sm:h-[180px] group hover:border-primary/30 transition-colors">
+            <div className="w-full sm:w-[180px] h-[140px] sm:h-auto bg-border flex items-center justify-center text-[#3f3f46] text-4xl group-hover:text-primary/40 transition-colors shrink-0">
               <ImageIcon size={48} strokeWidth={1} />
             </div>
             <div className="p-5 flex-1 flex flex-col">
@@ -98,8 +98,8 @@ export function Dashboard() {
             </div>
           </div>
 
-          <div className="bg-[#1c1c1f] border border-border rounded-xl overflow-hidden flex h-[180px] group hover:border-primary/30 transition-colors">
-            <div className="w-[180px] bg-border flex items-center justify-center text-[#3f3f46] text-4xl group-hover:text-primary/40 transition-colors">
+          <div className="bg-[#1c1c1f] border border-border rounded-xl overflow-hidden flex flex-col sm:flex-row h-auto sm:h-[180px] group hover:border-primary/30 transition-colors">
+            <div className="w-full sm:w-[180px] h-[140px] sm:h-auto bg-border flex items-center justify-center text-[#3f3f46] text-4xl group-hover:text-primary/40 transition-colors shrink-0">
               <Video size={48} strokeWidth={1} />
             </div>
             <div className="p-5 flex-1 flex flex-col">

@@ -185,23 +185,23 @@ export function Research() {
         {/* Search Bar */}
         <div className="relative mb-8 shrink-0">
           <div className="absolute inset-0 rounded-full blur-xl opacity-50" style={{ backgroundColor: `${activeExpert.brandColor}33` }}></div>
-          <div className="relative bg-surface border border-border rounded-2xl p-2 flex items-center shadow-2xl">
+          <div className="relative bg-surface border border-border rounded-2xl p-2 flex flex-col sm:flex-row items-stretch sm:items-center shadow-2xl gap-2 sm:gap-0">
             <div className="pl-4 pr-2" style={{ color: activeExpert.brandColor }}>
               <Search size={24} />
             </div>
             <input 
               type="text" 
               placeholder={`Search topics, competitors, or trends in ${activeExpert.niche}...`} 
-              className="flex-1 bg-transparent border-none focus:outline-none text-lg py-3 px-2 placeholder:text-text-muted/50"
+              className="flex-1 bg-transparent border-none focus:outline-none text-base sm:text-lg py-3 px-2 placeholder:text-text-muted/50"
             />
-            <button className="text-white px-6 py-3 rounded-xl font-medium transition-colors hover:brightness-110 flex items-center gap-2" style={{ backgroundColor: activeExpert.brandColor }}>
+            <button className="text-white px-6 py-3 rounded-xl font-medium transition-colors hover:brightness-110 flex items-center gap-2 justify-center" style={{ backgroundColor: activeExpert.brandColor }}>
               <Zap size={18} /> Deep Scan
             </button>
           </div>
         </div>
 
         {/* Tabs */}
-        <div className="flex gap-4 mb-6 shrink-0 border-b border-border pb-2">
+        <div className="flex gap-2 sm:gap-4 mb-6 shrink-0 border-b border-border pb-2 overflow-x-auto custom-scrollbar">
           <button 
             onClick={() => setActiveTab('viral')}
             className={`pb-2 px-2 text-sm font-bold border-b-2 transition-colors flex items-center gap-2 ${activeTab === 'viral' ? 'text-text-main' : 'text-text-muted border-transparent hover:text-text-main'}`}
@@ -228,7 +228,7 @@ export function Research() {
         {/* Content Area */}
         <div className="flex-1 overflow-y-auto custom-scrollbar pb-8 pr-2">
           {activeTab === 'viral' && (
-            <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
               {viralContent.map(item => (
                 <div key={item.id} className="bg-surface border border-border rounded-2xl overflow-hidden group flex flex-col">
                   <div className="h-48 relative overflow-hidden shrink-0">
@@ -314,7 +314,7 @@ export function Research() {
                       <Search size={10} /> Target Keyword: {article.targetKeyword}
                     </div>
                   </div>
-                  <div className="pl-6 border-l border-border ml-6 flex flex-col gap-2 shrink-0">
+                  <div className="pl-0 sm:pl-6 border-l-0 sm:border-l border-border ml-0 sm:ml-6 flex flex-row sm:flex-col gap-2 shrink-0 w-full sm:w-auto">
                     <button className="bg-bg border border-border hover:bg-white/5 px-4 py-2 rounded-lg text-xs font-bold transition-colors whitespace-nowrap">
                       Read Full
                     </button>

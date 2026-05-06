@@ -18,7 +18,9 @@ import { Agents } from './pages/Agents';
 import { ExpertBlog } from './pages/ExpertBlog';
 import { Avatars } from './pages/Avatars';
 import { ScaleHub } from './pages/ScaleHub';
+import { Documentation } from './pages/Documentation';
 import { Playbook } from './pages/Playbook';
+import { PRD } from './pages/PRD';
 
 export default function App() {
   return (
@@ -39,6 +41,8 @@ export default function App() {
           <Route path="/kanban" element={<Kanban />} />
           <Route path="/agents" element={<Agents />} />
           <Route path="/blog" element={<ExpertBlog />} />
+          <Route path="/docs" element={<Documentation />} />
+          <Route path="/prd" element={<PRD />} />
         </Routes>
       </AppLayout>
     </BrowserRouter>

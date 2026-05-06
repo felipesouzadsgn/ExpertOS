@@ -55,12 +55,12 @@ export function ExpertBlog() {
 
   return (
     <div className="p-8 h-full flex flex-col text-text-main overflow-hidden relative">
-      <div className="flex justify-between items-center mb-8 shrink-0">
+      <div className="flex flex-col sm:flex-row sm:items-center justify-between mb-8 gap-4 shrink-0">
         <div>
           <h1 className="font-serif text-2xl mb-1">SEO & Public Portal</h1>
           <p className="text-text-muted text-sm">Manage the AI-optimized landing page and blog for <span className="font-semibold" style={{ color: activeExpert.brandColor }}>{activeExpert.name}</span>.</p>
         </div>
-        <div className="flex items-center gap-4">
+        <div className="flex items-center gap-4 flex-wrap">
           <div className="flex bg-surface border border-border rounded-lg p-1">
             <button 
               onClick={() => setActiveTab('preview')}
@@ -75,7 +75,7 @@ export function ExpertBlog() {
               AEO / SEO Settings
             </button>
           </div>
-          <button className="text-white px-4 py-2 rounded-lg text-sm font-medium flex items-center gap-2 transition-colors hover:brightness-110" style={{ backgroundColor: activeExpert.brandColor }}>
+          <button className="text-white px-4 py-2 rounded-lg text-sm font-medium flex items-center gap-2 transition-colors hover:brightness-110 w-full sm:w-auto justify-center" style={{ backgroundColor: activeExpert.brandColor }}>
             <Globe size={16} />
             Publish Changes
           </button>
@@ -102,12 +102,12 @@ export function ExpertBlog() {
             {/* Hero Section */}
             <div className="relative py-20 px-12 overflow-hidden" style={{ backgroundColor: `${activeExpert.brandColor}0A` }}>
               <div className="absolute top-0 right-0 w-96 h-96 rounded-full blur-3xl -translate-y-1/2 translate-x-1/4 opacity-50" style={{ backgroundColor: activeExpert.brandColor }}></div>
-              <div className="max-w-4xl mx-auto relative z-10 flex items-center gap-12">
+              <div className="max-w-4xl mx-auto relative z-10 flex flex-col md:flex-row items-center gap-8 md:gap-12">
                 <div className="flex-1">
                   <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full text-xs font-bold uppercase tracking-wider mb-6" style={{ backgroundColor: `${activeExpert.brandColor}1A`, color: activeExpert.brandColor }}>
                     <Sparkles size={14} /> Official Portal
                   </div>
-                  <h1 className="text-5xl font-serif font-bold mb-4 text-gray-900 leading-tight">{activeExpert.name}</h1>
+                  <h1 className="text-3xl md:text-5xl font-serif font-bold mb-4 text-gray-900 leading-tight">{activeExpert.name}</h1>
                   <h2 className="text-xl text-gray-600 mb-6 font-medium">{activeExpert.niche}</h2>
                   <p className="text-gray-600 leading-relaxed mb-8 max-w-2xl">
                     {activeExpert.bio || `Leading expert in ${activeExpert.niche}. Helping ${activeExpert.icp || 'professionals'} achieve excellence through proven frameworks and deep industry insights.`}
@@ -116,7 +116,7 @@ export function ExpertBlog() {
                     Work with {activeExpert.name.split(' ')[0]}
                   </button>
                 </div>
-                <div className="w-64 h-64 shrink-0 rounded-full overflow-hidden border-4 border-white shadow-2xl">
+                <div className="w-32 h-32 md:w-64 md:h-64 shrink-0 rounded-full overflow-hidden border-4 border-white shadow-2xl order-first md:order-last">
                   {activeExpert.profilePicture ? (
                     <img src={activeExpert.profilePicture} alt={activeExpert.name} className="w-full h-full object-cover" />
                   ) : (

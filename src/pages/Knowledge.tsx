@@ -10,12 +10,12 @@ export function Knowledge() {
 
   return (
     <div className="p-8 h-full flex flex-col text-text-main">
-      <div className="flex justify-between items-center mb-8">
+      <div className="flex flex-col sm:flex-row sm:items-center justify-between mb-8 gap-4">
         <div>
           <h1 className="font-serif text-2xl mb-1">Knowledge Base</h1>
           <p className="text-text-muted text-sm">Manage documents, references, and context for <span className="font-semibold" style={{ color: activeExpert.brandColor }}>{activeExpert.name}</span>.</p>
         </div>
-        <button className="bg-surface border border-border hover:bg-white/5 text-text-main px-4 py-2 rounded-lg text-sm font-medium flex items-center gap-2 transition-colors">
+        <button className="bg-surface border border-border hover:bg-white/5 text-text-main px-4 py-2 rounded-lg text-sm font-medium flex items-center gap-2 transition-colors w-full sm:w-auto justify-center">
           <UploadCloud size={16} />
           Upload Files
         </button>
@@ -72,7 +72,8 @@ export function Knowledge() {
           </div>
 
           <div className="flex-1 overflow-auto">
-            <table className="w-full text-sm text-left">
+            <div className="overflow-x-auto">
+            <table className="w-full text-sm text-left min-w-[600px]">
               <thead className="text-xs text-text-muted uppercase bg-bg/30 sticky top-0">
                 <tr>
                   <th className="px-6 py-4 font-medium">Document Name</th>
@@ -113,6 +114,7 @@ export function Knowledge() {
                 ))}
               </tbody>
             </table>
+            </div>
           </div>
         </div>
       </div>

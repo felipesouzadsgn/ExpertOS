@@ -55,7 +55,7 @@ export function Avatars() {
       <div className="max-w-7xl mx-auto w-full flex flex-col h-full">
         
         {/* Header */}
-        <div className="flex items-center justify-between mb-8 shrink-0">
+        <div className="flex flex-col sm:flex-row sm:items-center justify-between mb-8 gap-4 shrink-0">
           <div>
             <h1 className="font-serif text-3xl mb-2 flex items-center gap-3">
               <Camera className="text-text-muted" /> AI Digital Twins
@@ -66,7 +66,7 @@ export function Avatars() {
           </div>
           <button 
             onClick={() => setShowForm(!showForm)}
-            className="px-6 py-3 rounded-xl font-bold transition-colors text-white flex items-center gap-2 hover:brightness-110"
+            className="px-6 py-3 rounded-xl font-bold transition-colors text-white flex items-center gap-2 hover:brightness-110 w-full sm:w-auto justify-center"
             style={{ backgroundColor: activeExpert.brandColor }}
           >
             {showForm ? <X size={18} /> : <Plus size={18} />}
@@ -83,7 +83,7 @@ export function Avatars() {
               Avatar Generation Studio
             </h2>
             
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-6">
+            <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6 mb-6">
               <div>
                 <label className="block text-xs font-bold uppercase tracking-wider text-text-muted mb-2">Asset Type</label>
                 <div className="flex gap-2">
