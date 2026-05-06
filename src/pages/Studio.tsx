@@ -215,6 +215,9 @@ export function Studio() {
   const [leftCollapsed, setLeftCollapsed] = useState(false);
   const [rightCollapsed, setRightCollapsed] = useState(false);
 
+  /* ── View Mode ── */
+  const [viewMode, setViewMode] = useState<'canvas' | 'focus'>('canvas');
+
   /* ── Tabs ── */
   const [activeTab, setActiveTab] = useState<'content' | 'design' | 'layouts' | 'ai'>('content');
   const [mobilePanel, setMobilePanel] = useState<'items' | 'canvas' | 'design'>('canvas');
@@ -869,9 +872,69 @@ export function Studio() {
               JPG
             </button>
           </div>
+
+          {/* Mode Toggle */}
+          <div className="bg-surface/90 backdrop-blur-xl px-2 py-2 rounded-full border border-border/50 flex items-center gap-1 shadow-2xl">
+            <button onClick={() => setViewMode('canvas')} className={`px-3 py-1.5 rounded-full text-[10px] font-bold uppercase tracking-widest transition-all ${viewMode === 'canvas' ? 'text-white' : 'text-text-muted hover:text-text-main'}`} style={{ backgroundColor: viewMode === 'canvas' ? (activeExpert?.brandColor || '#6366f1') : 'transparent' }}>
+              Canvas
+            </button>
+            <button onClick={() => setViewMode('focus')} className={`px-3 py-1.5 rounded-full text-[10px] font-bold uppercase tracking-widest transition-all ${viewMode === 'focus' ? 'text-white' : 'text-text-muted hover:text-text-main'}`} style={{ backgroundColor: viewMode === 'focus' ? (activeExpert?.brandColor || '#6366f1') : 'transparent' }}>
+              Foco
+            </button>
+          </div>
         </div>
 
-        {/* World Container */}
+        {/* FOCO MODE: Large Preview */}
+        {viewMode === 'focus' && activeItem && (
+          <div className="absolute inset-0 flex flex-col items-center justify-center z-10">
+            {/* Focus Header */}
+            <div className="absolute top-4 left-4 right-4 flex items-center justify-between z-20">
+              <div className="flex items-center gap-3">
+                <button onClick={() => setViewMode('canvas')} className="flex items-center gap-2 px-3 py-2 bg-surface/80 backdrop-blur-xl border border-border/50 rounded-full text-xs font-bold text-text-muted hover:text-text-main transition-colors">
+                  <ChevronLeft size={14} /> Voltar ao Canvas
+                </button>
+                <div className="flex items-center gap-2">
+                  <span className={`text-[10px] font-bold uppercase px-2 py-0.5 rounded ${activeItem.type === 'post' ? 'bg-primary/20 text-primary' : 'bg-emerald-400/20 text-emerald-400'}`}>{activeItem.type}</span>
+                  <span className="text-sm font-semibold text-text-main">{activeItem.name}</span>
+                </div>
+              </div>
+              <div className="flex items-center gap-2">
+                <button onClick={() => setItemDisplayScale(activeItem.id, activeItem.displayScale - 0.05)} className="p-2 bg-surface/80 backdrop-blur-xl border border-border/50 rounded-full text-text-muted hover:text-text-main"><Minus size={14} /></button>
+                <span className="text-xs font-bold text-text-muted w-10 text-center">{Math.round(activeItem.displayScale * 100)}%</span>
+                <button onClick={() => setItemDisplayScale(activeItem.id, activeItem.displayScale + 0.05)} className="p-2 bg-surface/80 backdrop-blur-xl border border-border/50 rounded-full text-text-muted hover:text-text-main"><Plus size={14} /></button>
+              </div>
+            </div>
+
+            {/* Large Preview */}
+            <div className="flex-1 flex items-center justify-center w-full overflow-hidden py-16 px-8">
+              <div className={`${getAspectClass(activeItem.format)} relative bg-surface rounded-xl overflow-hidden shadow-2xl border border-border/50`}
+                style={{ width: getBaseWidth(activeItem.format) * activeItem.displayScale, height: getBaseHeight(activeItem.format) * activeItem.displayScale }}>
+                {activeItem.slides[activeItem.activeSlideIndex] && renderSlideContent(activeItem.slides[activeItem.activeSlideIndex], activeItem)}
+              </div>
+            </div>
+
+            {/* Timeline */}
+            <div className="h-28 bg-surface/80 backdrop-blur-xl border-t border-border w-full shrink-0 flex items-center px-6 gap-3 overflow-x-auto custom-scrollbar">
+              {activeItem.slides.map((slide, sIdx) => (
+                <button key={slide.id} onClick={() => setActiveSlide(activeItem.id, sIdx)}
+                  className={`relative w-16 h-16 rounded-lg overflow-hidden border-2 flex-shrink-0 transition-all ${activeItem.activeSlideIndex === sIdx ? 'border-primary scale-110 shadow-lg' : 'border-border/50 hover:border-text-muted'}`}
+                  style={{ borderColor: activeItem.activeSlideIndex === sIdx ? (activeExpert?.brandColor || '#6366f1') : undefined }}>
+                  <img src={slide.mediaUrl} alt="" className="w-full h-full object-cover" />
+                  <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent" />
+                  <span className="absolute bottom-0.5 right-1 text-[9px] font-black text-white">{sIdx + 1}</span>
+                </button>
+              ))}
+              <button onClick={() => addSlide(activeItem.id, 'image')}
+                className="w-16 h-16 rounded-lg border-2 border-dashed border-border flex flex-col items-center justify-center gap-0.5 text-text-muted hover:text-primary hover:border-primary transition-colors flex-shrink-0">
+                <Plus size={14} />
+                <span className="text-[8px] font-bold uppercase">Add</span>
+              </button>
+            </div>
+          </div>
+        )}
+
+        {/* CANVAS MODE: Infinite Canvas */}
+        {viewMode === 'canvas' && (
         <div className="absolute inset-0" style={{ transform: `translate(${pan.x}px, ${pan.y}px)` }}>
           {/* Grid Background */}
           <div className="absolute" style={{
@@ -891,6 +954,7 @@ export function Studio() {
               return (
                 <div key={item.id} data-canvas-item
                   onMouseDown={(e) => handleItemMouseDown(e, item.id)}
+                  onDoubleClick={() => { setActiveItemId(item.id); setViewMode('focus'); }}
                   className={`absolute group ${isActive ? 'z-20' : 'z-10'}`}
                   style={{
                     left: item.x,
@@ -967,6 +1031,7 @@ export function Studio() {
             })}
           </div>
         </div>
+        )}
 
         {/* Canvas hint */}
         <div className="absolute bottom-4 left-4 flex items-center gap-4 text-[10px] text-text-muted/50 pointer-events-none">
