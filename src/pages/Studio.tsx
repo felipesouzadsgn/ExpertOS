@@ -349,6 +349,7 @@ export function Studio() {
   const [aiChat, setAiChat] = useState([{ id: 1, role: 'agent' as const, text: "Hi! I'm your AI Assistant. How can I help you build content?" }]);
   const [aiInput, setAiInput] = useState('');
   const [isGeneratingCopy, setIsGeneratingCopy] = useState(false);
+  const [copyMode, setCopyMode] = useState<'auto' | 'educational' | 'storytelling' | 'contrarian' | 'data-driven'>('auto');
 
   /* ── Refs ── */
   const fileInputRef = useRef<HTMLInputElement>(null);
@@ -749,20 +750,116 @@ export function Studio() {
     setExporting(false);
   };
 
-  /* ── AI COPY ── */
-  const generateAICopy = async () => {
+  /* ── AI COPY ENGINE ── */
+  const generateAICopy = async (mode?: typeof copyMode) => {
     if (!activeExpert || !activeSlide) return;
+    const useMode = mode || copyMode;
     setIsGeneratingCopy(true);
-    await new Promise(r => setTimeout(r, 1500));
+    await new Promise(r => setTimeout(r, 1200 + Math.random() * 800));
 
-    const copies = [
-      { hat: `${activeExpert.niche.toUpperCase()} INSIGHT`, title: `A Verdade Sobre\n${activeExpert.niche}`, subtitle: 'O que ninguém te conta', text: `Baseado na análise de ${activeExpert.name}, descobrimos que 73% dos profissionais em ${activeExpert.niche.toLowerCase()} cometem o mesmo erro fundamental.`, cta: 'LEIA MAIS' },
-      { hat: 'CASE STUDY', title: `Como Escalar\n${activeExpert.niche}`, subtitle: 'Framework validado', text: `${activeExpert.name} desenvolveu um método único para dominar ${activeExpert.niche.toLowerCase()}. Em 90 dias, resultados extraordinários.`, cta: 'ACESSE O MÉTODO' },
-      { hat: 'ERRO COMUM', title: `Pare de Fazer\nIsso Agora`, subtitle: 'A mudança começa hoje', text: `A maior lição que ${activeExpert.name} aprendeu: o que funcionava antes não funciona mais. Aqui está o novo playbook.`, cta: 'SALVE ESSE POST' },
-    ];
-    const randomCopy = copies[Math.floor(Math.random() * copies.length)];
-    updateActiveSlide({ ...randomCopy });
-    setAiChat(prev => [...prev, { id: Date.now(), role: 'user', text: 'Gere copy com IA' }, { id: Date.now() + 1, role: 'agent', text: `Copy gerado para ${activeExpert.name}!` }]);
+    const niche = activeExpert.niche || 'Negócio';
+    const name = activeExpert.name || 'Expert';
+    const firstName = name.split(' ')[0];
+    const tone = activeExpert.toneOfVoice || 'profissional e direto';
+    const icp = activeExpert.icp || 'empreendedores';
+    const product = activeExpert.products?.[0]?.name || 'Mentoria';
+
+    // Helper to pick random from array
+    const pick = <T,>(arr: T[]) => arr[Math.floor(Math.random() * arr.length)];
+
+    const generators: Record<string, () => { hat: string; title: string; subtitle: string; text: string; cta: string }> = {
+      educational: () => ({
+        hat: pick(['APRENDA AGORA', 'CONHECIMENTO REAL', 'INSIGHT DE ' + firstName.toUpperCase(), 'O QUE FUNCIONA']),
+        title: pick([
+          `O Framework\nQue Mudou\n${niche}`,
+          `O Que ${firstName}\nSabe Sobre\n${niche}`,
+          `A Base de\nTudo em\n${niche}`,
+        ]),
+        subtitle: pick(['Método validado na prática', 'Baseado em resultados reais', 'O que a teoria não ensina']),
+        text: pick([
+          `Depois de anos trabalhando com ${icp.split(' ').slice(0, 3).join(' ')}, ${firstName} identificou um padrão claro: quem domina os fundamentos escala 5x mais rápido que quem pula etapas.`,
+          `A maioria das pessoas em ${niche.toLowerCase()} foca em táticas avançadas antes de entender os princípios básicos. O resultado? Frustração e burnout.`,
+          `${firstName} compilou em um framework simples o que aprendeu ajudando centenas de ${icp.split(' ')[0].toLowerCase()} a alcançarem resultados consistentes.`,
+        ]),
+        cta: pick(['SALVE PARA REVISAR', 'MARQUE UM AMIGO', 'APLIQUE HOJE', 'LINK NA BIO']),
+      }),
+      storytelling: () => ({
+        hat: pick(['HISTÓRIA REAL', 'DE ZERO A HERÓI', 'A JORNADA', 'CASE REAL']),
+        title: pick([
+          `De Sem\nResultados Para\nReferência`,
+          `A Virada\nQue Ninguém\nEsperava`,
+          `O Dia Em Que\nTudo Mudou\nPara ${firstName}`,
+        ]),
+        subtitle: pick(['Uma história de superação', 'Transformação real', 'Do fundo do poço ao topo']),
+        text: pick([
+          `Há dois anos, ${firstName} estava prestes a desistir. Nada funcionava. Até que um insight simples — quase óbvio — mudou completamente a trajetória em ${niche.toLowerCase()}.`,
+          `Quando ${firstName} começou, todos diziam que era impossível. Hoje, é referência em ${niche.toLowerCase()}. A diferença? Uma decisão que parecia pequena na época.`,
+          `A história de ${firstName} prova que você não precisa de recursos ilimitados. Precisa de direção, consistência e acesso às informações certas em ${niche.toLowerCase()}.`,
+        ]),
+        cta: pick(['SIGA A JORNADA', 'LEIA TUDO', 'QUERO ISSO TAMBÉM', 'COMPARTILHE']),
+      }),
+      contrarian: () => ({
+        hat: pick(['OPINIÃO IMPOPULAR', 'A VERDADE DIFÍCIL', 'NINGUÉM FALA ISSO', 'CONTROVERSIAL']),
+        title: pick([
+          `Por Que ${niche}\nNão Funciona\nPara Você`,
+          `O Maior Mito\nDe ${niche}\nRevelado`,
+          `O Que os Gurus\nDe ${niche}\nNão Contam`,
+        ]),
+        subtitle: pick(['Vai doer ouvir isso', 'A verdade incomoda', 'Mas é necessário']),
+        text: pick([
+          `O mercado está cheio de promessas fáceis em ${niche.toLowerCase()}. A realidade? Sem estrutura, sem fundamentos e sem consistência, nenhuma tática do mundo vai salvar você.`,
+          `${firstName} desafia o status quo de ${niche.toLowerCase()}: o que funciona para quem já tem audiência NÃO funciona para quem está começando. E é por isso que a maioria desiste.`,
+          `Se você está esperando o "timing perfeito" para começar em ${niche.toLowerCase()}, vai esperar para sempre. O momento é agora. Mas da forma certa.`,
+        ]),
+        cta: pick(['CONCORDA?', 'COMENTE SUA OPINIÃO', 'SALVE SE CONCORDA', 'VEJA A SOLUÇÃO']),
+      }),
+      'data-driven': () => ({
+        hat: pick(['OS NÚMEROS', 'DADOS REAIS', 'ESTATÍSTICAS', 'ANÁLISE']),
+        title: pick([
+          `${pick(['73%', '89%', '94%', '67%'])} Falham\nEm ${niche}\nPor Isso`,
+          `O Número Que\nMudou Como\n${firstName} Pensa`,
+          `${pick(['5x', '10x', '3x'])} Mais Resultado\nCom Isso`,
+        ]),
+        subtitle: pick(['Dados que provam o ponto', 'Números não mentem', 'A matemática da vitória']),
+        text: pick([
+          `Uma análise de 200+ casos em ${niche.toLowerCase()} revelou um padrão surpreendente: os 10% de melhor performance fazem UMA coisa diferente dos outros 90%.`,
+          `${firstName} rastreou métricas por 18 meses e descobriu que o fator #1 de sucesso em ${niche.toLowerCase()} não é talento, não é sorte, e não é dinheiro.`,
+          `Se você ainda acredita que em ${niche.toLowerCase()} "quem trabalha mais ganha mais", esses dados vão mudar completamente sua perspectiva.`,
+        ]),
+        cta: pick(['OS DADOS NÃO MENTEM', 'VEJA A ANÁLISE', 'SALVE ESSE POST', 'LINK NA BIO']),
+      }),
+      auto: () => {
+        // Auto picks based on expert archetype/tone
+        const toneLower = tone.toLowerCase();
+        if (toneLower.includes('data') || toneLower.includes('analít')) return generators['data-driven']();
+        if (toneLower.includes('empática') || toneLower.includes('pessoal') || toneLower.includes('inspira')) return generators['storytelling']();
+        if (toneLower.includes('diret') || toneLower.includes('cirúrgic') || toneLower.includes('sem floreio')) return generators['contrarian']();
+        return generators['educational']();
+      },
+    };
+
+    const generator = generators[useMode] || generators['auto'];
+    const copy = generator();
+
+    // Also update layout to match the copy mode
+    const layoutMap: Record<string, LayoutTemplate> = {
+      educational: 'overlay',
+      storytelling: 'magazine',
+      contrarian: 'quote',
+      'data-driven': 'data',
+      auto: 'overlay',
+    };
+
+    updateActiveSlide({
+      ...copy,
+      layoutTemplate: layoutMap[useMode] || 'overlay',
+    });
+
+    setAiChat(prev => [
+      ...prev,
+      { id: Date.now(), role: 'user', text: `Gere copy em modo "${useMode}" para este slide` },
+      { id: Date.now() + 1, role: 'agent', text: `Copy gerado no modo **${useMode}** para ${name}! Usei o tom: "${tone.slice(0, 60)}...", focando em ${icp.slice(0, 50)}... O layout foi ajustado para ${layoutMap[useMode] || 'overlay'}.` },
+    ]);
     setIsGeneratingCopy(false);
   };
 
@@ -1223,11 +1320,28 @@ export function Studio() {
                   </div>
 
                   {activeExpert && (
-                    <button onClick={generateAICopy} disabled={isGeneratingCopy}
-                      className="w-full py-3 rounded-xl border border-primary/30 text-primary hover:bg-primary/10 transition-all flex items-center justify-center gap-2 text-xs font-bold uppercase tracking-wider disabled:opacity-50">
-                      <Wand2 size={14} className={isGeneratingCopy ? 'animate-spin' : ''} />
-                      {isGeneratingCopy ? 'Gerando...' : 'Gerar Copy com IA'}
-                    </button>
+                    <div className="space-y-2">
+                      <div className="flex gap-1 bg-bg p-1 rounded-lg border border-border">
+                        {([
+                          { id: 'auto' as const, label: 'Auto' },
+                          { id: 'educational' as const, label: 'Educativo' },
+                          { id: 'storytelling' as const, label: 'Story' },
+                          { id: 'contrarian' as const, label: 'Contra' },
+                          { id: 'data-driven' as const, label: 'Dados' },
+                        ]).map(m => (
+                          <button key={m.id} onClick={() => setCopyMode(m.id)}
+                            className={`flex-1 py-1.5 rounded text-[10px] font-bold uppercase transition-all ${copyMode === m.id ? 'text-white' : 'text-text-muted hover:text-text-main'}`}
+                            style={{ backgroundColor: copyMode === m.id ? (activeExpert?.brandColor || '#6366f1') : 'transparent' }}>
+                            {m.label}
+                          </button>
+                        ))}
+                      </div>
+                      <button onClick={() => generateAICopy()} disabled={isGeneratingCopy}
+                        className="w-full py-3 rounded-xl border border-primary/30 text-primary hover:bg-primary/10 transition-all flex items-center justify-center gap-2 text-xs font-bold uppercase tracking-wider disabled:opacity-50">
+                        <Wand2 size={14} className={isGeneratingCopy ? 'animate-spin' : ''} />
+                        {isGeneratingCopy ? 'Gerando...' : `Gerar Copy ${copyMode !== 'auto' ? `(${copyMode})` : ''}`}
+                      </button>
+                    </div>
                   )}
 
                   {['hat', 'title', 'subtitle', 'text', 'cta'].map((field) => (
