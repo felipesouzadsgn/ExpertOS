@@ -11,7 +11,7 @@ export function ExpertDetail() {
   const expert = experts.find(e => e.id === id);
   
   const [formData, setFormData] = useState(expert || {
-    id: '', name: '', handle: '', niche: '', role: '', bio: '', profilePicture: '', socialLinks: { instagram: '', linkedin: '', twitter: '' }, avatarGradient: '', brandColor: '', colorPalette: [], typography: { heading: 'Inter', body: 'Inter' }, archetype: '', toneOfVoice: '', photographicStyle: '', icp: '', skills: [], tokens: '', archetypes: 0
+    id: '', name: '', handle: '', niche: '', role: '', bio: '', profilePicture: '', socialLinks: { instagram: '', linkedin: '', twitter: '' }, avatarGradient: '', brandColor: '', colorPalette: [], typography: { heading: 'Poppins', body: 'Poppins' }, archetype: '', toneOfVoice: '', photographicStyle: '', icp: '', skills: [], tokens: '', archetypes: 0
   });
 
   useEffect(() => {
@@ -257,9 +257,9 @@ export function ExpertDetail() {
             
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
               {[
-                { label: 'Display (Títulos grandes)', key: 'display', value: formData.typography?.display || 'Inter', placeholder: 'Ex: Playfair Display' },
-                { label: 'Heading (Subtítulos)', key: 'heading', value: formData.typography?.heading || 'Inter', placeholder: 'Ex: Cormorant Garamond' },
-                { label: 'Body (Texto corrido)', key: 'body', value: formData.typography?.body || 'Inter', placeholder: 'Ex: Inter' },
+                { label: 'Display (Títulos grandes)', key: 'display', value: formData.typography?.display || 'REM', placeholder: 'Ex: REM' },
+                { label: 'Heading (Subtítulos)', key: 'heading', value: formData.typography?.heading || 'Poppins', placeholder: 'Ex: Poppins' },
+                { label: 'Body (Texto corrido)', key: 'body', value: formData.typography?.body || 'Poppins', placeholder: 'Ex: Poppins' },
                 { label: 'Accent (Destaques e CTAs)', key: 'accent', value: formData.typography?.accent || '', placeholder: 'Ex: Italiana' },
               ].map((font) => (
                 <div key={font.key} className="space-y-1">
@@ -270,9 +270,9 @@ export function ExpertDetail() {
                     onChange={e => setFormData({
                       ...formData, 
                       typography: { 
-                        display: formData.typography?.display || 'Inter',
-                        heading: formData.typography?.heading || 'Inter',
-                        body: formData.typography?.body || 'Inter',
+                        display: formData.typography?.display || 'REM',
+                        heading: formData.typography?.heading || 'Poppins',
+                        body: formData.typography?.body || 'Poppins',
                         accent: formData.typography?.accent || '',
                         [font.key]: e.target.value 
                       }

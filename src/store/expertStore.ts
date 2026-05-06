@@ -113,7 +113,7 @@ const mockExperts: Expert[] = [
     typography: { 
       display: 'Playfair Display', 
       heading: 'Cormorant Garamond', 
-      body: 'Inter', 
+      body: 'Poppins', 
       accent: 'Italiana' 
     },
     archetype: 'O Governante / O Criador',
@@ -190,7 +190,7 @@ const mockExperts: Expert[] = [
     typography: { 
       display: 'Space Grotesk', 
       heading: 'Sora', 
-      body: 'Inter', 
+      body: 'Poppins', 
       accent: 'JetBrains Mono' 
     },
     archetype: 'O Sábio / O Mago',

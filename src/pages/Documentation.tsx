@@ -605,7 +605,7 @@ export function Documentation() {
                 {[
                   { category: 'Framework', items: [{ name: 'React 19', desc: 'Biblioteca de UI com Strict Mode' }, { name: 'Vite 6.2', desc: 'Ferramenta de build e servidor dev (porta 3000)' }] },
                   { category: 'Linguagem', items: [{ name: 'TypeScript 5.8', desc: 'Tipagem estrita com módulo ESNext' }] },
-                  { category: 'Estilização', items: [{ name: 'Tailwind CSS v4', desc: 'CSS utilitário com plugin @tailwindcss/vite' }, { name: 'Inter + Georgia', desc: 'Sistema tipográfico via Google Fonts' }] },
+                  { category: 'Estilização', items: [{ name: 'Tailwind CSS v4', desc: 'CSS utilitário com plugin @tailwindcss/vite' }, { name: 'Poppins + REM', desc: 'Sistema tipográfico via Google Fonts' }] },
                   { category: 'Gerenciamento de Estado', items: [{ name: 'Zustand v5', desc: 'Store leve com atualizações imutáveis' }] },
                   { category: 'Roteamento', items: [{ name: 'react-router-dom v7', desc: 'BrowserRouter client-side com 12 rotas' }] },
                   { category: 'Utilitários', items: [{ name: 'clsx + tailwind-merge', desc: 'Composição condicional de classes CSS' }, { name: 'Lucide React', desc: 'Biblioteca de ícones (60+ usados)' }] },
@@ -664,12 +664,12 @@ export function Documentation() {
                 <div className="space-y-4">
                   <div className="bg-bg border border-border rounded-xl p-4">
                     <h4 className="text-xs font-bold uppercase tracking-wider text-text-muted mb-2">Sans-Serif (Primária)</h4>
-                    <p className="text-2xl font-sans">Inter — A tipografia principal da interface</p>
+                    <p className="text-2xl font-sans">Poppins — A tipografia principal da interface</p>
                     <p className="text-xs text-text-muted mt-1">Usada para texto corrido, rótulos, botões e todos os elementos de UI.</p>
                   </div>
                   <div className="bg-bg border border-border rounded-xl p-4">
-                    <h4 className="text-xs font-bold uppercase tracking-wider text-text-muted mb-2">Serifada (Display)</h4>
-                    <p className="text-2xl font-serif">Georgia — Títulos e cabeçalhos de seção</p>
+                    <h4 className="text-xs font-bold uppercase tracking-wider text-text-muted mb-2">Display (Títulos)</h4>
+                    <p className="text-2xl font-serif">REM — Títulos e cabeçalhos de seção</p>
                     <p className="text-xs text-text-muted mt-1">Usada para títulos de página, cabeçalhos de seção e conteúdo editorial.</p>
                   </div>
                 </div>
