@@ -11,7 +11,8 @@ import {
   Palette, BookmarkPlus, Trash2, FileImage, Package, LayoutGrid,
   Maximize2, RotateCcw, MousePointerClick, Copy, Check, GripVertical,
   Plus, X, Minus, Square, RectangleHorizontal, RectangleVertical,
-  Frame
+  Frame, AlertTriangle, BookOpen, ListOrdered, HelpCircle, Scale,
+  BarChart3, ArrowLeftRight
 } from 'lucide-react';
 
 /* ═══════════════════ TYPES ═══════════════════ */
@@ -188,6 +189,116 @@ function createCanvasItem(type: 'post' | 'carousel', index: number, format: stri
   };
 }
 
+/* ═══════════════════ SMART TEMPLATES ═══════════════════ */
+
+interface SmartTemplate {
+  id: string;
+  name: string;
+  description: string;
+  icon: typeof LayoutTemplate;
+  slideCount: number;
+  generate: (expertName: string, niche: string) => Slide[];
+}
+
+const smartTemplates: SmartTemplate[] = [
+  {
+    id: '3-erros',
+    name: '3 Erros Comuns',
+    description: 'Capa + 3 erros + CTA',
+    icon: AlertTriangle,
+    slideCount: 5,
+    generate: (name, niche) => [
+      createDefaultSlide('image', { hat: 'ERROS FATAIS', title: `3 Erros que\nDestroem seu\n${niche}`, text: 'A maioria das pessoas comete pelo menos um desses erros todos os dias. Veja se você está entre elas.', cta: 'ARRASTE PARA VER', alignment: 'center', layoutTemplate: 'overlay' }),
+      createDefaultSlide('image', { hat: 'ERRO #1', title: 'Focar no\nErrado', text: 'O primeiro erro é tentar agradar a todos em vez de seu público ideal. Especialização gera autoridade.', alignment: 'left', layoutTemplate: 'bottom' }),
+      createDefaultSlide('image', { hat: 'ERRO #2', title: 'Inconsistência\nTotal', text: 'Publicar quando "dá tempo" é o caminho mais rápido para o esquecimento. Consistência vence talento.', alignment: 'left', layoutTemplate: 'bottom' }),
+      createDefaultSlide('image', { hat: 'ERRO #3', title: 'Copiar os\nOutros', text: 'O que funciona para o guru pode não funcionar para você. Sua voz é seu maior diferencial.', alignment: 'left', layoutTemplate: 'bottom' }),
+      createDefaultSlide('image', { hat: 'A SOLUÇÃO', title: `O Método\n${name.split(' ')[0]}`, text: 'Se você quer resultados diferentes, precisa de ações diferentes. O link está na bio.', cta: 'LINK NA BIO', alignment: 'center', layoutTemplate: 'overlay' }),
+    ],
+  },
+  {
+    id: 'storytelling',
+    name: 'Storytelling Arc',
+    description: '5 slides de narrativa',
+    icon: BookOpen,
+    slideCount: 5,
+    generate: (name, niche) => [
+      createDefaultSlide('image', { hat: 'HISTÓRIA REAL', title: `De Zero a\n${niche}`, text: `Essa história mudou como ${name} enxerga ${niche.toLowerCase()} para sempre.`, cta: 'LEIA TUDO', alignment: 'center', layoutTemplate: 'overlay' }),
+      createDefaultSlide('image', { hat: 'O INÍCIO', title: 'Tudo Começou\nAssim...', text: 'Em um escritório pequeno, sem dinheiro e sem conexões. Apenas uma ideia e muita persistência.', alignment: 'left', layoutTemplate: 'magazine' }),
+      createDefaultSlide('image', { hat: 'O CONFLITO', title: 'O Momento\nMais Difícil', text: 'Quando tudo parecia perdido, um insight simples mudou completamente a trajetória.', alignment: 'center', layoutTemplate: 'quote' }),
+      createDefaultSlide('image', { hat: 'A VIRADA', title: 'A Descoberta\nQue Mudou\nTudo', text: 'O segredo não está em trabalhar mais. Está em trabalhar no que realmente importa.', alignment: 'left', layoutTemplate: 'data' }),
+      createDefaultSlide('image', { hat: 'O RESULTADO', title: 'Hoje é\nDiferente', text: 'A jornada continua, mas agora com direção, propósito e resultados reais.', cta: 'SIGA PARA MAIS', alignment: 'center', layoutTemplate: 'overlay' }),
+    ],
+  },
+  {
+    id: 'lista',
+    name: 'Lista Numerada',
+    description: 'Capa + 5 dicas',
+    icon: ListOrdered,
+    slideCount: 6,
+    generate: (name, niche) => [
+      createDefaultSlide('image', { hat: 'GUIA RÁPIDO', title: `5 Dicas de\n${niche}\nQue Funcionam`, text: `${name} compilou o essencial para você aplicar hoje mesmo.`, cta: 'SALVE ESSE POST', alignment: 'center', layoutTemplate: 'overlay' }),
+      createDefaultSlide('image', { hat: 'DICA #1', title: 'Comece\nPelo Fim', text: 'Defina claramente o resultado que você quer antes de qualquer ação.', alignment: 'left', layoutTemplate: 'bottom' }),
+      createDefaultSlide('image', { hat: 'DICA #2', title: 'Meça\nTudo', text: 'O que não é medido não é melhorado. Dados são seu melhor amigo.', alignment: 'left', layoutTemplate: 'bottom' }),
+      createDefaultSlide('image', { hat: 'DICA #3', title: 'Automatize\nO Óbvio', text: 'Se você repete algo 3 vezes, é hora de criar um sistema.', alignment: 'left', layoutTemplate: 'bottom' }),
+      createDefaultSlide('image', { hat: 'DICA #4', title: 'Diga Não\nMais', text: 'Cada "sim" para algo irrelevante é um "não" para o que importa.', alignment: 'left', layoutTemplate: 'bottom' }),
+      createDefaultSlide('image', { hat: 'DICA #5', title: 'Reinveste\nSempre', text: 'O maior investimento que você pode fazer é em conhecimento e pessoas.', cta: 'QUAL VOCÊ VAI APLICAR?', alignment: 'left', layoutTemplate: 'bottom' }),
+    ],
+  },
+  {
+    id: 'faq',
+    name: 'FAQ',
+    description: 'Capa + 4 Q&A',
+    icon: HelpCircle,
+    slideCount: 5,
+    generate: (name, niche) => [
+      createDefaultSlide('image', { hat: 'PERGUNTAS', title: `As Dúvidas\nMais Comuns\nSobre ${niche}`, text: `${name} responde o que todo mundo pergunta.`, cta: 'VEJA AS RESPOSTAS', alignment: 'center', layoutTemplate: 'overlay' }),
+      createDefaultSlide('image', { hat: 'PERGUNTA #1', title: 'Por Onde\nComeçar?', text: 'O primeiro passo é sempre o mais difícil, mas também o mais importante. Comece pequeno, comece hoje.', alignment: 'left', layoutTemplate: 'quote' }),
+      createDefaultSlide('image', { hat: 'PERGUNTA #2', title: 'Quanto\nCusta?', text: 'O custo da inação é sempre maior do que o custo de começar. Invista em você.', alignment: 'left', layoutTemplate: 'quote' }),
+      createDefaultSlide('image', { hat: 'PERGUNTA #3', title: 'Quanto\nTempo Leva?', text: 'Resultados reais exigem consistência. A maioria desiste no dia antes da virada.', alignment: 'left', layoutTemplate: 'quote' }),
+      createDefaultSlide('image', { hat: 'PERGUNTA #4', title: 'Funciona\nPra Mim?', text: 'Se você tem determinação e está disposto a aprender, funciona. Ponto final.', cta: 'MAIS DÚVIDAS? COMENTA', alignment: 'left', layoutTemplate: 'quote' }),
+    ],
+  },
+  {
+    id: 'mitos',
+    name: 'Mitos vs Verdades',
+    description: 'Desmistifique crenças',
+    icon: Scale,
+    slideCount: 5,
+    generate: (name, niche) => [
+      createDefaultSlide('image', { hat: 'VERDADE REVELADA', title: `Mitos de\n${niche}\nQue Você Acredita`, text: `${name} desmistifica as maiores mentiras do mercado.`, cta: 'PREPARE-SE', alignment: 'center', layoutTemplate: 'overlay' }),
+      createDefaultSlide('image', { hat: 'MITO #1', title: 'Precisa de\nDinheiro', text: 'Verdade: Você precisa de estratégia. Dinheiro sem direção é apenas despesa.', alignment: 'left', layoutTemplate: 'split' }),
+      createDefaultSlide('image', { hat: 'MITO #2', title: 'É Sobre\nTalent', text: 'Verdade: É sobre consistência e aprendizado contínuo. Talentos sem trabalho perdem.', alignment: 'left', layoutTemplate: 'split' }),
+      createDefaultSlide('image', { hat: 'MITO #3', title: 'O Mercado\nEstá Saturado', text: 'Verdade: Não existe mercado saturado, existe posicionamento fraco.', alignment: 'left', layoutTemplate: 'split' }),
+      createDefaultSlide('image', { hat: 'A REALIDADE', title: 'A Verdade\nLiberta', text: 'Agora que você sabe, está na hora de agir diferente.', cta: 'COMPARTILHE', alignment: 'center', layoutTemplate: 'overlay' }),
+    ],
+  },
+  {
+    id: 'dados',
+    name: 'Dados Surpreendentes',
+    description: 'Stats e números',
+    icon: BarChart3,
+    slideCount: 4,
+    generate: (name, niche) => [
+      createDefaultSlide('image', { hat: 'NÚMEROS QUE IMPACTAM', title: `Dados Sobre\n${niche}\nQue Vão te Surpreender`, text: `${name} separou as estatísticas mais relevantes.`, cta: 'CONFIRA', alignment: 'center', layoutTemplate: 'overlay' }),
+      createDefaultSlide('image', { hat: 'STAT #1', title: '73%', text: 'das pessoas em ' + niche + ' desistem nos primeiros 6 meses. Seja dos 27%.', alignment: 'center', layoutTemplate: 'data' }),
+      createDefaultSlide('image', { hat: 'STAT #2', title: '5x', text: 'mais resultado quem tem consistência vs quem posta "quando dá tempo".', alignment: 'center', layoutTemplate: 'data' }),
+      createDefaultSlide('image', { hat: 'STAT #3', title: '90%', text: 'do seu sucesso vem de 10% das suas ações. Foque no que importa.', cta: 'QUAL MAIS TE IMPACTOU?', alignment: 'center', layoutTemplate: 'data' }),
+    ],
+  },
+  {
+    id: 'antes-depois',
+    name: 'Antes / Depois',
+    description: 'Transformação',
+    icon: ArrowLeftRight,
+    slideCount: 3,
+    generate: (name, niche) => [
+      createDefaultSlide('image', { hat: 'TRANSFORMAÇÃO', title: `A Virada\nEm ${niche}`, text: `O antes e depois que ${name} presenciou de perto.`, cta: 'VEJA A DIFERENÇA', alignment: 'center', layoutTemplate: 'overlay' }),
+      createDefaultSlide('image', { hat: 'ANTES', title: 'Sem\nEstratégia', text: 'Trabalhando 12h por dia, sem resultados, sem direção, sem esperança.', alignment: 'center', layoutTemplate: 'minimal' }),
+      createDefaultSlide('image', { hat: 'DEPOIS', title: 'Com\nMétodo', text: 'Resultados consistentes, tempo livre, crescimento previsível e sustentável.', cta: 'QUERO ISSO', alignment: 'center', layoutTemplate: 'minimal' }),
+    ],
+  },
+];
+
 /* ═══════════════════ COMPONENT ═══════════════════ */
 
 export function Studio() {
@@ -355,6 +466,28 @@ export function Studio() {
     };
     setCanvasItems(prev => [...prev, newItem]);
     setActiveItemId(newItem.id);
+  };
+
+  /* ── Smart Template ── */
+  const applySmartTemplate = (template: SmartTemplate) => {
+    const slides = template.generate(activeExpert?.name || 'Expert', activeExpert?.niche || 'Negócio');
+    const newItem: CanvasItem = {
+      id: generateId(),
+      name: template.name,
+      type: 'carousel',
+      x: 100 + (canvasItems.length % 3) * 500,
+      y: 100 + Math.floor(canvasItems.length / 3) * 600,
+      displayScale: 0.75,
+      slides,
+      activeSlideIndex: 0,
+      format: 'aspect-[4/5]',
+      fadeIntensity: 85,
+      fadeColor: '#09090B',
+      corners: { tl: 'Logo', tr: 'Series Tag', bl: 'Author / Handle', br: 'Slide Counter' },
+    };
+    setCanvasItems(prev => [...prev, newItem]);
+    setActiveItemId(newItem.id);
+    setViewMode('focus');
   };
 
   /* ── Slide Management ── */
@@ -827,6 +960,28 @@ export function Studio() {
                   </div>
                 </div>
               ))}
+            </div>
+
+            {/* Smart Templates */}
+            <div className="p-4 border-t border-border/50">
+              <h2 className="text-xs font-bold uppercase tracking-widest text-text-muted mb-3">Templates Rápidos</h2>
+              <div className="space-y-2">
+                {smartTemplates.map(template => (
+                  <button key={template.id} onClick={() => applySmartTemplate(template)}
+                    className="w-full p-3 bg-bg rounded-xl border border-border hover:border-primary/50 hover:bg-white/5 transition-all text-left group">
+                    <div className="flex items-center gap-2.5">
+                      <div className="w-8 h-8 rounded-lg bg-primary/10 flex items-center justify-center shrink-0" style={{ color: activeExpert?.brandColor || '#6366f1' }}>
+                        <template.icon size={16} />
+                      </div>
+                      <div className="flex-1 min-w-0">
+                        <p className="text-xs font-medium text-text-main group-hover:text-primary transition-colors">{template.name}</p>
+                        <p className="text-[10px] text-text-muted">{template.description} · {template.slideCount} slides</p>
+                      </div>
+                      <Plus size={14} className="text-text-muted opacity-0 group-hover:opacity-100 transition-opacity" />
+                    </div>
+                  </button>
+                ))}
+              </div>
             </div>
           </>
         ) : (
