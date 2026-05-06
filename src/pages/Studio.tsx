@@ -350,6 +350,7 @@ export function Studio() {
   const [aiInput, setAiInput] = useState('');
   const [isGeneratingCopy, setIsGeneratingCopy] = useState(false);
   const [copyMode, setCopyMode] = useState<'auto' | 'educational' | 'storytelling' | 'contrarian' | 'data-driven'>('auto');
+  const [previewPlatform, setPreviewPlatform] = useState<'instagram' | 'linkedin' | 'stories' | 'grid'>('instagram');
 
   /* ── Refs ── */
   const fileInputRef = useRef<HTMLInputElement>(null);
@@ -1302,7 +1303,7 @@ export function Studio() {
         {!rightCollapsed ? (
           <>
             <div className="flex border-b border-border shrink-0">
-              {([{ id: 'content' as const, label: 'Content', icon: Type }, { id: 'design' as const, label: 'Design', icon: SlidersHorizontal }, { id: 'layouts' as const, label: 'Layouts', icon: LayoutGrid }, { id: 'ai' as const, label: 'AI', icon: Sparkles }]).map(tab => (
+              {([{ id: 'content' as const, label: 'Content', icon: Type }, { id: 'design' as const, label: 'Design', icon: SlidersHorizontal }, { id: 'layouts' as const, label: 'Layouts', icon: LayoutGrid }, { id: 'preview' as const, label: 'Preview', icon: Monitor }, { id: 'ai' as const, label: 'AI', icon: Sparkles }]).map(tab => (
                 <button key={tab.id} onClick={() => setActiveTab(tab.id)}
                   className={`flex-1 py-3 text-[10px] font-bold uppercase tracking-widest border-b-2 flex items-center justify-center gap-1.5 transition-colors ${activeTab === tab.id ? 'text-text-main' : 'text-text-muted hover:text-text-main border-transparent'}`}
                   style={{ borderColor: activeTab === tab.id ? (activeExpert?.brandColor || '#6366f1') : 'transparent' }}>
@@ -1576,6 +1577,122 @@ export function Studio() {
                           <button onClick={() => setShowSaveLayoutModal(false)} className="flex-1 px-4 py-2.5 border border-border text-text-main rounded-lg font-medium hover:bg-white/5 transition-colors text-sm">Cancelar</button>
                           <button onClick={saveCurrentLayout} disabled={!newLayoutName.trim()} className="flex-1 px-4 py-2.5 bg-primary text-white rounded-lg font-medium hover:bg-primary/90 transition-colors text-sm disabled:opacity-50">Salvar</button>
                         </div>
+                      </div>
+                    </div>
+                  )}
+                </div>
+              )}
+
+              {activeTab === 'preview' && activeItem && (
+                <div className="p-5 space-y-5">
+                  <div className="flex items-center gap-2 text-text-main mb-1">
+                    <Monitor size={16} style={{ color: activeExpert?.brandColor || '#6366f1' }} />
+                    <h3 className="text-[11px] font-black uppercase tracking-widest">Preview de Plataforma</h3>
+                  </div>
+
+                  <div className="flex gap-1 bg-bg p-1 rounded-lg border border-border">
+                    {([
+                      { id: 'instagram' as const, label: 'Instagram' },
+                      { id: 'linkedin' as const, label: 'LinkedIn' },
+                      { id: 'stories' as const, label: 'Stories' },
+                      { id: 'grid' as const, label: 'Grid 3x3' },
+                    ]).map(p => (
+                      <button key={p.id} onClick={() => setPreviewPlatform(p.id)}
+                        className={`flex-1 py-1.5 rounded text-[10px] font-bold uppercase transition-all ${previewPlatform === p.id ? 'text-white' : 'text-text-muted hover:text-text-main'}`}
+                        style={{ backgroundColor: previewPlatform === p.id ? (activeExpert?.brandColor || '#6366f1') : 'transparent' }}>
+                        {p.label}
+                      </button>
+                    ))}
+                  </div>
+
+                  {/* Instagram Feed Preview */}
+                  {previewPlatform === 'instagram' && (
+                    <div className="space-y-3">
+                      <div className="bg-bg rounded-xl border border-border overflow-hidden">
+                        {/* Mock feed header */}
+                        <div className="flex items-center gap-2 p-3 border-b border-border/50">
+                          <div className="w-8 h-8 rounded-full bg-gradient-to-br" style={{ backgroundImage: `linear-gradient(to bottom right, ${activeExpert?.brandColor || '#6366f1'}, #000)` }} />
+                          <div>
+                            <p className="text-xs font-semibold text-text-main">{activeExpert?.handle || '@expert'}</p>
+                            <p className="text-[10px] text-text-muted">Original audio</p>
+                          </div>
+                        </div>
+                        {/* The actual post */}
+                        <div className={`${getAspectClass(activeItem.format)} w-full bg-surface relative`}>
+                          {activeItem.slides[activeItem.activeSlideIndex] && renderSlideContent(activeItem.slides[activeItem.activeSlideIndex], activeItem)}
+                        </div>
+                        {/* Mock actions */}
+                        <div className="p-3 space-y-2">
+                          <div className="flex items-center gap-3">
+                            <div className="w-5 h-5 rounded-full border border-text-muted/30" />
+                            <div className="w-5 h-5 rounded-full border border-text-muted/30" />
+                            <div className="w-5 h-5 rounded-full border border-text-muted/30" />
+                          </div>
+                          <p className="text-xs font-semibold text-text-main">1,247 curtidas</p>
+                          <p className="text-xs text-text-main">
+                            <span className="font-semibold">{activeExpert?.handle || '@expert'}</span>{' '}
+                            {activeItem.slides[activeItem.activeSlideIndex]?.text?.slice(0, 80)}...
+                          </p>
+                        </div>
+                      </div>
+                    </div>
+                  )}
+
+                  {/* LinkedIn Feed Preview */}
+                  {previewPlatform === 'linkedin' && (
+                    <div className="space-y-3">
+                      <div className="bg-bg rounded-xl border border-border overflow-hidden">
+                        <div className="flex items-center gap-2 p-3">
+                          <div className="w-10 h-10 rounded-full bg-gradient-to-br" style={{ backgroundImage: `linear-gradient(to bottom right, ${activeExpert?.brandColor || '#6366f1'}, #000)` }} />
+                          <div>
+                            <p className="text-xs font-semibold text-text-main">{activeExpert?.name || 'Expert'}</p>
+                            <p className="text-[10px] text-text-muted">{activeExpert?.niche || 'Consultor'} · 2h</p>
+                          </div>
+                        </div>
+                        <div className="px-3 pb-2">
+                          <p className="text-xs text-text-main leading-relaxed">
+                            {activeItem.slides[activeItem.activeSlideIndex]?.text || 'Conteúdo em construção...'}
+                          </p>
+                        </div>
+                        <div className={`${getAspectClass(activeItem.format)} w-full bg-surface relative`}>
+                          {activeItem.slides[activeItem.activeSlideIndex] && renderSlideContent(activeItem.slides[activeItem.activeSlideIndex], activeItem)}
+                        </div>
+                        <div className="p-3 flex items-center gap-4 text-[10px] text-text-muted border-t border-border/50">
+                          <span>👍 847</span><span>💬 42 comentários</span><span>🔄 18 reposts</span>
+                        </div>
+                      </div>
+                    </div>
+                  )}
+
+                  {/* Stories Preview */}
+                  {previewPlatform === 'stories' && (
+                    <div className="flex justify-center">
+                      <div className="w-56 bg-black rounded-3xl border-4 border-surface shadow-2xl overflow-hidden">
+                        <div className="absolute top-2 left-4 right-4 h-0.5 bg-white/30 rounded-full z-30" />
+                        <div className="aspect-[9/16] relative">
+                          {activeItem.slides[activeItem.activeSlideIndex] && renderSlideContent(activeItem.slides[activeItem.activeSlideIndex], activeItem)}
+                        </div>
+                      </div>
+                    </div>
+                  )}
+
+                  {/* Grid 3x3 Preview */}
+                  {previewPlatform === 'grid' && (
+                    <div className="space-y-3">
+                      <p className="text-xs text-text-muted text-center">Como ficaria no grid do perfil</p>
+                      <div className="grid grid-cols-3 gap-1">
+                        {Array.from({ length: 9 }).map((_, i) => (
+                          <div key={i} className="aspect-square bg-surface rounded overflow-hidden relative">
+                            {i === 4 && activeItem.slides[0] ? (
+                              <img src={activeItem.slides[0].mediaUrl} alt="" className="w-full h-full object-cover" />
+                            ) : (
+                              <div className="w-full h-full bg-white/5" />
+                            )}
+                            {i === 4 && (
+                              <div className="absolute inset-0 border-2 border-primary" style={{ borderColor: activeExpert?.brandColor || '#6366f1' }} />
+                            )}
+                          </div>
+                        ))}
                       </div>
                     </div>
                   )}
