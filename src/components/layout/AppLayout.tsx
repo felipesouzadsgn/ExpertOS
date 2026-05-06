@@ -19,7 +19,11 @@ import {
   BookMarked,
   FileBarChart2,
   Menu,
-  X
+  X,
+  ScrollText,
+  Tag,
+  ClipboardList,
+  Mic
 } from 'lucide-react';
 import { cn } from '@/lib/utils';
 import { useExpertStore } from '@/store/expertStore';
@@ -42,6 +46,10 @@ const navItems = [
   { name: 'Kanban Flow', path: '/kanban', icon: KanbanSquare },
   { name: 'Agentes de IA', path: '/agents', icon: Bot },
   { name: 'SEO & Blog', path: '/blog', icon: Globe },
+  { name: 'Roteiro', path: '/roteiro', icon: ScrollText },
+  { name: 'SEO Pack', path: '/seo', icon: Tag },
+  { name: 'Briefing', path: '/briefing', icon: ClipboardList },
+  { name: 'Transcrição', path: '/transcricao', icon: Mic },
   { name: 'Documentation', path: '/docs', icon: FileText },
   { name: 'PRD', path: '/prd', icon: FileBarChart2 },
 ];

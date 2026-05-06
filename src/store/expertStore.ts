@@ -54,6 +54,23 @@ export interface VisualIdentity {
   brandManifesto?: string;
 }
 
+export interface Product {
+  id: string;
+  name: string;
+  description: string;
+  price: string;
+  type: 'digital' | 'physical' | 'service' | 'membership';
+}
+
+export interface Platform {
+  id: string;
+  name: string;
+  handle: string;
+  url?: string;
+  followers: string;
+  active: boolean;
+}
+
 export interface Expert {
   id: string;
   name: string;
@@ -81,6 +98,8 @@ export interface Expert {
   photographicStyle?: string;
   icp?: string;
   skills?: string[];
+  products?: Product[];
+  platforms?: Platform[];
   tokens: string;
   archetypes: number;
   avatars?: AvatarAsset[];
@@ -136,6 +155,15 @@ const mockExperts: Expert[] = [
     photographicStyle: 'Alto contraste, foco arquitetônico, iluminação quente dourada, profundidade de campo cinematográfica. Composição com linhas de fuga. Tons predominantes: índigo profundo, dourado sutil, branco marmorizado.',
     icp: 'Indivíduos de patrimônio ultra-elevado (UHNW), founders de tech, investidores internacionais e famílias multi-geracionais buscando trophy assets e diversificação de portfólio imobiliário global.',
     skills: ['Vendas de Luxo', 'Negociação UHNW', 'Avaliação de Propriedades', 'Personal Branding', 'Curadoria de Portfólio'],
+    products: [
+      { id: 'p1', name: 'Mentoria Imobiliária de Elite', description: 'Acompanhamento exclusivo para corretores que querem dominar o mercado de luxo.', price: 'R$ 15.000/mês', type: 'service' },
+      { id: 'p2', name: 'Curso Trophy Assets', description: 'Framework completo para avaliar e comercializar imóveis de ultra-alto padrão.', price: 'R$ 4.997', type: 'digital' },
+    ],
+    platforms: [
+      { id: 'pl1', name: 'Instagram', handle: '@aria.sterling', followers: '420K', active: true },
+      { id: 'pl2', name: 'LinkedIn', handle: 'in/ariasterling', followers: '85K', active: true },
+      { id: 'pl3', name: 'YouTube', handle: '@ariasterluxury', followers: '120K', active: true },
+    ],
     tokens: '1.2M', 
     archetypes: 14,
     blogPosts: [
@@ -213,6 +241,15 @@ const mockExperts: Expert[] = [
     photographicStyle: 'Minimalista, tech-focused, tons frios (azul elétrico + slate). Frequentemente com dashboards, gráficos ou workspaces limpos. Iluminação plana e moderna. Composição com bastante espaço negativo.',
     icp: 'Founders de SaaS, Head of Growth, CMOs e VPs de Produto em startups Series A/B buscando escalar de $1M para $10M ARR com estratégias de PLG e data-driven.',
     skills: ['Product-Led Growth', 'Go-to-Market', 'Análise de Dados', 'CRO', 'Retenção & Churn', 'Pricing Strategy'],
+    products: [
+      { id: 'p1', name: 'Growth OS Framework', description: 'Sistema completo de growth para SaaS B2B, com playbooks, templates e automações.', price: 'US$ 2.997', type: 'digital' },
+      { id: 'p2', name: 'Consultoria de Growth', description: 'Advisory mensal para founders que querem escalar de $1M para $10M ARR.', price: 'US$ 8.000/mês', type: 'service' },
+    ],
+    platforms: [
+      { id: 'pl1', name: 'Twitter/X', handle: '@marcusgrowth', followers: '310K', active: true },
+      { id: 'pl2', name: 'LinkedIn', handle: 'in/marcuschen', followers: '150K', active: true },
+      { id: 'pl3', name: 'YouTube', handle: '@marcusgrowthlabs', followers: '95K', active: true },
+    ],
     tokens: '850K', 
     archetypes: 8,
     blogPosts: []
@@ -265,6 +302,15 @@ const mockExperts: Expert[] = [
     photographicStyle: 'Luminosa, aérea, tons quentes (rosé, dourado, pêssego). Lifestyle-focused: cafés bonitos, journals, nascer do sol, espaços acolhedores. Fotos com luz natural suave, bokeh. A Expert sempre sorri com autenticidade.',
     icp: 'Mulheres coaches, consultoras e prestadoras de serviço estagnadas em R$10k-30k/mês que querem escalar para 6-7 dígitos com ofertas high-ticket, sem perder autenticidade nem burnout.',
     skills: ['Mindset Coaching', 'Vendas High-Ticket', 'Construção de Comunidade', 'Criação de Ofertas', 'Storytelling', 'Funis de Alto Valor'],
+    products: [
+      { id: 'p1', name: 'Mentoria 7 Dígitos', description: 'Programa de 6 meses para coaches escalarem para 7 dígitos com ofertas high-ticket.', price: 'R$ 25.000', type: 'service' },
+      { id: 'p2', name: 'Comunidade Mulheres de 7 Dígitos', description: 'Comunidade exclusiva de mulheres empreendedoras.', price: 'R$ 497/mês', type: 'membership' },
+    ],
+    platforms: [
+      { id: 'pl1', name: 'Instagram', handle: '@elena.coach', followers: '890K', active: true },
+      { id: 'pl2', name: 'TikTok', handle: '@elenacoach', followers: '650K', active: true },
+      { id: 'pl3', name: 'YouTube', handle: '@elenarostova', followers: '220K', active: true },
+    ],
     tokens: '2.1M', 
     archetypes: 22,
     blogPosts: []
